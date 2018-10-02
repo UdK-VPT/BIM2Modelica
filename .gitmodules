@@ -1,0 +1,4 @@
+[submodule "CoTeTo"]
+	path = CoTeTo
+	url = https://github.com/UdK-VPT/CoTeTo.git
+	branch = master
