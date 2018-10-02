@@ -2,3 +2,7 @@
 	path = CoTeTo
 	url = https://github.com/UdK-VPT/CoTeTo.git
 	branch = master
+[submodule "Modelica"]
+	path = Modelica
+	url = https://github.com/UdK-VPT/BuildingSystems.git
+	branch = master
