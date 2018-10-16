@@ -1,0 +1,157 @@
+<%
+for filename in d:
+  data = d[filename]['_buildingData']
+%>\
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+[RequireComponent(typeof(MeshFilter))]
+
+public class ${data['buildingSystem'].name}_BuildingModel : MonoBehaviour
+{
+<% i = 1 %>\
+% for owa in data['buildingSystem'].originalWalls:
+  public GameObject originalWall${i};
+  Mesh mesh${i};
+  Vector3[] vertices${i};
+  int[] triangles${i};<% i = i + 1 %>
+% endfor
+% for odo in data['buildingSystem'].originalDoors:
+  public GameObject originalDoor${i};
+  Mesh mesh${i};
+  Vector3[] vertices${i};
+  int[] triangles${i};<% i = i + 1 %>
+% endfor
+% for osl in data['buildingSystem'].originalSlabs:
+  public GameObject originalSlab${i};
+  Mesh mesh${i};
+  Vector3[] vertices${i};
+  int[] triangles${i};<% i = i + 1 %>
+% endfor
+% for owi in data['buildingSystem'].originalWindows:
+  public GameObject originalWindow${i};
+  Mesh mesh${i};
+  Vector3[] vertices${i};
+  int[] triangles${i};<% i = i + 1 %>
+% endfor
+
+  Color myColor1 = new Color(1.0f,1.0f,1.0f,1.0f);
+  Color myColor2 = new Color(0.5f,0.5f,0.5f,1.0f);
+  Color myColor3 = new Color(0.2f,0.2f,0.2f,1.0f);
+
+  void Start() {
+<% i = 1 %>\
+% for owa in data['buildingSystem'].originalWalls:
+
+    // original wall${i}
+    originalWall${i} = new GameObject("originalWall${i}");
+    originalWall${i}.AddComponent<MeshFilter>();
+    originalWall${i}.AddComponent<MeshRenderer>();
+
+    originalWall${i}.GetComponent<Renderer>().material = new Material(Shader.Find("Ciconia Studio/Double Sided/Transparent/Diffuse Bump"));
+    originalWall${i}.GetComponent<Renderer>().material.SetFloat("_SpecIntensity",2.0f);
+    originalWall${i}.GetComponent<Renderer>().material.SetFloat("_Transparency",0.2f);
+    originalWall${i}.GetComponent<Renderer>().material.SetColor("_Speccolor",myColor1);
+    mesh${i} = originalWall${i}.GetComponent<MeshFilter>().mesh;
+    // vertices
+    vertices${i} = new Vector3[${len(owa.vertices)}] {
+  % for ver in owa.vertices:
+      new Vector3(${ver[0]}f,${ver[2]}f,${ver[1]}f)${',' if not loop.last else ''}
+  % endfor;
+    };
+    // Triangles
+    triangles${i} = new int[${len(owa.triangles)}]{
+  % for j in range(0,int(len(owa.triangles)/3)):
+      ${owa.triangles[3*j+0]},${owa.triangles[3*j+1]},${owa.triangles[3*j+2]}${',' if not loop.last else ''}
+  % endfor
+    };
+    mesh${i}.Clear();
+    mesh${i}.vertices = vertices${i};
+    mesh${i}.triangles = triangles${i};<% i = i + 1 %>
+% endfor
+
+% for oda in data['buildingSystem'].originalDoors:
+
+    // original door${i}
+    originalDoor${i} = new GameObject("originalDoor${i}");
+    originalDoor${i}.AddComponent<MeshFilter>();
+    originalDoor${i}.AddComponent<MeshRenderer>();
+    originalDoor${i}.GetComponent<Renderer>().material = new Material(Shader.Find("Ciconia Studio/Double Sided/Standard/Diffuse Bump"));
+    originalDoor${i}.GetComponent<Renderer>().material.SetFloat("_SpecIntensity",1.0f);
+    originalDoor${i}.GetComponent<Renderer>().material.SetColor("_Speccolor",myColor3);
+    mesh${i} = originalDoor${i}.GetComponent<MeshFilter>().mesh;
+    // vertices
+    vertices${i} = new Vector3[${len(odo.vertices)}] {
+  % for ver in odo.vertices:
+      new Vector3(${ver[0]}f,${ver[2]}f,${ver[1]}f)${',' if not loop.last else ''}
+  % endfor;
+    };
+    // Triangles
+    triangles${i} = new int[${len(odo.triangles)}]{
+  % for j in range(0,int(len(odo.triangles)/3)):
+      ${odo.triangles[3*j+0]},${odo.triangles[3*j+1]},${odo.triangles[3*j+2]}${',' if not loop.last else ''}
+  % endfor
+    };
+    mesh${i}.Clear();
+    mesh${i}.vertices = vertices${i};
+    mesh${i}.triangles = triangles${i};<% i = i + 1 %>
+% endfor
+
+% for osl in data['buildingSystem'].originalSlabs:
+
+    // original slab${i}
+    originalSlab${i} = new GameObject("originalSlab${i}");
+    originalSlab${i}.AddComponent<MeshFilter>();
+    originalSlab${i}.AddComponent<MeshRenderer>();
+    originalSlab${i}.GetComponent<Renderer>().material = new Material(Shader.Find("Ciconia Studio/Double Sided/Transparent/Diffuse Bump"));
+    originalSlab${i}.GetComponent<Renderer>().material.SetFloat("_SpecIntensity",2.0f);
+    originalSlab${i}.GetComponent<Renderer>().material.SetFloat("_Transparency",0.2f);
+    originalSlab${i}.GetComponent<Renderer>().material.SetColor("_Speccolor",myColor1);
+    mesh${i} = originalSlab${i}.GetComponent<MeshFilter>().mesh;
+    // vertices
+    vertices${i} = new Vector3[${len(osl.vertices)}] {
+  % for ver in osl.vertices:
+      new Vector3(${ver[0]}f,${ver[2]}f,${ver[1]}f)${',' if not loop.last else ''}
+  % endfor;
+    };
+    // Triangles
+    triangles${i} = new int[${len(osl.triangles)}]{
+  % for j in range(0,int(len(osl.triangles)/3)):
+      ${osl.triangles[3*j+0]},${osl.triangles[3*j+1]},${osl.triangles[3*j+2]}${',' if not loop.last else ''}
+  % endfor
+    };
+    mesh${i}.Clear();
+    mesh${i}.vertices = vertices${i};
+    mesh${i}.triangles = triangles${i};<% i = i + 1 %>
+% endfor
+
+% for owi in data['buildingSystem'].originalWindows:
+
+    // original window${i}
+    originalWindow${i} = new GameObject("originalWindow${i}");
+    originalWindow${i}.AddComponent<MeshFilter>();
+    originalWindow${i}.AddComponent<MeshRenderer>();
+    originalWindow${i}.GetComponent<Renderer>().material = new Material(Shader.Find("Ciconia Studio/Double Sided/Transparent/Diffuse Bump"));
+    originalWindow${i}.GetComponent<Renderer>().material.SetFloat("_SpecIntensity",1.0f);
+    originalWindow${i}.GetComponent<Renderer>().material.SetFloat("_Transparency",0.8f);
+    originalWindow${i}.GetComponent<Renderer>().material.SetColor("_Speccolor",myColor1);
+    mesh${i} = originalWindow${i}.GetComponent<MeshFilter>().mesh;
+    // vertices
+    vertices${i} = new Vector3[${len(owi.vertices)}] {
+  % for ver in owi.vertices:
+      new Vector3(${ver[0]}f,${ver[2]}f,${ver[1]}f)${',' if not loop.last else ''}
+  % endfor;
+    };
+    // Triangles
+    triangles${i} = new int[${len(owi.triangles)}]{
+  % for j in range(0,int(len(owi.triangles)/3)):
+      ${owi.triangles[3*j+0]},${owi.triangles[3*j+1]},${owi.triangles[3*j+2]}${',' if not loop.last else ''}
+  % endfor
+    };
+    mesh${i}.Clear();
+    mesh${i}.vertices = vertices${i};
+    mesh${i}.triangles = triangles${i};<% i = i + 1 %>
+% endfor
+  }
+}

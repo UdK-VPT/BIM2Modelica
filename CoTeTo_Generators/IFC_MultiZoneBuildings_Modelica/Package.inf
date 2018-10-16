@@ -1,0 +1,33 @@
+[GENERATOR]
+name = IFC_MultiZoneBuildings_Modelica
+version = 0.2
+description = generator for Modelica building models based on IFC data
+author = Christoph Nytsch-Geusen
+
+[REQUIRES]
+modelicaLibs = []
+
+[LOADER]
+name = IFCFile
+module = IFCFile
+minVer = 0.1
+maxVer = 2.0
+
+[FILTER]
+module = Filter01
+function = filter01
+
+[TEMPLATE_MODELICA]
+topFile = PhysicalModel.mot
+type = mako
+ext = .mo
+
+[TEMPLATE_UNITY_STATE_VARIABLES]
+topFile = StateVariables.unt
+type = mako
+ext = _StateVariables.cs
+
+[TEMPLATE_UNITY_BUILDING_MODEL]
+topFile = BuildingModel.unt
+type = mako
+ext = _BuildingModel.cs
