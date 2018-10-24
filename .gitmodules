@@ -6,3 +6,7 @@
 	path = Modelica
 	url = https://github.com/UdK-VPT/BuildingSystems.git
 	branch = master
+[submodule "BuildingSystems"]
+	path = BuildingSystems
+	url = https://github.com/UdK-VPT/BuildingSystems.git
+	branch = master
