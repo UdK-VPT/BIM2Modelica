@@ -1,0 +1,15 @@
+# Python residue
+*.py[cod]
+
+# IDE settings and preferences
+*.pyproj
+*.sln
+.vs/
+.idea/
+
+# Documentation
+*.docx
+
+# temporary and log files
+[Tt]emp/
+*.log
