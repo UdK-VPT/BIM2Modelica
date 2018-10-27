@@ -17,6 +17,17 @@ maxVer = 2.0
 module = Filter01
 function = filter01
 
+# Modelica code generator
+[MODELICA_SWITCHES]
+# Set surface temperatures as an output of the building model: surTemOut = 1
+surTemOut = 0
+# Set internal heat sources for all thermal zones as an input of the building model: heaSouInp = 1
+heaSouInp = 0
+# Set heating set temperature for all thermal zones as an input of the building model: TSetHeaInp = 1
+TSetHeaInp = 0
+# Set cooling set temperature for all thermal zones as an input of the building model: TSetCooInp = 1
+TSetCooInp = 0
+
 [TEMPLATE_MODELICA]
 topFile = PhysicalModel.mot
 type = mako

@@ -420,7 +420,7 @@ def getGeneratorData(buildingData):
 
     ## Building system
     buildingSystem = dmg.BuildingSystem(name=buildingData.getParameter('name'),
-                                        location='BuildingSystems.Climate.WeatherDataMeteonorm.Germany_Berlin_Meteonorm_NetCDF',
+                                        location='BuildingSystems.Climate.WeatherDataMeteonorm.Germany_Berlin_Meteonorm_ASCII',
                                         originalWalls = buildingData.getParameter('originalWalls'),
                                         originalDoors = buildingData.getParameter('originalDoors'),
                                         originalSlabs = buildingData.getParameter('originalSlabs'),
@@ -444,3 +444,4 @@ def filter01(d, systemCfg, generatorCfg, logger):
         # insert additional data into the existing dictionary for this file,
         # using an underscore will minimize the risk of overwriting data read from the json file
         fileData['_buildingData'] = getGeneratorData(dataModel)
+    print('ready')

@@ -1,29 +1,4 @@
 <%
-##
-## Set surface temperatures as an output of the building model: surTemOut = True
-#surTemOut = True
-surTemOut = False
-
-## Set internal heat sources for all thermal zones as an input of the building model: heaSouInp = True
-#heaSouInp = True
-heaSouInp = False
-
-## Set heating set temperature for all thermal zones as an input of the building model: TSetHeaInp = True
-#TSetHeaInp = True
-TSetHeaInp = False
-
-## Set cooling set temperature for all thermal zones as an input of the building model: TSetCooInp = True
-#TSetCooInp = True
-TSetCooInp = False
-
-## Set pane tilt angle for all windows as an input of the building model: angTilWinInp = True
-#angTilWinInp = True
-angTilWinInp = False
-
-## Set pane rotation angle for all windows as an input of the building model: angRotWinInp = True
-#angRotWinInp = True
-angRotWinInp = False
-
 ## Data of the multi-zone building model
 for filename in d:
   data = d[filename]['_buildingData']
@@ -58,11 +33,9 @@ model ${data['buildingSystem'].name}
     nSurfacesSolid = ${len(data['conEleSol'])},
     surfacesToSolids(nSurfaces = nSurfacesSolid),
     convectionOnSurfaces = BuildingSystems.HAM.ConvectiveHeatTransfer.Types.Convection.forced,
-    useAirPathes = false,
+    useAirPaths = false,
     heatSources = true,
     nHeatSources = ${len(data['zones'])});
-
-    parameter BuildingSystems.Buildings.Data.Constructions.Transparent.HeatProtectionDoubleGlazingUVal14 constructionWindow;
 
   % for zone in data['zones']:
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed ${zone.name}(
@@ -75,7 +48,7 @@ model ${data['buildingSystem'].name}
 
   % for ele in data['elementsOpaque']:
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes ${ele.name}(
-    % if surTemOut == True:
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
       show_TSur = true,
     % endif
       redeclare ${ele.constructionData} constructionData,
@@ -85,20 +58,18 @@ model ${data['buildingSystem'].name}
       height = ${ele.height},
       width = ${ele.width});
   % endfor
+
   % for ele in data['elementsTransparent']:
     BuildingSystems.Buildings.Constructions.Windows.Window ${ele.name}(
-    % if surTemOut == True:
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
       show_TSur = true,
     % endif
+      redeclare BuildingSystems.Buildings.Data.Constructions.Transparent.DoubleGlazing constructionData,
       angleDegAzi = ${ele.angleDegAzi},
       angleDegTil = ${ele.angleDegTil},
       height = ${ele.height},
-      width = ${ele.width},
-      UVal = (1.0 - ${ele.name}.framePortion) * constructionWindow.UValGla + ${ele.name}.framePortion * constructionWindow.UValFra,
-      tauDir0 = constructionWindow.g,
-      tauDif = constructionWindow.g);
+      width = ${ele.width});
   % endfor
-
   equation
     // connections between construction elements and zones
   % for con in data['conEleZon']:
@@ -148,9 +119,9 @@ model ${data['buildingSystem'].name}
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.conHeatSourcesPorts[1], conHeatSourcesPorts[${i+1}]);
   % endfor
-  % if surTemOut == True:
+  % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
   // Connections for surface temperatures
-<% i = 1 %>\
+  <% i = 1 %>\
     % for ele in data['elementsOpaque']:
     connect(${ele.name}.TSur_1, TSur[${i}]);<% i = i + 1 %>
     connect(${ele.name}.TSur_2, TSur[${i}]);<% i = i + 1 %>
@@ -163,7 +134,7 @@ model ${data['buildingSystem'].name}
   end Building;
 
   Building building(
-  % if surTemOut == True:
+  % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
     show_TSur = true,
     nSurfaces = ${2*len(data['elementsOpaque'])+2*len(data['elementsTransparent'])},
   % endif
@@ -172,9 +143,8 @@ model ${data['buildingSystem'].name}
 
   BuildingSystems.Buildings.Ambient ambient(
     nSurfaces = building.nSurfacesAmbient,
-    redeclare block WeatherData = ${location})
+    redeclare block WeatherData = ${data['buildingSystem'].location})
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
-
     // Heating set temperature of the thermal zones
     % for zone in data['zones']:
     Modelica.Blocks.Sources.Constant TSetHeating_${zone.name}(k=273.15 + ${zone.TSetHeating});
@@ -188,7 +158,7 @@ model ${data['buildingSystem'].name}
     Modelica.Blocks.Sources.Constant airchange_${zone.name}(k=${zone.airchange});
     % endfor
     // Heating source of each thermal zones
-    % if heaSouInp == False:
+    % if not generatorCfg['MODELICA_SWITCHES'].getboolean('heaSouInp'):
       % for zone in data['zones']:
     Modelica.Blocks.Sources.Constant heatsources_${zone.name}(k=${zone.heatsource});
       % endfor
@@ -217,7 +187,7 @@ model ${data['buildingSystem'].name}
     connect(airchange_${data['zones'][i].name}.y, building.airchange[${i+1}]);
     % endfor
     // Heating source of each thermal zones
-    % if heaSouInp == False:
+    % if not generatorCfg['MODELICA_SWITCHES'].getboolean('heaSouInp'):
       % for i in range(len(data['zones'])):
     connect(heatsources_${data['zones'][i].name}.y, heatFlow[${i+1}].Q_flow);
       % endfor
@@ -229,4 +199,4 @@ model ${data['buildingSystem'].name}
   annotation(experiment(StartTime=0, StopTime=31536000),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
 
-end ${data['buildingSystem'].name};
+  end ${data['buildingSystem'].name};
