@@ -1,0 +1,4 @@
+OutputCPUtime:=true;
+openModel("./BuildingSystems/BuildingSystems/package.mo");
+openModel("../netCDF-DataReader/NCDataReader2/package.mo");
+openModel("../../../ModelicaModels/package.mo");
