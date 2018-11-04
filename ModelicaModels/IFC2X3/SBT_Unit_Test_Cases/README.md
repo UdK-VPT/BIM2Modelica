@@ -37,30 +37,30 @@ Generated Modelica thermal building models from folder BIM2Modelica/IFC/IFC2X3/S
 
 ![CSW-8_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/CSW-8_SB.png)
 
-![SOAW-1_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SOAW-1.png)
+![SOAW-1_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SOAW-1_SB.png)
 
-![SOAW-3_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SOAW-3.png)
+![SOAW-3_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SOAW-3_SB.png)
 
-![SOWW-1_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SOWW-1.png)
+![SOWW-1_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SOWW-1_SB.png)
 
-![SOWW-3_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SOWW-3.png)
+![SOWW-3_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SOWW-3_SB.png)
 
-![SWWW-3_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SWWW-3.png)
+![SWWW-3_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SWWW-3_SB.png)
 
-![SWWW-4_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SWWW-4.png)
+![SWWW-4_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SWWW-4_SB.png)
 
-![SWWW-5_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SWWW-5.png)
+![SWWW-5_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/SWWW-5_SB.png)
 
-![Wi-1_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-1.png)
+![Wi-1_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-1_SB.png)
 
-![Wi-3_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-3.png)
+![Wi-3_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-3_SB.png)
 
-![Wi-4_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-4.png)
+![Wi-4_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-4_SB.png)
 
-![Wi-5_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-5.png)
+![Wi-5_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-5_SB.png)
 
-![Wi-6_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-6.png)
+![Wi-6_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-6_SB.png)
 
-![Wi-7_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-7.png)
+![Wi-7_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/Wi-7_SB.png)
 
-![WW-3_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/WW-3.png)
+![WW-3_SB](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/WW-3_SB.png)
