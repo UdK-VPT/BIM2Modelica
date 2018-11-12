@@ -7,9 +7,9 @@ model TwoZones
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
       nLayers=3,
       thickness={
-        15.0,
-        200.0,
-        20.0
+        0.015,
+        0.200,
+        0.020
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete(),
@@ -21,7 +21,7 @@ model TwoZones
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
       nLayers=1,
       thickness={
-        300.0
+        0.300
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()

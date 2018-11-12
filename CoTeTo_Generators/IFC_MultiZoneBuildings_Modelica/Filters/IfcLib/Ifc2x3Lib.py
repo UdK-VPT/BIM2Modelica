@@ -102,15 +102,15 @@ def WindowAndDoor_toStyle(ifc_file):
 def ElementFaceToThickness(mylist):
     """
     The shapes of each ifc element of the input list are explored.
-    Faces are extraced, and iterated over the other faces.
-    During the exp2.More() loop a Parallel face is searched.
+    Faces are extraced and iterated over the other faces.
+    During the exp2.More() loop a parallel face is searched.
     If found thickness (distance between faces "BRepExtrema_ExtFF")
     and the normal vector are obtained.
 
     The dictionary "element_dict" is returned with key (Id of building element)
     and a dictionary as a value.
-    The value/dictionary has uses the face as a key and a list as a value.
-    The value contain the thickness and normal vector.
+    The value/dictionary uses the face as a key and a list as a value.
+    The value contains the thickness and the normal vector.
 
     Beware that,
         1. ExtFF.SquareDistance is for some cases reporting a distance = 0, when displaying these
@@ -292,11 +292,11 @@ def RelatedElementsWalls(Spaces, ifc_file, WallInfo, SlabsInfo):
     The faces of the IfcWall are compared to the boundary faces of the IfcSpaces
     contained into Spaces. Thus identifying which walls are attached to each zone.
     The Information is stored for later use into the dictionary RelatedWall of each
-    SpaceContainer instance. Dictionaries uses as key the GlobalId of attached building
-    element and as value the shape of the common face.
+    SpaceContainer instance. Dictionaries use as the key the GlobalId of attached building
+    element and as the value the shape of the common face.
 
     An updated list of SpaceContainer as well as a black list of walls is returned.
-    The black list contains walls that are inside a volume (internal walls)
+    The black list contains walls that are inside of a volume (internal walls)
     """
     props = OCC.GProp.GProp_GProps()
     all_walls = ifc_file.by_type("IfcWall")

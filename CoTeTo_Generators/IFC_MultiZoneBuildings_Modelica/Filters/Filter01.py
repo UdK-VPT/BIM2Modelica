@@ -210,7 +210,10 @@ def mapIFCtoBuildingDataModel(file,filename):
         material = []
         treatedCon[con[0]] = "Construction"+str(ico)
         for layer in con[1]:
-            thickness.append(layer.Thickness)
+            if layer.Thickness > 1.0: # length unit in the IFC file in mm
+                thickness.append(layer.Thickness/1000.0)
+            else: # length unit in the IFC file in m
+                thickness.append(layer.Thickness)
             material.append("BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete")
         buildingData.addConstruction(bdm.Construction(name="Construction"+str(ico),
                                                       numberOfLayers=len(con[1]),
