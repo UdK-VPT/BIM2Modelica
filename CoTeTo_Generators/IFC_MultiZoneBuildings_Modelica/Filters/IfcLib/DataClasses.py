@@ -103,10 +103,14 @@ class Mesh(object):
             face = topods_Face(expFac.Current())
             location = TopLoc_Location()
             facing = (bt.Triangulation(face, location)).GetObject()
-            tri = facing.Triangles()
-            nTri = facing.NbTriangles()
-            ver = facing.Nodes()
-
+            try:
+                tri = facing.Triangles()
+                nTri = facing.NbTriangles()
+                ver = facing.Nodes()
+            except:
+                tri = None
+                nTri= None
+                ver = None
             # store origin of the face's local coordinates
             transf = face.Location().Transformation()
 

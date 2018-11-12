@@ -182,7 +182,7 @@ model OneZone
     connect(relationRadiationConvection.heatPortCv, building.conHeatSourcesPorts[1:1]);
     connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:1]);
 
-  annotation(experiment(StartTime=0, StopTime=31536000),
+  annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
 
   end OneZone;

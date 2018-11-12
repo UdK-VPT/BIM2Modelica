@@ -1,38 +1,24 @@
-within ModelicaModels.IFC2X3.UdKB_Test_Cases;
-model TwoZones
+within ModelicaModels.IFC2X3.SBT_Unit_Test_Cases;
+model Wi7_SB
   "Model of a building with its climate ambient"
   extends Modelica.Icons.Example;
 
   record Construction1
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
-      nLayers=3,
+      nLayers=1,
       thickness={
-        15.0,
-        200.0,
-        20.0
+        200.0
       },
       material={
-        BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete(),
-        BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete(),
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()
       });
   end Construction1;
-  record Construction2
-    extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
-      nLayers=1,
-      thickness={
-        300.0
-      },
-      material={
-        BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()
-      });
-  end Construction2;
 
   model Building
     "Automatically generated multi-zone building model"
     extends BuildingSystems.Buildings.BaseClasses.BuildingTemplate(
     nZones = 2,
-    surfacesToAmbient(nSurfaces = 12),
+    surfacesToAmbient(nSurfaces = 11),
     nSurfacesSolid = 0,
     surfacesToSolids(nSurfaces = nSurfacesSolid),
     convectionOnSurfaces = BuildingSystems.HAM.ConvectiveHeatTransfer.Types.Convection.forced,
@@ -41,116 +27,102 @@ model TwoZones
     nHeatSources = 2);
 
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_1(
-      V=27.0,
+      V=760.0,
       height=3.0,
-      nConstructions=8,
+      nConstructions=7,
       heatSources=true,
       nHeatSources=1);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_2(
-      V=27.0,
+      V=759.9999999999999,
       height=3.0,
-      nConstructions=8,
+      nConstructions=6,
       heatSources=true,
       nHeatSources=1);
 
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_1(
       redeclare Construction1 constructionData,
-      angleDegAzi = 90.0,
-      angleDegTil = 90.0,
-      AInnSur = 0.0,
-      height = 2.9999999999999996,
-      width = 3.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_2(
-      redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
-      AInnSur = 2.0,
-      height = 2.9999999999999996,
-      width = 3.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_3(
+      AInnSur = 0.0,
+      height = 3.8,
+      width = 20.0);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_2(
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
-      height = 2.9999999999999996,
-      width = 3.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_4(
+      height = 3.8,
+      width = 6.0);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_3(
       redeclare Construction1 constructionData,
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
-      AInnSur = 1.0,
-      height = 2.9999999999999996,
-      width = 3.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_1(
-      redeclare Construction2 constructionData,
-      angleDegAzi = 0.0,
-      angleDegTil = 180.0,
       AInnSur = 0.0,
-      height = 3.0,
-      width = 3.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_2(
-      redeclare Construction2 constructionData,
-      angleDegAzi = 0.0,
-      angleDegTil = 0.0,
-      AInnSur = 0.0,
-      height = 3.0,
-      width = 3.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes door_1(
-      redeclare Construction1 constructionData,
-      angleDegAzi = 0.0,
-      angleDegTil = 90.0,
-      AInnSur = 0.0,
-      height = 2.0,
-      width = 1.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_5(
+      height = 3.8,
+      width = 20.0);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_4(
       redeclare Construction1 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
-      height = 2.9999999999999996,
-      width = 3.0000000000000004);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_6(
+      height = 3.8,
+      width = 10.0);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_1(
+      redeclare Construction1 constructionData,
+      angleDegAzi = 0.0,
+      angleDegTil = 180.0,
+      AInnSur = 0.0,
+      height = 10.0,
+      width = 20.0);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_2(
+      redeclare Construction1 constructionData,
+      angleDegAzi = 0.0,
+      angleDegTil = 0.0,
+      AInnSur = 0.0,
+      height = 10.0,
+      width = 20.0);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_5(
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
-      AInnSur = 2.0,
-      height = 2.9999999999999996,
-      width = 3.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_7(
+      AInnSur = 0.0,
+      height = 3.8,
+      width = 20.0);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_6(
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
-      height = 2.9999999999999996,
-      width = 3.0000000000000004);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_3(
-      redeclare Construction2 constructionData,
-      angleDegAzi = 0.0,
-      angleDegTil = 180.0,
+      height = 3.8,
+      width = 10.0);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_7(
+      redeclare Construction1 constructionData,
+      angleDegAzi = 180.0,
+      angleDegTil = 90.0,
       AInnSur = 0.0,
-      height = 3.0,
-      width = 3.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_4(
-      redeclare Construction2 constructionData,
+      height = 3.8,
+      width = 20.0);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_8(
+      redeclare Construction1 constructionData,
+      angleDegAzi = 90.0,
+      angleDegTil = 90.0,
+      AInnSur = 0.0,
+      height = 3.8,
+      width = 10.0);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_3(
+      redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 0.0,
       AInnSur = 0.0,
-      height = 3.0,
-      width = 3.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes door_2(
-      redeclare Construction1 constructionData,
-      angleDegAzi = 0.0,
-      angleDegTil = 90.0,
-      AInnSur = 0.0,
-      height = 2.0,
-      width = 1.0);
+      height = 10.0,
+      width = 20.0);
 
     BuildingSystems.Buildings.Constructions.Windows.Window window_1(
       redeclare BuildingSystems.Buildings.Data.Constructions.Transparent.DoubleGlazing constructionData,
-      angleDegAzi = 180.0,
+      angleDegAzi = -90.0,
       angleDegTil = 90.0,
-      height = 1.0,
-      width = 1.0);
+      height = 3.8,
+      width = 4.0);
   equation
     // connections between construction elements and zones
     connect(wall_1.toSurfacePort_1, zone_1.toConstructionPorts[1]);
@@ -159,29 +131,25 @@ model TwoZones
     connect(wall_4.toSurfacePort_1, zone_1.toConstructionPorts[4]);
     connect(slab_1.toSurfacePort_1, zone_1.toConstructionPorts[5]);
     connect(slab_2.toSurfacePort_1, zone_1.toConstructionPorts[6]);
-    connect(door_1.toSurfacePort_1, zone_1.toConstructionPorts[7]);
-    connect(window_1.toSurfacePort_1, zone_1.toConstructionPorts[8]);
-    connect(wall_2.toSurfacePort_2, zone_2.toConstructionPorts[1]);
-    connect(door_1.toSurfacePort_2, zone_2.toConstructionPorts[2]);
-    connect(wall_5.toSurfacePort_1, zone_2.toConstructionPorts[3]);
-    connect(wall_6.toSurfacePort_1, zone_2.toConstructionPorts[4]);
-    connect(wall_7.toSurfacePort_1, zone_2.toConstructionPorts[5]);
+    connect(window_1.toSurfacePort_1, zone_1.toConstructionPorts[7]);
+    connect(slab_2.toSurfacePort_2, zone_2.toConstructionPorts[1]);
+    connect(wall_5.toSurfacePort_1, zone_2.toConstructionPorts[2]);
+    connect(wall_6.toSurfacePort_1, zone_2.toConstructionPorts[3]);
+    connect(wall_7.toSurfacePort_1, zone_2.toConstructionPorts[4]);
+    connect(wall_8.toSurfacePort_1, zone_2.toConstructionPorts[5]);
     connect(slab_3.toSurfacePort_1, zone_2.toConstructionPorts[6]);
-    connect(slab_4.toSurfacePort_1, zone_2.toConstructionPorts[7]);
-    connect(door_2.toSurfacePort_1, zone_2.toConstructionPorts[8]);
     // connections between construction elements and ambient
     connect(wall_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[1]);
-    connect(wall_3.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[2]);
-    connect(wall_4.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[3]);
-    connect(slab_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[4]);
-    connect(slab_2.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[5]);
+    connect(wall_2.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[2]);
+    connect(wall_3.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[3]);
+    connect(wall_4.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[4]);
+    connect(slab_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[5]);
     connect(wall_5.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[6]);
     connect(wall_6.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[7]);
     connect(wall_7.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[8]);
-    connect(slab_3.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[9]);
-    connect(slab_4.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[10]);
-    connect(door_2.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[11]);
-    connect(window_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[12]);
+    connect(wall_8.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[9]);
+    connect(slab_3.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[10]);
+    connect(window_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[11]);
     // connections between construction elements and ground
   // Heating set temperature of each thermal zones
     connect(zone_1.T_setHeating, T_setHeating[1]);
@@ -262,4 +230,4 @@ model TwoZones
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
 
-  end TwoZones;
+  end Wi7_SB;

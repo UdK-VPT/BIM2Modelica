@@ -196,7 +196,7 @@ model ${data['buildingSystem'].name}
     connect(relationRadiationConvection.heatPortCv, building.conHeatSourcesPorts[1:${len(data['zones'])}]);
     connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:${len(data['zones'])}]);
 
-  annotation(experiment(StartTime=0, StopTime=31536000),
+  annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
 
   end ${data['buildingSystem'].name};
