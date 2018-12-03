@@ -27,7 +27,7 @@ and the Python package [OCC](https://github.com/tpaviot/pythonocc) are used.
 ## Template for Modelica code generation
 
 A flexible MAKO template for [Modelica multi-zone building models](https://github.com/UdK-VPT/BIM2Modelica/blob/master/CoTeTo_Generators/IFC_MultiZoneBuildings_Modelica/Templates/PhysicalModel.mot)
-generates the Modelica code for thermal building models with flexible geometry, number of zones, building constructions and boundary conditions (weather data, building use).
+generates the Modelica code for thermal building models with a flexible geometry, number of zones, building constructions and boundary conditions (weather data, building use).
 
 ## IFC test models
 
@@ -35,4 +35,4 @@ A set of [IFC test models](https://github.com/UdK-VPT/BIM2Modelica/tree/master/I
 
 ## Generated Modelica building models
 
-[This folder](https://github.com/UdK-VPT/BIM2Modelica/tree/master/ModelicaModels) includes the generated Modelica models correspondent to the IFC test models.
+[This folder](https://github.com/UdK-VPT/BIM2Modelica/tree/master/ModelicaModels/IFC2X3) includes the generated Modelica models correspondent to the IFC2X3 test models.
