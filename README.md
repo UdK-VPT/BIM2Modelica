@@ -47,12 +47,12 @@ A set of [IFC test models](https://github.com/UdK-VPT/BIM2Modelica/tree/master/I
 
 4. Start the GUI of CoTeTo and select the generator of your interest, in this case `IFC_MultiZoneBuildings_Modelica`.
 
-![CoTeTo-GUI](https://github.com/UdK-VPT/BIM2Modelica/tree/master/docs/source/images/CoTeTo_GUI.png)
+![CoTeTo-GUI](https://github.com/UdK-VPT/BIM2Modelica/tree/master/docs/source/images/CoTeTo_GUI.PNG)
 
-5. Select the IFC input file (e.g. [OneZone.ifc]https://github.com/UdK-VPT/BIM2Modelica/tree/master/IFC/IFC2X3/UdKB_Test_Cases/OneZone.ifc)
+5. Select the IFC input file (e.g. [OneZone.ifc](https://github.com/UdK-VPT/BIM2Modelica/tree/master/IFC/IFC2X3/UdKB_Test_Cases/OneZone.ifc))
 
 6. Name the output model name (e.g. OneZone) and press **Generate**.
 
-7. As a result three files (OneZone.mo, OneZone_StateVariables.cs and OneZone_BuildingModel.cs) are generated
+7. As a result three files (OneZone.mo, OneZone_StateVariables.cs and OneZone_BuildingModel.cs) are generated.
 
 6. Open the generated .mo-File in your Modelica simulation environment and simulate it.
