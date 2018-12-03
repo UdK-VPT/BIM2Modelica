@@ -49,7 +49,7 @@ A set of [IFC test models](https://github.com/UdK-VPT/BIM2Modelica/tree/master/I
 
 ![CoTeTo-GUI](https://github.com/UdK-VPT/BIM2Modelica/tree/master/docs/source/images/CoTeTo_GUI.PNG)
 
-5. Select the IFC input file (e.g. [OneZone.ifc](https://github.com/UdK-VPT/BIM2Modelica/tree/master/IFC/IFC2X3/UdKB_Test_Cases/OneZone.ifc))
+5. Select the IFC input file (e.g. BIM2Modelica/IFC/IFC2X3/UdKB_Test_Cases/[OneZone.ifc](https://github.com/UdK-VPT/BIM2Modelica/tree/master/IFC/IFC2X3/UdKB_Test_Cases/OneZone.ifc))
 
 6. Name the output model name (e.g. OneZone) and press **Generate**.
 
