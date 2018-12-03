@@ -47,7 +47,7 @@ A set of [IFC test models](https://github.com/UdK-VPT/BIM2Modelica/tree/master/I
 
 4. Start the GUI of CoTeTo and select the generator of your interest, in this case `IFC_MultiZoneBuildings_Modelica`.
 
-![CoTeTo-GUI](https://github.com/UdK-VPT/BIM2Modelica/blob/master/BIM2Modelica/docs/source/images/CoTeTo_GUI.png)
+![CoTeTo-GUI](https://github.com/UdK-VPT/BIM2Modelica/blob/master/docs/source/images/CoTeTo_GUI.png)
 
 5. Select the IFC input file (e.g. BIM2Modelica/IFC/IFC2X3/UdKB_Test_Cases/[OneZone.ifc](https://github.com/UdK-VPT/BIM2Modelica/tree/master/IFC/IFC2X3/UdKB_Test_Cases/OneZone.ifc))
 
