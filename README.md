@@ -15,13 +15,24 @@ All the intermediate steps from
 
 is summarized in one CoTeTo code generator (a short introduction into the generator package concept of CoTeTo you can find under [CoTeTo/Generators/README.md](https://github.com/UdK-VPT/CoTeTo/tree/master/Generators)).
 
-At the moment one code generator for [multi-zone building models](https://github.com/UdK-VPT/BIM2Modelica/tree/master/CoTeTo_Generators/IFC_MultiZoneBuildings_Modelica)
-which can read the IFC 2X3 format and generates code for the Modelica BuildingSystems [BuildingSystems](http://www.modelica-buildingsystems.de) libray is realized.
+At the moment one code generator for [Modelica multi-zone building models](https://github.com/UdK-VPT/BIM2Modelica/tree/master/CoTeTo_Generators/IFC_MultiZoneBuildings_Modelica)
+which can read the IFC 2X3 format and generates code for the Modelica BuildingSystems [BuildingSystem librarys](http://www.modelica-buildingsystems.de) is realized.
 
-## IFC data reader and model checker
+## IFC data reader and model analyser
+
+This software module reads and analyses the IFC files for thermal simulation purposes.
+Therefor, features of the Python package [IfcOpenShell](https://github.com/IfcOpenShell/IfcOpenShell.git)
+and the Python package [OCC](https://github.com/tpaviot/pythonocc) are used.
 
 ## Template for Modelica code generation
 
+A flexible MAKO template for [Modelica multi-zone building models](https://github.com/UdK-VPT/BIM2Modelica/blob/master/CoTeTo_Generators/IFC_MultiZoneBuildings_Modelica/Templates/PhysicalModel.mot)
+generates the Modelica code for thermal building models with flexible geometry, number of zones, building constructions and boundary conditions (weather data, building use).
+
 ## IFC test models
 
+A set of [IFC test models](https://github.com/UdK-VPT/BIM2Modelica/tree/master/IFC/IFC2X3) in the IFC2x3 format is part of the BIM2Modelica repository.
+
 ## Generated Modelica building models
+
+[This folder](https://github.com/UdK-VPT/BIM2Modelica/tree/master/ModelicaModels) includes the generated Modelica models correspondent to the IFC test models.
