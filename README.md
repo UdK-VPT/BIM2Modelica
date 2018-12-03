@@ -22,7 +22,7 @@ which can read the IFC 2X3 format and generates code for the Modelica BuildingSy
 
 This [software module](https://github.com/UdK-VPT/BIM2Modelica/tree/master/CoTeTo_Generators/IFC_MultiZoneBuildings_Modelica/Filters)
 reads and analyses the IFC files for thermal simulation purposes.
-Therefor, features of the Python package [IfcOpenShell](https://github.com/IfcOpenShell/IfcOpenShell.git)
+Therefore, features of the Python package [IfcOpenShell](https://github.com/IfcOpenShell/IfcOpenShell.git)
 and the Python package [OCC](https://github.com/tpaviot/pythonocc) are used.
 
 ## Template for Modelica code generation
