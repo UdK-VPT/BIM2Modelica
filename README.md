@@ -37,3 +37,18 @@ A set of [IFC test models](https://github.com/UdK-VPT/BIM2Modelica/tree/master/I
 ## Generated Modelica building models
 
 [This folder](https://github.com/UdK-VPT/BIM2Modelica/tree/master/ModelicaModels/IFC2X3) includes the generated Modelica models correspondent to the IFC2X3 test models.
+
+## Usage
+1. Clone or download CoTeTo (https://github.com/UdK-VPT/CoTeTo.git)
+
+2. Install CoTeTo on your machine.
+
+3. Copy the folder with the respective code generator (https://github.com/UdK-VPT/BIM2Modelica/tree/master/CoTeTo_Generators/IFC_MultiZoneBuildings_Modelica) in the folder CoTeTo/Generators.
+
+4. Start the GUI of CoTeTo and select the generator of your interest, in this case `IFC_MultiZoneBuildings_Modelica`.
+
+![CoTeTo-GUI](https://github.com/UdK-VPT/BuildingSystems/blob/master/BuildingSystems/Resources/CodeGeneration/CoTeTo/Images/CoTeTo.png)
+
+5. Name the output file (e.g. Building.mo) and press **Generate**.
+
+6. Open the generated .mo-File in your Modelica simulation environment and simulate it.
