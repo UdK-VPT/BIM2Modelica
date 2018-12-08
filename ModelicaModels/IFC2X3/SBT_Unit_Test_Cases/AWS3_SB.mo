@@ -266,6 +266,7 @@ model AWS3_SB
     connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:2]);
 
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
+    __Dymola_Commands(file="modelica://ModelicaModels/Resources/Scripts/Dymola/IFC2X3/SBT_Unit_Test_Cases/AWS3_SB.mos" "Simulate and plot"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
 
   end AWS3_SB;
