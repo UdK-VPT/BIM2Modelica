@@ -88,7 +88,7 @@ P.show()
 ```
 This script can be executed with the IPython shell of JModelica:
 
-![JModelica_IPython](https://github.com/UdK-VPT/BuildingSystems/blob/master/BuildingSystems/Resources/Images/Resources/Scripts/JModelica/JModelica_IPython.png)
+![JModelica_IPython](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/SBT_Unit_Test_Cases/JModelica_IPython.png)
 
 When the simulation experiment with JModelica is finished the results are displayed in two plots (compare their definitions in the Python code):
 
