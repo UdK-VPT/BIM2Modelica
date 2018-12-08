@@ -4,7 +4,7 @@ This Repository contains an open source toolchain which generates Modelica build
 It uses the GUI and the software infrastructure of CoTeTo for simplifying the code generation process.
 
 ## License
-The BIM2Modelica sogtware package is available under the terms of the BSD 3-Clause License.
+The BIM2Modelica software package is available under the terms of the BSD 3-Clause License.
 A copy of the license is available at
 [BIM2Modelica/LICENSE.md](https://github.com/UdK-VPT/BIM2Modelica/blob/master/LICENSE.md).
 
