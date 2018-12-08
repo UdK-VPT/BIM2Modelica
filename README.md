@@ -56,3 +56,8 @@ A set of [IFC test models](https://github.com/UdK-VPT/BIM2Modelica/tree/master/I
 7. As a result three files (OneZone.mo, OneZone_StateVariables.cs and OneZone_BuildingModel.cs) are generated.
 
 6. Open the generated .mo-File in your Modelica simulation environment and simulate it.
+
+For example, you can do this with the Open Source simulation tool JModelica
+(as explained [here]https://github.com/UdK-VPT/BIM2Modelica/tree/master/ModelicaModels/Resources/Scripts/JModelica):
+
+![Simulation results](https://github.com/UdK-VPT/BIM2Modelica/blob/master/ModelicaModels/Resources/Images/IFC2X3/UdKB_Test_Cases/Results_OneZone.png)
