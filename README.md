@@ -21,7 +21,7 @@ All the intermediate steps from
 is summarized in one CoTeTo code generator (a short introduction into the generator package concept of CoTeTo you can find under [CoTeTo/Generators/README.md](https://github.com/UdK-VPT/CoTeTo/tree/master/Generators)).
 
 At the moment one code generator for [Modelica multi-zone building models](https://github.com/UdK-VPT/BIM2Modelica/tree/master/CoTeTo_Generators/IFC_MultiZoneBuildings_Modelica)
-which can read the IFC 2X3 format and generates code for the Modelica BuildingSystems [BuildingSystem librarys](http://www.modelica-buildingsystems.de) is realized.
+which can read the IFC 2X3 format and generates code for the Modelica BuildingSystems [BuildingSystem library](http://www.modelica-buildingsystems.de) is realized.
 
 ## IFC data reader and model analyser
 
@@ -32,7 +32,7 @@ and the Python package [OCC](https://github.com/tpaviot/pythonocc) are used.
 
 ## Template for Modelica code generation
 
-A flexible MAKO template for [Modelica multi-zone building models](https://github.com/UdK-VPT/BIM2Modelica/blob/master/CoTeTo_Generators/IFC_MultiZoneBuildings_Modelica/Templates/PhysicalModel.mot)
+A flexible Mako template for [Modelica multi-zone building models](https://github.com/UdK-VPT/BIM2Modelica/blob/master/CoTeTo_Generators/IFC_MultiZoneBuildings_Modelica/Templates/PhysicalModel.mot)
 generates the Modelica code for thermal building models with a flexible geometry, number of zones, building constructions and boundary conditions (weather data, building use).
 
 ## IFC test models
