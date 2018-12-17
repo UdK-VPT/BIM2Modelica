@@ -17,7 +17,7 @@ print(os.getcwd())
 
 # compile model to fmu
 from pymodelica import compile_fmu
-model_name = 'ModelicaModels.IFC2X3.UdKB_Test_Cases.TwoZones'
+model_name = 'ModelicaModels.IFC2X3.UdKB_Test_Cases.MultiZoneBuilding'
 my_fmu = compile_fmu(model_name, moLibs)
 
 # simulate the fmu and store results
@@ -47,11 +47,10 @@ y1 = res['ambient.TAirRef']
 y2 = res['building.zone_1.TAir']
 y3 = res['building.zone_2.TAir']
 y4 = res['building.zone_1.TOperative']
-y5 = res['building.zone_2.TOperative']
 t = res['time']
 P.subplot(2,1,1)
 P.plot(t, y1, t, y2, t, y3, t, y4)
-P.legend(['ambient.TAirRef','building.zone_1.TAir','building.zone_2.TAir', 'building.zone_1.TOperative', 'building.zone_2.TOperative'])
+P.legend(['ambient.TAirRef','building.zone_1.TAir','building.zone_2.TAir', 'building.zone_1.TOperative'])
 P.ylabel('Temperature (K)')
 P.xlabel('Time (s)')
 # Heating load

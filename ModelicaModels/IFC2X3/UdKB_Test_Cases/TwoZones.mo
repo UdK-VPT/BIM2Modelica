@@ -8,8 +8,8 @@ model TwoZones
       nLayers=3,
       thickness={
         0.015,
-        0.200,
-        0.020
+        0.2,
+        0.02
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete(),
@@ -21,7 +21,7 @@ model TwoZones
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
       nLayers=1,
       thickness={
-        0.300
+        0.3
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()
@@ -260,6 +260,7 @@ model TwoZones
     connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:2]);
 
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
+    __Dymola_Commands(file="modelica://ModelicaModels/Resources/Scripts/Dymola/IFC2X3/UdKB_Test_Cases/TwoZones.mos" "Simulate and plot"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
 
   end TwoZones;

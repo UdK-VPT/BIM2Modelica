@@ -1121,6 +1121,7 @@ model MultiZoneBuilding
     connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:13]);
 
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
+    __Dymola_Commands(file="modelica://ModelicaModels/Resources/Scripts/Dymola/IFC2X3/UdKB_Test_Cases/MultiZoneBuilding.mos" "Simulate and plot"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
 
   end MultiZoneBuilding;

@@ -1,0 +1,38 @@
+simulateModel("ModelicaModels.IFC2X3.UdKB_Test_Cases.MultiZoneBuilding", startTime = 0, stopTime=31536000, method="dassl", resultFile="MultiZoneBuilding");
+removePlots();
+createPlot(
+  id = 1,
+  position = {0, 0, 600, 500},
+  y = {"ambient.TAirRef","building.zone_1.TAir","building.zone_2.TAir",
+        "building.zone_3.TAir","building.zone_4.TAir","building.zone_5.TAir",
+        "building.zone_6.TAir","building.zone_7.TAir","building.zone_8.TAir",
+        "building.zone_9.TAir","building.zone_10.TAir","building.zone_11.TAir",
+        "building.zone_12.TAir","building.zone_13.TAir","building.zone_1.TOperative"},
+  autoscale = true,
+  autoerase = true,
+  autoreplot = true,
+  description = false,
+  grid = true,
+  color = true,
+  online = false,
+  filename = "MultiZoneBuilding.mat",
+  leftTitleType = 1,
+  bottomTitleType = 1);
+createPlot(
+  id = 2,
+  position = {610, 0, 600, 500},
+  y = {"building.zone_1.Q_flow_heating","building.zone_2.Q_flow_heating","building.zone_3.Q_flow_heating",
+       "building.zone_4.Q_flow_heating","building.zone_5.Q_flow_heating","building.zone_6.Q_flow_heating",
+       "building.zone_7.Q_flow_heating","building.zone_8.Q_flow_heating","building.zone_9.Q_flow_heating",
+       "building.zone_10.Q_flow_heating","building.zone_11.Q_flow_heating","building.zone_12.Q_flow_heating",
+       "building.zone_13.Q_flow_heating"},
+  autoscale = true,
+  autoerase = true,
+  autoreplot = true,
+  description = false,
+  grid = true,
+  color = true,
+  online = false,
+  filename = "MultiZoneBuilding.mat",
+  leftTitleType = 1,
+  bottomTitleType = 1);
