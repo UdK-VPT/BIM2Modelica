@@ -220,26 +220,24 @@ def mapIFCtoBuildingDataModel(file,filename):
                                                       thickness=thickness,
                                                       material=material))
         ico = ico + 1
-    izo = 1
-    iwa = 1
-    isl = 1
-    ido = 1
-    iwi = 1
     treatedBuildingEle = {}
     treatedZones = {}
 
     ## Thermal zones
+    izo = 1
     for space in Spaces:
         treatedZones[space.Space.GlobalId] = "zone_" + str(izo)
         izo = izo + 1
 
+    iwa = 1
+    isl = 1
+    ido = 1
+    iwi = 1
     for space in Spaces:
-        iel = 0
-
+        iel=0
         ## Opaque elements
         for bound in space.Boundaries:
             if bound.OtherSideSpace in treatedZones.keys() or bound.OtherSideSpace == "EXTERNAL":
-                iel = iel + 1
                 side1 =  treatedZones[space.Space.GlobalId]
                 if bound.OtherSideSpace == "EXTERNAL":
                     side2 = "AMB"
@@ -247,11 +245,10 @@ def mapIFCtoBuildingDataModel(file,filename):
                     side2 = treatedZones[bound.OtherSideSpace]
 
                 ## Walls
-                if bound.RelatedBuildingElement in WallInfo.keys():
+                if bound.RelatedBuildingElement in WallInfo.keys() and bound.thickness[0] > 0.0:
+                    iel = iel + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
-
                         mesh=DataClasses.Mesh(bound.Face)
-
                         treatedBuildingEle[bound.Id] = "wall_"+str(iwa)
                         buildingData.addOpaqueElement(bdm.BuildingElementOpaque(name="wall_"+str(iwa),
                                                                                 pos=(bound.Position.X(),bound.Position.Y(),bound.Position.Z()),
@@ -268,7 +265,8 @@ def mapIFCtoBuildingDataModel(file,filename):
                         iwa = iwa + 1
 
                 ## Slabs
-                if bound.RelatedBuildingElement in SlabsInfo.keys():
+                if bound.RelatedBuildingElement in SlabsInfo.keys() and tiltAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()) in [0.0,180.0]:
+                    iel = iel + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
                         treatedBuildingEle[bound.Id] = "slab_"+str(isl)
                         buildingData.addOpaqueElement(bdm.BuildingElementOpaque(name="slab_"+str(isl),
@@ -287,6 +285,7 @@ def mapIFCtoBuildingDataModel(file,filename):
 
                 ## Doors
                 if bound.RelatedBuildingElement in DoorToStyle.keys():
+                    iel = iel + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
                         mesh=DataClasses.Mesh(bound.Face)
                         treatedBuildingEle[bound.Id] = "door_"+str(ido)
@@ -306,10 +305,9 @@ def mapIFCtoBuildingDataModel(file,filename):
 
                 ## Transparent elements
                 if bound.RelatedBuildingElement in WindowToStyle.keys():
+                    iel = iel + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
-
                         mesh=DataClasses.Mesh(bound.Face)
-
                         treatedBuildingEle[bound.Id] = "window_"+str(iwi)
                         buildingData.addTransparentElement(bdm.BuildingElementTransparent(name="window_"+str(iwi),
                                                                                           pos=(bound.Position.X(),bound.Position.Y(),bound.Position.Z()),

@@ -28,7 +28,7 @@ model AWS3_SB
     "Automatically generated multi-zone building model"
     extends BuildingSystems.Buildings.BaseClasses.BuildingTemplate(
     nZones = 2,
-    surfacesToAmbient(nSurfaces = 9),
+    surfacesToAmbient(nSurfaces = 8),
     nSurfacesSolid = 0,
     surfacesToSolids(nSurfaces = nSurfacesSolid),
     convectionOnSurfaces = BuildingSystems.HAM.ConvectiveHeatTransfer.Types.Convection.forced,
@@ -39,7 +39,7 @@ model AWS3_SB
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_1(
       V=1381.3600000000006,
       height=3.0,
-      nConstructions=13,
+      nConstructions=10,
       heatSources=true,
       nHeatSources=1);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_2(
@@ -114,32 +114,11 @@ model AWS3_SB
       width = 20.0);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_3(
       redeclare Construction1 constructionData,
-      angleDegAzi = -90.00000000000001,
-      angleDegTil = 90.0,
-      AInnSur = 0.0,
-      height = 0.20000000000000018,
-      width = 4.3999999999999995);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_4(
-      redeclare Construction1 constructionData,
-      angleDegAzi = -180.0,
-      angleDegTil = 90.0,
-      AInnSur = -0.0,
-      height = 0.20000000000000018,
-      width = 10.15);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_5(
-      redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 0.0,
       AInnSur = 0.0,
       height = 4.0,
       width = 9.85);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_6(
-      redeclare Construction1 constructionData,
-      angleDegAzi = -0.0,
-      angleDegTil = 90.0,
-      AInnSur = 0.0,
-      height = 0.20000000000000018,
-      width = 10.15);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_8(
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
@@ -147,7 +126,7 @@ model AWS3_SB
       AInnSur = 0.0,
       height = 3.8,
       width = 4.0);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_7(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_4(
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 0.0,
@@ -167,17 +146,12 @@ model AWS3_SB
     connect(slab_1.toSurfacePort_1, zone_1.toConstructionPorts[8]);
     connect(slab_2.toSurfacePort_1, zone_1.toConstructionPorts[9]);
     connect(slab_3.toSurfacePort_1, zone_1.toConstructionPorts[10]);
-    connect(slab_4.toSurfacePort_1, zone_1.toConstructionPorts[11]);
-    connect(slab_4.toSurfacePort_2, zone_1.toConstructionPorts[12]);
-    connect(slab_5.toSurfacePort_1, zone_1.toConstructionPorts[13]);
-    connect(slab_6.toSurfacePort_1, zone_1.toConstructionPorts[14]);
-    connect(slab_6.toSurfacePort_2, zone_1.toConstructionPorts[15]);
     connect(wall_3.toSurfacePort_2, zone_2.toConstructionPorts[1]);
     connect(wall_4.toSurfacePort_2, zone_2.toConstructionPorts[2]);
     connect(wall_7.toSurfacePort_2, zone_2.toConstructionPorts[3]);
-    connect(slab_5.toSurfacePort_2, zone_2.toConstructionPorts[4]);
+    connect(slab_3.toSurfacePort_2, zone_2.toConstructionPorts[4]);
     connect(wall_8.toSurfacePort_1, zone_2.toConstructionPorts[5]);
-    connect(slab_7.toSurfacePort_1, zone_2.toConstructionPorts[6]);
+    connect(slab_4.toSurfacePort_1, zone_2.toConstructionPorts[6]);
     // connections between construction elements and ambient
     connect(wall_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[1]);
     connect(wall_2.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[2]);
@@ -185,9 +159,8 @@ model AWS3_SB
     connect(wall_6.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[4]);
     connect(slab_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[5]);
     connect(slab_2.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[6]);
-    connect(slab_3.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[7]);
-    connect(wall_8.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[8]);
-    connect(slab_7.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[9]);
+    connect(wall_8.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[7]);
+    connect(slab_4.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[8]);
     // connections between construction elements and ground
   // Heating set temperature of each thermal zones
     connect(zone_1.T_setHeating, T_setHeating[1]);
