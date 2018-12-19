@@ -1,0 +1,30 @@
+simulateModel("ModelicaModels.IFC2X3.SBT_Unit_Test_Cases.CSC7_SB", startTime = 0, stopTime=31536000, method="dassl", resultFile="CSC7_SB");
+removePlots();
+createPlot(
+  id = 1,
+  position = {0, 0, 600, 500},
+  y = {"ambient.TAirRef","building.zone_1.TAir","building.zone_2.TAir","building.zone_1.TOperative"},
+  autoscale = true,
+  autoerase = true,
+  autoreplot = true,
+  description = false,
+  grid = true,
+  color = true,
+  online = false,
+  filename = "CSC7_SB.mat",
+  leftTitleType = 1,
+  bottomTitleType = 1);
+createPlot(
+  id = 2,
+  position = {610, 0, 600, 500},
+  y = {"building.zone_1.Q_flow_heating","building.zone_2.Q_flow_heating"},
+  autoscale = true,
+  autoerase = true,
+  autoreplot = true,
+  description = false,
+  grid = true,
+  color = true,
+  online = false,
+  filename = "CSC7_SB.mat",
+  leftTitleType = 1,
+  bottomTitleType = 1);

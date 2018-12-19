@@ -29,7 +29,7 @@ model CSC6_SB
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_1(
       V=757.5575753124721,
       height=3.0,
-      nConstructions=14,
+      nConstructions=6,
       heatSources=true,
       nHeatSources=1);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_2(
@@ -220,6 +220,7 @@ model CSC6_SB
     connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:2]);
 
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
+    __Dymola_Commands(file="modelica://ModelicaModels/Resources/Scripts/Dymola/IFC2X3/SBT_Unit_Test_Cases/CSC6_SB.mos" "Simulate and plot"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
 
   end CSC6_SB;
