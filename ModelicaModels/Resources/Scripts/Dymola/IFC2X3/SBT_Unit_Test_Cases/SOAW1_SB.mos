@@ -11,7 +11,7 @@ createPlot(
   grid = true,
   color = true,
   online = false,
-  filename = "SOAW1.mat",
+  filename = "SOAW1_SB.mat",
   leftTitleType = 1,
   bottomTitleType = 1);
 createPlot(
