@@ -32,18 +32,46 @@ model ${data['buildingSystem'].name}
     surfacesToAmbient(nSurfaces = ${len(data['conEleAmb'])}),
     nSurfacesSolid = ${len(data['conEleSol'])},
     surfacesToSolids(nSurfaces = nSurfacesSolid),
-    convectionOnSurfaces = BuildingSystems.HAM.ConvectiveHeatTransfer.Types.Convection.forced,
     useAirPaths = false,
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
+    calcIdealLoads = true,
+    % else:
+    calcIdealLoads = false,
+    % endif
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
+    prescribedAirchange = true,
+    % else:
+    prescribedAirchange = false,
+    % endif
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
     heatSources = true,
-    nHeatSources = ${len(data['zones'])});
+    nHeatSources = ${len(data['zones'])},
+    % else:
+    heatSources = false,
+    % endif
+    convectionOnSurfaces = BuildingSystems.HAM.ConvectiveHeatTransfer.Types.Convection.forced);
 
   % for zone in data['zones']:
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed ${zone.name}(
       V=${zone.volume},
-      height=${zone.height},
-      nConstructions=${zone.nElements},
-      heatSources=true,
-      nHeatSources=1);
+      nConstructions = ${zone.nElements},
+      % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
+      calcIdealLoads = true,
+      % else:
+      calcIdealLoads = false,
+      % endif
+      % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
+      prescribedAirchange = true,
+      % else:
+      prescribedAirchange = false,
+      % endif
+      % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
+      heatSources = true,
+      nHeatSources = 1,
+      % else:
+      heatSources = false,
+      % endif
+      height=${zone.height});
   % endfor
 
   % for ele in data['elementsOpaque']:
@@ -83,6 +111,7 @@ model ${data['buildingSystem'].name}
   % for con in data['conEleSol']:
     connect(${con.element}.toSurfacePort_${con.elementPort}, surfacesToSolids.toConstructionPorts[${con.solidPort}]);
   % endfor
+  % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
   // Heating set temperature of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.T_setHeating, T_setHeating[${i+1}]);
@@ -91,6 +120,16 @@ model ${data['buildingSystem'].name}
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.T_setCooling, T_setCooling[${i+1}]);
   % endfor
+  // Cooling load of each thermal zones
+  % for i in range(len(data['zones'])):
+    connect(${data['zones'][i].name}.Q_flow_cooling, Q_flow_cooling[${i+1}]);
+  % endfor
+  // Heating load of each thermal zones
+  % for i in range(len(data['zones'])):
+    connect(${data['zones'][i].name}.Q_flow_heating, Q_flow_heating[${i+1}]);
+  % endfor
+  % endif
+  % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
   // airchange rates of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.airchange, airchange[${i+1}]);
@@ -103,14 +142,8 @@ model ${data['buildingSystem'].name}
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.xAirAmb, xAirAmb);
   % endfor
-  // Cooling load of each thermal zones
-  % for i in range(len(data['zones'])):
-    connect(${data['zones'][i].name}.Q_flow_cooling, Q_flow_cooling[${i+1}]);
-  % endfor
-  // Heating load of each thermal zones
-  % for i in range(len(data['zones'])):
-    connect(${data['zones'][i].name}.Q_flow_heating, Q_flow_heating[${i+1}]);
-  % endfor
+  % endif
+  % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
   // Radiative heating source of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.radHeatSourcesPorts[1], radHeatSourcesPorts[${i+1}]);
@@ -119,6 +152,7 @@ model ${data['buildingSystem'].name}
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.conHeatSourcesPorts[1], conHeatSourcesPorts[${i+1}]);
   % endfor
+  % endif
   % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
   // Connections for surface temperatures
   <% i = 1 %>\
@@ -145,58 +179,83 @@ model ${data['buildingSystem'].name}
     nSurfaces = building.nSurfacesAmbient,
     redeclare block WeatherData = ${data['buildingSystem'].location})
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
     // Heating set temperature of the thermal zones
     % for zone in data['zones']:
-    Modelica.Blocks.Sources.Constant TSetHeating_${zone.name}(k=273.15 + ${zone.TSetHeating});
+    Modelica.Blocks.Sources.Constant TSetHeating_${zone.name}(
+      k=273.15 + ${zone.TSetHeating})
+      annotation (Placement(transformation(extent={{58,16},{50,24}})));
     % endfor
     // Cooling set temperature of each thermal zones
     % for zone in data['zones']:
-    Modelica.Blocks.Sources.Constant TSetCooling_${zone.name}(k=273.15 + ${zone.TSetCooling});
+    Modelica.Blocks.Sources.Constant TSetCooling_${zone.name}(
+      k=273.15 + ${zone.TSetCooling})
+      annotation (Placement(transformation(extent={{58,2},{50,10}})));
     % endfor
+    % endif
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
     // Air change rate of each thermal zones
     % for zone in data['zones']:
-    Modelica.Blocks.Sources.Constant airchange_${zone.name}(k=${zone.airchange});
+    Modelica.Blocks.Sources.Constant airchange_${zone.name}(
+      k=${zone.airchange})
+    annotation (Placement(transformation(extent={{58,-14},{50,-6}})));
     % endfor
-    // Heating source of each thermal zones
-    % if not generatorCfg['MODELICA_SWITCHES'].getboolean('heaSouInp'):
-      % for zone in data['zones']:
-    Modelica.Blocks.Sources.Constant heatsources_${zone.name}(k=${zone.heatsource});
-      % endfor
     % endif
-    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heatFlow[${len(data['zones'])}];
-    BuildingSystems.Buildings.BaseClasses.RelationRadiationConvection relationRadiationConvection[${len(data['zones'])}](each radiationportion = 0.5);
+    // Heating source of each thermal zones
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
+      % for zone in data['zones']:
+    Modelica.Blocks.Sources.Constant heatsources_${zone.name}(
+      k=${zone.heatsource})
+      annotation (Placement(transformation(extent={{44,22},{36,30}})));
+      % endfor
+    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heatFlow[${len(data['zones'])}]
+      annotation (Placement(transformation(extent={{32,22},{24,30}})));
+    BuildingSystems.Buildings.BaseClasses.RelationRadiationConvection relationRadiationConvection[${len(data['zones'])}](
+      each radiationportion = 0.5)
+      annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation=-90,origin={21,21})));
+    % endif
   equation
     connect(ambient.toSurfacePorts, building.toAmbientSurfacesPorts)
       annotation (Line(points={{-12,4},{11,4}},color={0,255,0},smooth=Smooth.None));
     connect(ambient.toAirPorts, building.toAmbientAirPorts)
       annotation (Line(points={{-12,-4},{11,-4}},color={85,170,255},smooth=Smooth.None));
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
     connect(ambient.TAirRef, building.TAirAmb)
       annotation (Line(points={{-28.2,7},{-30,7},{-30,12},{-30,14},{26.2,14},{26.2,9.8}}, color={0,0,127}));
     connect(ambient.xAir, building.xAirAmb)
       annotation (Line(points={{-28.2,5},{-32,5},{-32,16},{28.4,16},{28.4,9.8}}, color={0,0,127}));
+    // Air change rate of each thermal zones
+    % for i in range(len(data['zones'])):
+    connect(airchange_${data['zones'][i].name}.y, building.airchange[${i+1}])
+      annotation (Line(points={{29.8,3.5},{44,3.5},{44,-10},{49.6,-10}}, color={0,0,127}));
+    % endfor
+    % endif
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
     // Heating set temperature of each thermal zones
     % for i in range(len(data['zones'])):
-    connect(TSetHeating_${data['zones'][i].name}.y, building.T_setHeating[${i+1}]);
+    connect(TSetHeating_${data['zones'][i].name}.y, building.T_setHeating[${i+1}])
+      annotation (Line(points={{29.8,7.5},{44,7.5},{44,20},{49.6,20}}, color={0,0,127}));
     % endfor
     // Cooling set temperature of each thermal zones
     % for i in range(len(data['zones'])):
-    connect(TSetCooling_${data['zones'][i].name}.y, building.T_setCooling[${i+1}]);
+    connect(TSetCooling_${data['zones'][i].name}.y, building.T_setCooling[${i+1}])
+      annotation (Line(points={{29.8,5.5},{39.6,5.5},{39.6,6},{49.6,6}}, color={0,0,127}));
     % endfor
-    // Air change rate of each thermal zones
-    % for i in range(len(data['zones'])):
-    connect(airchange_${data['zones'][i].name}.y, building.airchange[${i+1}]);
-    % endfor
-    // Heating source of each thermal zones
-    % if not generatorCfg['MODELICA_SWITCHES'].getboolean('heaSouInp'):
-      % for i in range(len(data['zones'])):
-    connect(heatsources_${data['zones'][i].name}.y, heatFlow[${i+1}].Q_flow);
-      % endfor
     % endif
-    connect(relationRadiationConvection.heatPort, heatFlow.port);
-    connect(relationRadiationConvection.heatPortCv, building.conHeatSourcesPorts[1:${len(data['zones'])}]);
-    connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:${len(data['zones'])}]);
+    // Heating source of each thermal zones
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
+      % for i in range(len(data['zones'])):
+    connect(heatsources_${data['zones'][i].name}.y, heatFlow[${i+1}].Q_flow)
+      annotation (Line(points={{32,26},{35.6,26}}, color={0,0,127}));
+      % endfor
+    connect(relationRadiationConvection.heatPort, heatFlow.port)
+      annotation (Line(points={{21,22.5},{21,26},{24,26}}, color={191,0,0}));
+    connect(relationRadiationConvection.heatPortCv, building.conHeatSourcesPorts[1:${len(data['zones'])}])
+      annotation (Line(points={{22,19},{22,10.5}}, color={191,0,0}));
+    connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:${len(data['zones'])}])
+      annotation (Line(points={{20,19},{20,10.5}}, color={191,0,0}));
+    % endif
 
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
-
   end ${data['buildingSystem'].name};

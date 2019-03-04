@@ -21,12 +21,14 @@ function = filter01
 [MODELICA_SWITCHES]
 # Set surface temperatures as an output of the building model: surTemOut = 1
 surTemOut = 0
-# Set internal heat sources for all thermal zones as an input of the building model: heaSouInp = 1
-heaSouInp = 0
-# Set heating set temperature for all thermal zones as an input of the building model: TSetHeaInp = 1
-TSetHeaInp = 0
-# Set cooling set temperature for all thermal zones as an input of the building model: TSetCooInp = 1
-TSetCooInp = 0
+# Set internal heat sources for all thermal zones: intHeaSou = 1
+intHeaSou = 1
+# Add two air paths to each thermal zone: UseAirPaths = 1
+UseAirPaths = 1
+# Define the ventilation rate for each thermal zone as a prescribed air change rate: prescribedAirchange = 1
+prescribedAirchange = 1
+# Calculate the ideal heating and cooling loads for each thermal zone for prescribed set temperatures: calcIdealLoads = 1
+calcIdealLoads = 1
 
 [TEMPLATE_MODELICA]
 topFile = PhysicalModel.mot
