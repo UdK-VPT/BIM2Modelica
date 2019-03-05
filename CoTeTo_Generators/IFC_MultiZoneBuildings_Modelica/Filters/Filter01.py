@@ -235,7 +235,11 @@ def mapIFCtoBuildingDataModel(file,filename):
     iwi = 1
     for space in Spaces:
         iel=0
-        ## Opaque elements
+        iwaz = 0
+        islz = 0
+        idoz = 0
+        iwiz = 0
+        ## Construction elements
         for bound in space.Boundaries:
             if bound.OtherSideSpace in treatedZones.keys() or bound.OtherSideSpace == "EXTERNAL":
                 side1 =  treatedZones[space.Space.GlobalId]
@@ -247,6 +251,7 @@ def mapIFCtoBuildingDataModel(file,filename):
                 ## Walls
                 if bound.RelatedBuildingElement in WallInfo.keys() and bound.thickness[0] > 0.0:
                     iel = iel + 1
+                    iwaz = iwaz + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
                         mesh=DataClasses.Mesh(bound.Face)
                         treatedBuildingEle[bound.Id] = "wall_"+str(iwa)
@@ -267,6 +272,7 @@ def mapIFCtoBuildingDataModel(file,filename):
                 ## Slabs
                 if bound.RelatedBuildingElement in SlabsInfo.keys() and tiltAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()) in [0.0,180.0]:
                     iel = iel + 1
+                    islz = islz + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
                         treatedBuildingEle[bound.Id] = "slab_"+str(isl)
                         buildingData.addOpaqueElement(bdm.BuildingElementOpaque(name="slab_"+str(isl),
@@ -286,6 +292,7 @@ def mapIFCtoBuildingDataModel(file,filename):
                 ## Doors
                 if bound.RelatedBuildingElement in DoorToStyle.keys():
                     iel = iel + 1
+                    idoz = idoz + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
                         mesh=DataClasses.Mesh(bound.Face)
                         treatedBuildingEle[bound.Id] = "door_"+str(ido)
@@ -306,6 +313,7 @@ def mapIFCtoBuildingDataModel(file,filename):
                 ## Transparent elements
                 if bound.RelatedBuildingElement in WindowToStyle.keys():
                     iel = iel + 1
+                    iwiz = iwiz + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
                         mesh=DataClasses.Mesh(bound.Face)
                         treatedBuildingEle[bound.Id] = "window_"+str(iwi)
@@ -328,6 +336,10 @@ def mapIFCtoBuildingDataModel(file,filename):
                                               volume=space.Volume,
                                               height=3.0,
                                               numberOfElements=iel,
+                                              numberOfWalls=iwaz,
+                                              numberOfSlabs=islz,
+                                              numberOfDoors=idoz,
+                                              numberOfWindows=iwiz,
                                               TSetHeating=20.0,
                                               TSetCooling=24.0,
                                               airchange=0.5,
@@ -354,6 +366,10 @@ def getGeneratorData(buildingData):
         zones.append(dmg.Zone(name=zone.name,
                               pos=(zone.pos.X(),zone.pos.Y(),zone.pos.Z()),
                               nElements=zone.numberOfElements,
+                              nWalls=zone.numberOfWalls,
+                              nSlabs=zone.numberOfSlabs,
+                              nDoors=zone.numberOfDoors,
+                              nWindows=zone.numberOfWindows,
                               volume=zone.volume,
                               height=zone.height,
                               TSetHeating=zone.TSetHeating,

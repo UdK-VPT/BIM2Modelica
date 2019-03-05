@@ -133,6 +133,10 @@ class BuildingZone:
            'height',
            'geometry',
            'numberOfElements',
+           'numberOfWalls',
+           'numberOfSlabs',
+           'numberOfDoors',
+           'numberOfWindows',
            'TSetHeating',
            'TSetCooling',
            'airchange',
@@ -145,6 +149,10 @@ class BuildingZone:
         self.height = None
         self.geometry = None
         self.numberOfElements = None
+        self.numberOfWalls = None
+        self.numberOfSlabs = None
+        self.numberOfDoors = None
+        self.numberOfWindows = None
         self.TSetHeating = None
         self.TSetCooling = None
         self.airchange = None

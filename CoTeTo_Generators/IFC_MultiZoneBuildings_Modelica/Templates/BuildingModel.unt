@@ -58,7 +58,7 @@ public class ${data['buildingSystem'].name}_BuildingModel : MonoBehaviour
     vertices${i} = new Vector3[${len(owa.vertices)}] {
   % for ver in owa.vertices:
       new Vector3(${ver[0]}f,${ver[2]}f,${ver[1]}f)${',' if not loop.last else ''}
-  % endfor;
+  % endfor
     };
     // Triangles
     triangles${i} = new int[${len(owa.triangles)}]{

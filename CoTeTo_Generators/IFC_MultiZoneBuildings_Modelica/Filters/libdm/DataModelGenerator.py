@@ -7,10 +7,14 @@ class Construction:
         self.material = material
 
 class Zone:
-    def __init__(self, name, pos, nElements, volume, height, TSetHeating, TSetCooling, airchange, heatsource):
+    def __init__(self, name, pos, nElements, nWalls, nSlabs, nDoors, nWindows, volume, height, TSetHeating, TSetCooling, airchange, heatsource):
         self.name = name
         self.pos = pos
         self.nElements = nElements
+        self.nWalls = nWalls,
+        self.nSlabs = nSlabs,
+        self.nDoors = nDoors,
+        self.nWindows = nWindows,
         self.volume = volume
         self.height = height
         self.TSetHeating = TSetHeating

@@ -32,7 +32,12 @@ model ${data['buildingSystem'].name}
     surfacesToAmbient(nSurfaces = ${len(data['conEleAmb'])}),
     nSurfacesSolid = ${len(data['conEleSol'])},
     surfacesToSolids(nSurfaces = nSurfacesSolid),
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+    useAirPaths = true,
+    nAirpaths = ${2*len(data['elementsTransparent'])},
+    % else:
     useAirPaths = false,
+    % endif
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
     calcIdealLoads = true,
     % else:
@@ -55,6 +60,13 @@ model ${data['buildingSystem'].name}
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed ${zone.name}(
       V=${zone.volume},
       nConstructions = ${zone.nElements},
+      % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+      nAirpaths=${2*zone.nWindows[0]},
+      heightAirpath={
+      % for wi in range(zone.nWindows[0]):
+        0.5,1.5${',' if not loop.last else '},'}
+      % endfor
+      % endif
       % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
       calcIdealLoads = true,
       % else:
@@ -91,6 +103,11 @@ model ${data['buildingSystem'].name}
     BuildingSystems.Buildings.Constructions.Windows.Window ${ele.name}(
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
       show_TSur = true,
+    % endif
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+      calcAirchange = true,
+    % else:
+      calcAirchange = false,
     % endif
       redeclare BuildingSystems.Buildings.Data.Constructions.Transparent.DoubleGlazing constructionData,
       angleDegAzi = ${ele.angleDegAzi},
@@ -175,7 +192,10 @@ model ${data['buildingSystem'].name}
     nZones = ${len(data['zones'])})
     annotation (Placement(transformation(extent={{10,-10},{30,10}})));
 
-  BuildingSystems.Buildings.Ambient ambient(
+  BuildingSystems.Buildings.Ambient ambience(
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+    nAirpaths = ${2*len(data['elementsTransparent'])},
+    % endif
     nSurfaces = building.nSurfacesAmbient,
     redeclare block WeatherData = ${data['buildingSystem'].location})
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
@@ -254,6 +274,11 @@ model ${data['buildingSystem'].name}
       annotation (Line(points={{22,19},{22,10.5}}, color={191,0,0}));
     connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:${len(data['zones'])}])
       annotation (Line(points={{20,19},{20,10.5}}, color={191,0,0}));
+    % endif
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+    // Air paths between the windows and the ambient
+    connect(ambient.toAirpathPorts, building.toAmbientAirpathPorts)
+      annotation (Line(points={{-17,9},{-17,14},{-34,14},{-34,-14},{40,-14},{40,-2},{29,-2}},color={0,127,255}));
     % endif
 
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
