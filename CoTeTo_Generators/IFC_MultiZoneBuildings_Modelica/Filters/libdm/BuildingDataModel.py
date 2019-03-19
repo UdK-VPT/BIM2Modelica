@@ -67,6 +67,7 @@ class BuildingElement:
     '''
     att = ['name',
            'pos',
+           'memberOfZone',
            'angleDegAzi',
            'angleDegTil',
            'adjZoneSide1',
@@ -81,6 +82,7 @@ class BuildingElement:
     def __init__(self, name, pos, **kwargs):
         self.name = str(name)
         self.pos = OCC.gp.gp_Pnt(pos[0], pos[1], pos[2])
+        self.memberOfZone = None
         self.angleDegAzi = None
         self.angleDegTil = None
         self.adjZoneSide1 = None
@@ -121,7 +123,6 @@ class BuildingElementTransparent(BuildingElement):
     def __init__(self, name='', pos=(0.0, 0.0, 0.0), **kwargs):
         BuildingElement.__init__(self, name, pos, **kwargs)
         self.setParameter(**kwargs)
-
 
 class BuildingZone:
     '''

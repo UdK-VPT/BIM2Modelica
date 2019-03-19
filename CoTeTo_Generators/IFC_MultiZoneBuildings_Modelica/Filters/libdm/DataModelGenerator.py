@@ -23,9 +23,10 @@ class Zone:
         self.heatsource = heatsource
 
 class Element:
-    def __init__(self, name, pos, angleDegAzi, angleDegTil, height, width, thickness, mesh):
+    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh):
         self.name = name
         self.pos = pos
+        self.memberOfZone = memberOfZone
         self.angleDegAzi = angleDegAzi
         self.angleDegTil = angleDegTil
         self.height = height
@@ -34,14 +35,14 @@ class Element:
         self.mesh = mesh
 
 class ElementOpaque(Element):
-    def __init__(self, name, pos, angleDegAzi, angleDegTil, height, width, thickness, mesh, constructionData, AInnSur):
-        Element.__init__(self, name, pos, angleDegAzi, angleDegTil, height, width, thickness, mesh)
+    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh, constructionData, AInnSur):
+        Element.__init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh)
         self.constructionData = constructionData
         self.AInnSur = AInnSur
 
 class ElementTransparent(Element):
-    def __init__(self, name, pos, angleDegAzi, angleDegTil, height, width, thickness, mesh):
-        Element.__init__(self, name, pos, angleDegAzi, angleDegTil, height, width, thickness, mesh)
+    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh):
+        Element.__init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh)
 
 class ConnectionElementZone:
     def __init__(self, element, elementPort, zone, zonePort):

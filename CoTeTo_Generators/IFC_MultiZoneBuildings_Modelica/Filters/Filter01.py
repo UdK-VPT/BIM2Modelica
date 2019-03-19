@@ -257,6 +257,7 @@ def mapIFCtoBuildingDataModel(file,filename):
                         treatedBuildingEle[bound.Id] = "wall_"+str(iwa)
                         buildingData.addOpaqueElement(bdm.BuildingElementOpaque(name="wall_"+str(iwa),
                                                                                 pos=(bound.Position.X(),bound.Position.Y(),bound.Position.Z()),
+                                                                                memberOfZone = treatedZones[space.Space.GlobalId],
                                                                                 angleDegAzi=azimuthAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                 angleDegTil=tiltAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                 adjZoneSide1=side1,
@@ -277,6 +278,7 @@ def mapIFCtoBuildingDataModel(file,filename):
                         treatedBuildingEle[bound.Id] = "slab_"+str(isl)
                         buildingData.addOpaqueElement(bdm.BuildingElementOpaque(name="slab_"+str(isl),
                                                                                 pos=(bound.Position.X(),bound.Position.Y(),bound.Position.Z()),
+                                                                                memberOfZone = treatedZones[space.Space.GlobalId],
                                                                                 angleDegAzi=azimuthAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                 angleDegTil=tiltAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                 adjZoneSide1=side1,
@@ -298,6 +300,7 @@ def mapIFCtoBuildingDataModel(file,filename):
                         treatedBuildingEle[bound.Id] = "door_"+str(ido)
                         buildingData.addOpaqueElement(bdm.BuildingElementOpaque(name="door_"+str(ido),
                                                                                 pos=(bound.Position.X(),bound.Position.Y(),bound.Position.Z()),
+                                                                                memberOfZone = treatedZones[space.Space.GlobalId],
                                                                                 angleDegAzi=azimuthAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                 angleDegTil=tiltAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                 adjZoneSide1=side1,
@@ -319,6 +322,7 @@ def mapIFCtoBuildingDataModel(file,filename):
                         treatedBuildingEle[bound.Id] = "window_"+str(iwi)
                         buildingData.addTransparentElement(bdm.BuildingElementTransparent(name="window_"+str(iwi),
                                                                                           pos=(bound.Position.X(),bound.Position.Y(),bound.Position.Z()),
+                                                                                          memberOfZone = treatedZones[space.Space.GlobalId],
                                                                                           angleDegAzi=azimuthAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                           angleDegTil=tiltAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                           adjZoneSide1=side1,
@@ -331,6 +335,7 @@ def mapIFCtoBuildingDataModel(file,filename):
                         iwi = iwi + 1
 
         ## Thermal zones
+        print('numberOfWindows: ', iwiz)
         buildingData.addZone(bdm.BuildingZone(name=treatedZones[space.Space.GlobalId],
                                               pos=(0.0,0.0,0.0),
                                               volume=space.Volume,
@@ -382,6 +387,7 @@ def getGeneratorData(buildingData):
     for eleOpa in buildingData.getParameter('opaqueElements'):
         elementsOpaque.append(dmg.ElementOpaque(name=eleOpa.name,
                                                 pos=(eleOpa.pos.X(),eleOpa.pos.Y(),eleOpa.pos.Z()),
+                                                memberOfZone=eleOpa.memberOfZone,
                                                 angleDegAzi=eleOpa.angleDegAzi,
                                                 angleDegTil=eleOpa.angleDegTil,
                                                 height=eleOpa.height,
@@ -396,6 +402,7 @@ def getGeneratorData(buildingData):
     for eleTra in buildingData.getParameter('transparentElements'):
         elementsTransparent.append(dmg.ElementTransparent(name=eleTra.name,
                                                           pos=(eleTra.pos.X(),eleTra.pos.Y(),eleTra.pos.Z()),
+                                                          memberOfZone=eleTra.memberOfZone,
                                                           angleDegAzi=eleTra.angleDegAzi,
                                                           angleDegTil=eleTra.angleDegTil,
                                                           height=eleTra.height,
@@ -406,6 +413,7 @@ def getGeneratorData(buildingData):
     ## Element <-> zone
     conEleZon = []
     eleZoneRel = buildingData.getElementZoneRelations()
+    print("Element <-> zone", eleZoneRel)
     for zone in eleZoneRel.keys():
         i = 1
         for con in eleZoneRel[zone]:
@@ -418,6 +426,7 @@ def getGeneratorData(buildingData):
     ## Element <-> ambient
     conEleAmb = []
     eleAmbRel = buildingData.getElementAmbientRelations()
+    print("Element <-> ambient", eleAmbRel)
     i = 1
     for con in eleAmbRel:
         conEleAmb.append(dmg.ConnectionElementAmbient(element=con[0],
@@ -428,6 +437,7 @@ def getGeneratorData(buildingData):
     ## Element <-> solid ambient
     conEleSol = []
     eleSolRel = buildingData.getElementGroundRelations()
+    print("Element <-> solid ambient", eleSolRel)
     i = 1
     for con in eleSolRel:
         conEleSol.append(dmg.ConnectionElementSolid(element=con[0],

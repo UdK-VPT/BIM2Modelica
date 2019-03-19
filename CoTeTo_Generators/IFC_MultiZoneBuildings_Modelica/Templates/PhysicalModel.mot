@@ -5,7 +5,7 @@ for filename in d:
 %>\
 within;
 model ${data['buildingSystem'].name}
-  "Model of a building with its climate ambient"
+  "Model of a building with its climate environment"
   extends Modelica.Icons.Example;
 
   % for con in data['constructions']:
@@ -56,16 +56,20 @@ model ${data['buildingSystem'].name}
     % endif
     convectionOnSurfaces = BuildingSystems.HAM.ConvectiveHeatTransfer.Types.Convection.forced);
 
+    // Thermal zones
   % for zone in data['zones']:
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed ${zone.name}(
       V=${zone.volume},
       nConstructions = ${zone.nElements},
       % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
-      nAirpaths=${2*zone.nWindows[0]},
+<% nAirpathsZone = 2*zone.nWindows[0] %>\
+      % if nAirpathsZone > 0:
+      nAirpaths=${nAirpathsZone},
       heightAirpath={
-      % for wi in range(zone.nWindows[0]):
+      % for wi in range(int(nAirpathsZone/2)):
         0.5,1.5${',' if not loop.last else '},'}
       % endfor
+      % endif
       % endif
       % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
       calcIdealLoads = true,
@@ -84,8 +88,9 @@ model ${data['buildingSystem'].name}
       heatSources = false,
       % endif
       height=${zone.height});
-  % endfor
 
+  % endfor
+    // Opaque construction elements
   % for ele in data['elementsOpaque']:
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes ${ele.name}(
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
@@ -97,8 +102,9 @@ model ${data['buildingSystem'].name}
       AInnSur = ${ele.AInnSur},
       height = ${ele.height},
       width = ${ele.width});
-  % endfor
 
+  % endfor
+    // Transparent construction elements
   % for ele in data['elementsTransparent']:
     BuildingSystems.Buildings.Constructions.Windows.Window ${ele.name}(
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
@@ -115,46 +121,81 @@ model ${data['buildingSystem'].name}
       height = ${ele.height},
       width = ${ele.width});
   % endfor
+
+  % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+  // control (opening) signal for windows
+  % for ele in data['elementsTransparent']:
+    Modelica.Blocks.Sources.Constant control${ele.name}(k=0.0);
+  % endfor
+  % endif
   equation
-    // connections between construction elements and zones
+    // connections between construction elements and thermal zones
   % for con in data['conEleZon']:
     connect(${con.element}.toSurfacePort_${con.elementPort}, ${con.zone}.toConstructionPorts[${con.zonePort}]);
   % endfor
-    // connections between construction elements and ambient
+
+    // connections between construction elements and environment
   % for con in data['conEleAmb']:
     connect(${con.element}.toSurfacePort_${con.elementPort}, surfacesToAmbient.toConstructionPorts[${con.ambientPort}]);
   % endfor
+
     // connections between construction elements and ground
   % for con in data['conEleSol']:
     connect(${con.element}.toSurfacePort_${con.elementPort}, surfacesToSolids.toConstructionPorts[${con.solidPort}]);
   % endfor
+
   % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
-  // Heating set temperature of each thermal zones
+    // Heating set temperature of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.T_setHeating, T_setHeating[${i+1}]);
   % endfor
-  // Cooling set temperatures of each thermal zones
+
+    // Cooling set temperatures of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.T_setCooling, T_setCooling[${i+1}]);
   % endfor
-  // Cooling load of each thermal zones
+
+    // Cooling load of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.Q_flow_cooling, Q_flow_cooling[${i+1}]);
   % endfor
-  // Heating load of each thermal zones
+
+    // Heating load of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.Q_flow_heating, Q_flow_heating[${i+1}]);
   % endfor
   % endif
+
+  % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+    // Air paths between windows and zones
+<% j = 1 %>\
+  % for zone in data['zones']:
+<% i = 1 %>\
+  % for ele in data['elementsTransparent']:
+  % if zone.name == ele.memberOfZone:
+    connect(${zone.name}.airpathPorts[${i}], ${ele.name}.port_b2);
+    connect(${zone.name}.airpathPorts[${i+1}], ${ele.name}.port_a1);
+    connect(toAmbientAirpathPorts[${j}], ${ele.name}.port_a2);
+    connect(toAmbientAirpathPorts[${j+1}], ${ele.name}.port_b1);
+    connect(control${ele.name}.y, ${ele.name}.y);
+  % endif
+<% i = i + 2 %>\
+  % endfor
+<% j = j + 2 %>\
+  % endfor
+  % endif
+
   % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
   // airchange rates of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.airchange, airchange[${i+1}]);
   % endfor
+
   // ambient temperature of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.TAirAmb, TAirAmb);
   % endfor
+
   // ambient moisture of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.xAirAmb, xAirAmb);
@@ -165,6 +206,7 @@ model ${data['buildingSystem'].name}
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.radHeatSourcesPorts[1], radHeatSourcesPorts[${i+1}]);
   % endfor
+
   // Convective heating source of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.conHeatSourcesPorts[1], conHeatSourcesPorts[${i+1}]);
@@ -192,13 +234,14 @@ model ${data['buildingSystem'].name}
     nZones = ${len(data['zones'])})
     annotation (Placement(transformation(extent={{10,-10},{30,10}})));
 
-  BuildingSystems.Buildings.Ambient ambience(
+  BuildingSystems.Buildings.Ambient environment(
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
     nAirpaths = ${2*len(data['elementsTransparent'])},
     % endif
     nSurfaces = building.nSurfacesAmbient,
     redeclare block WeatherData = ${data['buildingSystem'].location})
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
+
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
     // Heating set temperature of the thermal zones
     % for zone in data['zones']:
@@ -206,6 +249,7 @@ model ${data['buildingSystem'].name}
       k=273.15 + ${zone.TSetHeating})
       annotation (Placement(transformation(extent={{58,16},{50,24}})));
     % endfor
+
     // Cooling set temperature of each thermal zones
     % for zone in data['zones']:
     Modelica.Blocks.Sources.Constant TSetCooling_${zone.name}(
@@ -221,6 +265,7 @@ model ${data['buildingSystem'].name}
     annotation (Placement(transformation(extent={{58,-14},{50,-6}})));
     % endfor
     % endif
+
     // Heating source of each thermal zones
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
       % for zone in data['zones']:
@@ -235,15 +280,17 @@ model ${data['buildingSystem'].name}
       annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation=-90,origin={21,21})));
     % endif
   equation
-    connect(ambient.toSurfacePorts, building.toAmbientSurfacesPorts)
+    // building constructions to the environment
+    connect(environment.toSurfacePorts, building.toAmbientSurfacesPorts)
       annotation (Line(points={{-12,4},{11,4}},color={0,255,0},smooth=Smooth.None));
-    connect(ambient.toAirPorts, building.toAmbientAirPorts)
+    connect(environment.toAirPorts, building.toAmbientAirPorts)
       annotation (Line(points={{-12,-4},{11,-4}},color={85,170,255},smooth=Smooth.None));
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
-    connect(ambient.TAirRef, building.TAirAmb)
+    connect(environment.TAirRef, building.TAirAmb)
       annotation (Line(points={{-28.2,7},{-30,7},{-30,12},{-30,14},{26.2,14},{26.2,9.8}}, color={0,0,127}));
-    connect(ambient.xAir, building.xAirAmb)
+    connect(environment.xAir, building.xAirAmb)
       annotation (Line(points={{-28.2,5},{-32,5},{-32,16},{28.4,16},{28.4,9.8}}, color={0,0,127}));
+
     // Air change rate of each thermal zones
     % for i in range(len(data['zones'])):
     connect(airchange_${data['zones'][i].name}.y, building.airchange[${i+1}])
@@ -251,17 +298,20 @@ model ${data['buildingSystem'].name}
     % endfor
     % endif
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
+
     // Heating set temperature of each thermal zones
     % for i in range(len(data['zones'])):
     connect(TSetHeating_${data['zones'][i].name}.y, building.T_setHeating[${i+1}])
       annotation (Line(points={{29.8,7.5},{44,7.5},{44,20},{49.6,20}}, color={0,0,127}));
     % endfor
+
     // Cooling set temperature of each thermal zones
     % for i in range(len(data['zones'])):
     connect(TSetCooling_${data['zones'][i].name}.y, building.T_setCooling[${i+1}])
       annotation (Line(points={{29.8,5.5},{39.6,5.5},{39.6,6},{49.6,6}}, color={0,0,127}));
     % endfor
     % endif
+
     // Heating source of each thermal zones
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
       % for i in range(len(data['zones'])):
@@ -276,8 +326,9 @@ model ${data['buildingSystem'].name}
       annotation (Line(points={{20,19},{20,10.5}}, color={191,0,0}));
     % endif
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
-    // Air paths between the windows and the ambient
-    connect(ambient.toAirpathPorts, building.toAmbientAirpathPorts)
+
+    // Air paths between the windows and the environment
+    connect(environment.toAirpathPorts, building.toAmbientAirpathPorts)
       annotation (Line(points={{-17,9},{-17,14},{-34,14},{-34,-14},{40,-14},{40,-2},{29,-2}},color={0,127,255}));
     % endif
 

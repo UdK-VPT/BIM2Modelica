@@ -24,9 +24,9 @@ surTemOut = 0
 # Set internal heat sources for all thermal zones: intHeaSou = 1
 intHeaSou = 1
 # Uses air paths of the windows to calculate the ventilation rate: useWinAirPaths = 1
-useWinAirPaths = 0
+useWinAirPaths = 1
 # Define the ventilation rate for each thermal zone as a prescribed air change rate: prescribedAirchange = 1
-prescribedAirchange = 1
+prescribedAirchange = 0
 # Calculate the ideal heating and cooling loads for each thermal zone for prescribed set temperatures: calcIdealLoads = 1
 calcIdealLoads = 1
 
