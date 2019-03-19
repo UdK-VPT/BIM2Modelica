@@ -82,7 +82,6 @@ class BuildingElement:
     def __init__(self, name, pos, **kwargs):
         self.name = str(name)
         self.pos = OCC.gp.gp_Pnt(pos[0], pos[1], pos[2])
-        self.memberOfZone = None
         self.angleDegAzi = None
         self.angleDegTil = None
         self.adjZoneSide1 = None
@@ -122,6 +121,17 @@ class BuildingElementTransparent(BuildingElement):
 
     def __init__(self, name='', pos=(0.0, 0.0, 0.0), **kwargs):
         BuildingElement.__init__(self, name, pos, **kwargs)
+        self.setParameter(**kwargs)
+
+class BuildingElementDoor(BuildingElement):
+    '''
+    This class describes the properties of a door building element.
+    '''
+
+    def __init__(self, name='', pos=(0.0, 0.0, 0.0), **kwargs):
+        BuildingElement.__init__(self, name, pos, **kwargs)
+        BuildingElement.att.append('constructionData')
+        self.constructionData = None
         self.setParameter(**kwargs)
 
 class BuildingZone:
@@ -184,6 +194,7 @@ class Building:
            'originalWindows',
            'opaqueElements',
            'transparentElements',
+           'doorElements',
            'constructions',
            'UValFac',
            'UValRoo',
@@ -209,6 +220,7 @@ class Building:
         self.originalWindows = []
         self.opaqueElements = []
         self.transparentElements = []
+        self.doorElements = []
         self.constructions = []
         # 0D modelling approach
         self.UValFac = None
@@ -247,6 +259,9 @@ class Building:
     def addTransparentElement(self, transparentElement):
         self.transparentElements.append(transparentElement)
 
+    def addDoorElement(self, doorElement):
+        self.doorElements.append(doorElement)
+
     def setParameter(self, **kwargs):
         if kwargs is not None:
             for k in kwargs:
@@ -280,6 +295,8 @@ class Building:
                 return self.opaqueElements
             if value == 'transparentElements':
                 return self.transparentElements
+            if value == 'doorElements':
+                return self.doorElements
             if value == 'constructions':
                 return self.constructions
             # 0D modelling approach
@@ -350,6 +367,17 @@ class Building:
                     d[element.adjZoneSide2].append((element.name, '2'))
                 else:
                     d[str(element.adjZoneSide2)] = [(element.name, '2')]
+        for element in self.doorElements:
+            if element.adjZoneSide1 not in ['AMB', 'GRO', None]:
+                if element.adjZoneSide1 in d:
+                    d[element.adjZoneSide1].append((element.name, '1'))
+                else:
+                    d[str(element.adjZoneSide1)] = [(element.name, '1')]
+            if element.adjZoneSide2 not in ['AMB', 'GRO', None]:
+                if element.adjZoneSide2 in d:
+                    d[element.adjZoneSide2].append((element.name, '2'))
+                else:
+                    d[str(element.adjZoneSide2)] = [(element.name, '2')]
         return d
 
     def getElementAmbientRelations(self):
@@ -360,6 +388,11 @@ class Building:
             if element.adjZoneSide2 == 'AMB':
                 l.append((element.name, '2'))
         for element in self.transparentElements:
+            if element.adjZoneSide1 == 'AMB':
+                l.append((element.name, '1'))
+            if element.adjZoneSide2 == 'AMB':
+                l.append((element.name, '2'))
+        for element in self.doorElements:
             if element.adjZoneSide1 == 'AMB':
                 l.append((element.name, '1'))
             if element.adjZoneSide2 == 'AMB':
@@ -378,8 +411,13 @@ class Building:
                 l.append((element.name, '1'))
             if element.adjZoneSide2 == 'GRO':
                 l.append((element.name, '2'))
+        for element in self.doorElements:
+            if element.adjZoneSide1 == 'GRO':
+                l.append((element.name, '1'))
+            if element.adjZoneSide2 == 'GRO':
+                l.append((element.name, '2'))
         return l
-
+        
 
 class District:
     '''

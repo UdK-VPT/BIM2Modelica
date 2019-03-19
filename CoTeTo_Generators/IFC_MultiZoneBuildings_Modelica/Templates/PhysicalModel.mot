@@ -1,7 +1,7 @@
 <%
 ## Data of the multi-zone building model
 for filename in d:
-  data = d[filename]['_buildingData']
+    data = d[filename]['_buildingData']
 %>\
 within;
 model ${data['buildingSystem'].name}
@@ -34,7 +34,16 @@ model ${data['buildingSystem'].name}
     surfacesToSolids(nSurfaces = nSurfacesSolid),
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
     useAirPaths = true,
-    nAirpaths = ${2*len(data['elementsTransparent'])},
+<%
+nAirpathsBuilding = 0
+for ele in data['elementsTransparent']:
+    if "AMB" in ele.memberOfZone:
+        nAirpathsBuilding+=2
+for ele in data['elementsDoor']:
+    if "AMB" in ele.memberOfZone:
+        nAirpathsBuilding+=2
+%>
+    nAirpaths = ${nAirpathsBuilding},
     % else:
     useAirPaths = false,
     % endif
@@ -62,11 +71,19 @@ model ${data['buildingSystem'].name}
       V=${zone.volume},
       nConstructions = ${zone.nElements},
       % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
-<% nAirpathsZone = 2*zone.nWindows[0] %>\
-      % if nAirpathsZone > 0:
-      nAirpaths=${nAirpathsZone},
+<%
+nAirpaths = 0
+for ele in data['elementsTransparent']:
+    if zone.name in ele.memberOfZone:
+        nAirpaths+=2
+for ele in data['elementsDoor']:
+    if zone.name in ele.memberOfZone:
+        nAirpaths+=2
+%>\
+      % if nAirpaths > 0:
+      nAirpaths=${nAirpaths},
       heightAirpath={
-      % for wi in range(int(nAirpathsZone/2)):
+      % for i in range(int(nAirpaths/2)):
         0.5,1.5${',' if not loop.last else '},'}
       % endfor
       % endif
@@ -88,8 +105,8 @@ model ${data['buildingSystem'].name}
       heatSources = false,
       % endif
       height=${zone.height});
-
   % endfor
+
     // Opaque construction elements
   % for ele in data['elementsOpaque']:
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes ${ele.name}(
@@ -102,8 +119,8 @@ model ${data['buildingSystem'].name}
       AInnSur = ${ele.AInnSur},
       height = ${ele.height},
       width = ${ele.width});
-
   % endfor
+
     // Transparent construction elements
   % for ele in data['elementsTransparent']:
     BuildingSystems.Buildings.Constructions.Windows.Window ${ele.name}(
@@ -122,10 +139,32 @@ model ${data['buildingSystem'].name}
       width = ${ele.width});
   % endfor
 
+    // Door elements
+  % for ele in data['elementsDoor']:
+    BuildingSystems.Buildings.Constructions.Doors.Door ${ele.name}(
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
+      show_TSur = true,
+    % endif
+    % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+      calcAirchange = true,
+    % else:
+      calcAirchange = false,
+    % endif
+      redeclare ${ele.constructionData} constructionData,
+      angleDegAzi = ${ele.angleDegAzi},
+      angleDegTil = ${ele.angleDegTil},
+      height = ${ele.height},
+      width = ${ele.width});
+  % endfor
+
   % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
   // control (opening) signal for windows
   % for ele in data['elementsTransparent']:
-    Modelica.Blocks.Sources.Constant control${ele.name}(k=0.0);
+    Modelica.Blocks.Sources.Constant control_${ele.name}(k=0.0);
+  % endfor
+  // control (opening) signal for doors
+  % for ele in data['elementsDoor']:
+    Modelica.Blocks.Sources.Constant control_${ele.name}(k=0.0);
   % endfor
   % endif
   equation
@@ -167,31 +206,67 @@ model ${data['buildingSystem'].name}
   % endif
 
   % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
-    // Air paths between windows and zones
 <% j = 1 %>\
   % for zone in data['zones']:
 <% i = 1 %>\
+    // ${zone.name}:
+    // Air paths between windows and zones
   % for ele in data['elementsTransparent']:
-  % if zone.name == ele.memberOfZone:
+  % if ele.memberOfZone[0] == zone.name:
     connect(${zone.name}.airpathPorts[${i}], ${ele.name}.port_b2);
     connect(${zone.name}.airpathPorts[${i+1}], ${ele.name}.port_a1);
+<% i = i + 2 %>\
+  % endif
+  % if ele.memberOfZone[1] == zone.name:
+    connect(${zone.name}.airpathPorts[${i}], ${ele.name}.port_a2);
+    connect(${zone.name}.airpathPorts[${i+1}], ${ele.name}.port_b1);
+<% i = i + 2 %>\
+  % endif
+  % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
     connect(toAmbientAirpathPorts[${j}], ${ele.name}.port_a2);
     connect(toAmbientAirpathPorts[${j+1}], ${ele.name}.port_b1);
-    connect(control${ele.name}.y, ${ele.name}.y);
-  % endif
-<% i = i + 2 %>\
-  % endfor
 <% j = j + 2 %>\
+  % endif
+  % endfor
+
+    // Air paths between doors and zones
+  % for ele in data['elementsDoor']:
+  % if ele.memberOfZone[0] == zone.name:
+    connect(${zone.name}.airpathPorts[${i}], ${ele.name}.port_b2);
+    connect(${zone.name}.airpathPorts[${i+1}], ${ele.name}.port_a1);
+<% i = i + 2 %>\
+  % endif
+  % if ele.memberOfZone[1] == zone.name:
+    connect(${zone.name}.airpathPorts[${i}], ${ele.name}.port_a2);
+    connect(${zone.name}.airpathPorts[${i+1}], ${ele.name}.port_b1);
+<% i = i + 2 %>\
+  % endif
+  % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
+    connect(toAmbientAirpathPorts[${j}], ${ele.name}.port_a2);
+    connect(toAmbientAirpathPorts[${j+1}], ${ele.name}.port_b1);
+<% j = j + 2 %>\
+  % endif
+  % endfor
+
+  % endfor
+
+    // control (opening) signal for windows
+  % for ele in data['elementsTransparent']:
+    connect(control_${ele.name}.y, ${ele.name}.y);
+  % endfor
+    // control (opening) signal for doors
+  % for ele in data['elementsDoor']:
+    connect(control_${ele.name}.y, ${ele.name}.y);
   % endfor
   % endif
 
   % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
-  // airchange rates of each thermal zones
+    // airchange rates of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.airchange, airchange[${i+1}]);
   % endfor
 
-  // ambient temperature of each thermal zones
+    // ambient temperature of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.TAirAmb, TAirAmb);
   % endfor
@@ -236,7 +311,7 @@ model ${data['buildingSystem'].name}
 
   BuildingSystems.Buildings.Ambient environment(
     % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
-    nAirpaths = ${2*len(data['elementsTransparent'])},
+    nAirpaths = ${nAirpathsBuilding},
     % endif
     nSurfaces = building.nSurfacesAmbient,
     redeclare block WeatherData = ${data['buildingSystem'].location})
