@@ -18,17 +18,24 @@ module = Filter01
 function = filter01
 
 # Modelica code generator
-[MODELICA_SWITCHES]
-# Set surface temperatures as an output of the building model: surTemOut = 1
-surTemOut = 0
-# Set internal heat sources for all thermal zones: intHeaSou = 1
-intHeaSou = 1
-# Uses air paths of the windows to calculate the ventilation rate: useWinAirPaths = 1
-useWinAirPaths = 1
-# Define the ventilation rate for each thermal zone as a prescribed air change rate: prescribedAirchange = 1
-prescribedAirchange = 0
-# Calculate the ideal heating and cooling loads for each thermal zone for prescribed set temperatures: calcIdealLoads = 1
-calcIdealLoads = 1
+[MODELICA_CODE_SWITCHES]
+# Set surface temperatures as an output of the building model: surTemOut = on
+surTemOut = off
+# Set internal heat sources for all thermal zones: intHeaSou = on
+intHeaSou = on
+# Uses air paths of the windows and doors to calculate the ventilation rates: useAirPaths = on
+useAirPaths = on
+# Define the ventilation rate for each thermal zone as a prescribed air change rate: prescribedAirchange = on
+prescribedAirchange = off
+# Calculate the ideal heating and cooling loads for each thermal zone for prescribed set temperatures: calcIdealLoads = on
+calcIdealLoads = on
+
+[MODELICA_LIBPATHS]
+# Use of a libray path for the within statement: libPath = on
+libPath = off
+# Library pathes
+ModelicaLibPath = ModelicaModels.IFC2X3.UdKB_Test_Cases
+#ModelicaLibPath = ModelicaModels.IFC2X3.SBT_Test_Cases
 
 [TEMPLATE_MODELICA]
 topFile = PhysicalModel.mot

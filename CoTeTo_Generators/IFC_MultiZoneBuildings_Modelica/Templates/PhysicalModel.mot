@@ -3,7 +3,33 @@
 for filename in d:
     data = d[filename]['_buildingData']
 %>\
+% if generatorCfg['MODELICA_LIBPATHS'].getboolean('libPath'):
+within ${generatorCfg['MODELICA_LIBPATHS'].get('ModelicaLibPath')};
+% else:
 within;
+% endif
+/**************************************************************************************/
+// Automatically generated thermal building model by
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica
+//
+// Used MODELICA_CODE_SWITCHES for code generation:
+// surTemOut = on: sets surface temperatures as an output of the building model
+// used value: ${generatorCfg['MODELICA_CODE_SWITCHES'].get('surTemOut')}
+//
+// intHeaSou = on: sets internal heat sources for all thermal zones:
+// used value: ${generatorCfg['MODELICA_CODE_SWITCHES'].get('intHeaSou')}
+//
+// useAirPaths = on: uses air paths of windows and doors to calculate ventilation rates:
+// used value: ${generatorCfg['MODELICA_CODE_SWITCHES'].get('useAirPaths')}
+//
+// prescribedAirchange = on: defines ventilation rates for each thermal zone as
+// a prescribed air change rate:
+// used value: ${generatorCfg['MODELICA_CODE_SWITCHES'].get('prescribedAirchange')}
+//
+// calcIdealLoads = on: calculates the ideal heating and cooling loads for each
+// thermal zone for prescribed set temperatures:
+// used value: ${generatorCfg['MODELICA_CODE_SWITCHES'].get('calcIdealLoads')}
+/***************************************************************************************/
 model ${data['buildingSystem'].name}
   "Model of a building with its climate environment"
   extends Modelica.Icons.Example;
@@ -32,7 +58,7 @@ model ${data['buildingSystem'].name}
     surfacesToAmbient(nSurfaces = ${len(data['conEleAmb'])}),
     nSurfacesSolid = ${len(data['conEleSol'])},
     surfacesToSolids(nSurfaces = nSurfacesSolid),
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
     useAirPaths = true,
 <%
 nAirpathsBuilding = 0
@@ -47,17 +73,17 @@ for ele in data['elementsDoor']:
     % else:
     useAirPaths = false,
     % endif
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('calcIdealLoads'):
     calcIdealLoads = true,
     % else:
     calcIdealLoads = false,
     % endif
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('prescribedAirchange'):
     prescribedAirchange = true,
     % else:
     prescribedAirchange = false,
     % endif
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('intHeaSou'):
     heatSources = true,
     nHeatSources = ${len(data['zones'])},
     % else:
@@ -70,7 +96,7 @@ for ele in data['elementsDoor']:
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed ${zone.name}(
       V=${zone.volume},
       nConstructions = ${zone.nElements},
-      % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+      % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
 <%
 nAirpaths = 0
 for ele in data['elementsTransparent']:
@@ -88,17 +114,17 @@ for ele in data['elementsDoor']:
       % endfor
       % endif
       % endif
-      % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
+      % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('calcIdealLoads'):
       calcIdealLoads = true,
       % else:
       calcIdealLoads = false,
       % endif
-      % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
+      % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('prescribedAirchange'):
       prescribedAirchange = true,
       % else:
       prescribedAirchange = false,
       % endif
-      % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
+      % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('intHeaSou'):
       heatSources = true,
       nHeatSources = 1,
       % else:
@@ -110,7 +136,7 @@ for ele in data['elementsDoor']:
     // Opaque construction elements
   % for ele in data['elementsOpaque']:
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes ${ele.name}(
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('surTemOut'):
       show_TSur = true,
     % endif
       redeclare ${ele.constructionData} constructionData,
@@ -124,10 +150,10 @@ for ele in data['elementsDoor']:
     // Transparent construction elements
   % for ele in data['elementsTransparent']:
     BuildingSystems.Buildings.Constructions.Windows.Window ${ele.name}(
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('surTemOut'):
       show_TSur = true,
     % endif
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
       calcAirchange = true,
     % else:
       calcAirchange = false,
@@ -142,10 +168,10 @@ for ele in data['elementsDoor']:
     // Door elements
   % for ele in data['elementsDoor']:
     BuildingSystems.Buildings.Constructions.Doors.Door ${ele.name}(
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('surTemOut'):
       show_TSur = true,
     % endif
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
       calcAirchange = true,
     % else:
       calcAirchange = false,
@@ -157,33 +183,40 @@ for ele in data['elementsDoor']:
       width = ${ele.width});
   % endfor
 
-  % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
-  // control (opening) signal for windows
+  % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
+    // control (opening) signal for windows
   % for ele in data['elementsTransparent']:
     Modelica.Blocks.Sources.Constant control_${ele.name}(k=0.0);
   % endfor
-  // control (opening) signal for doors
+    // control (opening) signal for doors
   % for ele in data['elementsDoor']:
     Modelica.Blocks.Sources.Constant control_${ele.name}(k=0.0);
   % endfor
   % endif
   equation
+  % if len(data['conEleZon']) > 0:
+
     // connections between construction elements and thermal zones
   % for con in data['conEleZon']:
     connect(${con.element}.toSurfacePort_${con.elementPort}, ${con.zone}.toConstructionPorts[${con.zonePort}]);
   % endfor
+  % endif
+  % if len(data['conEleAmb']) > 0:
 
     // connections between construction elements and environment
   % for con in data['conEleAmb']:
     connect(${con.element}.toSurfacePort_${con.elementPort}, surfacesToAmbient.toConstructionPorts[${con.ambientPort}]);
   % endfor
+  % endif
+  % if len(data['conEleSol']) > 0:
 
     // connections between construction elements and ground
   % for con in data['conEleSol']:
     connect(${con.element}.toSurfacePort_${con.elementPort}, surfacesToSolids.toConstructionPorts[${con.solidPort}]);
   % endfor
+  % endif
+  % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('calcIdealLoads'):
 
-  % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
     // Heating set temperature of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.T_setHeating, T_setHeating[${i+1}]);
@@ -204,12 +237,12 @@ for ele in data['elementsDoor']:
     connect(${data['zones'][i].name}.Q_flow_heating, Q_flow_heating[${i+1}]);
   % endfor
   % endif
+  % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
 
-  % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
 <% j = 1 %>\
   % for zone in data['zones']:
 <% i = 1 %>\
-    // ${zone.name}:
+    // Air paths of ${zone.name}:
     // Air paths between windows and zones
   % for ele in data['elementsTransparent']:
   % if ele.memberOfZone[0] == zone.name:
@@ -249,18 +282,17 @@ for ele in data['elementsDoor']:
   % endfor
 
   % endfor
-
-    // control (opening) signal for windows
+    // Control (opening) signal for windows
   % for ele in data['elementsTransparent']:
     connect(control_${ele.name}.y, ${ele.name}.y);
   % endfor
-    // control (opening) signal for doors
+    // Control (opening) signal for doors
   % for ele in data['elementsDoor']:
     connect(control_${ele.name}.y, ${ele.name}.y);
   % endfor
   % endif
 
-  % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
+  % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('prescribedAirchange'):
     // airchange rates of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.airchange, airchange[${i+1}]);
@@ -271,23 +303,23 @@ for ele in data['elementsDoor']:
     connect(${data['zones'][i].name}.TAirAmb, TAirAmb);
   % endfor
 
-  // ambient moisture of each thermal zones
+    // ambient moisture of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.xAirAmb, xAirAmb);
   % endfor
   % endif
-  % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
-  // Radiative heating source of each thermal zones
+  % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('intHeaSou'):
+    // Radiative heating source of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.radHeatSourcesPorts[1], radHeatSourcesPorts[${i+1}]);
   % endfor
 
-  // Convective heating source of each thermal zones
+    // Convective heating source of each thermal zones
   % for i in range(len(data['zones'])):
     connect(${data['zones'][i].name}.conHeatSourcesPorts[1], conHeatSourcesPorts[${i+1}]);
   % endfor
   % endif
-  % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
+  % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('surTemOut'):
   // Connections for surface temperatures
   <% i = 1 %>\
     % for ele in data['elementsOpaque']:
@@ -302,7 +334,7 @@ for ele in data['elementsDoor']:
   end Building;
 
   Building building(
-  % if generatorCfg['MODELICA_SWITCHES'].getboolean('surTemOut'):
+  % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('surTemOut'):
     show_TSur = true,
     nSurfaces = ${2*len(data['elementsOpaque'])+2*len(data['elementsTransparent'])},
   % endif
@@ -310,14 +342,14 @@ for ele in data['elementsDoor']:
     annotation (Placement(transformation(extent={{10,-10},{30,10}})));
 
   BuildingSystems.Buildings.Ambient environment(
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
     nAirpaths = ${nAirpathsBuilding},
     % endif
     nSurfaces = building.nSurfacesAmbient,
     redeclare block WeatherData = ${data['buildingSystem'].location})
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
 
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('calcIdealLoads'):
     // Heating set temperature of the thermal zones
     % for zone in data['zones']:
     Modelica.Blocks.Sources.Constant TSetHeating_${zone.name}(
@@ -332,7 +364,7 @@ for ele in data['elementsDoor']:
       annotation (Placement(transformation(extent={{58,2},{50,10}})));
     % endfor
     % endif
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('prescribedAirchange'):
     // Air change rate of each thermal zones
     % for zone in data['zones']:
     Modelica.Blocks.Sources.Constant airchange_${zone.name}(
@@ -342,7 +374,7 @@ for ele in data['elementsDoor']:
     % endif
 
     // Heating source of each thermal zones
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('intHeaSou'):
       % for zone in data['zones']:
     Modelica.Blocks.Sources.Constant heatsources_${zone.name}(
       k=${zone.heatsource})
@@ -360,7 +392,7 @@ for ele in data['elementsDoor']:
       annotation (Line(points={{-12,4},{11,4}},color={0,255,0},smooth=Smooth.None));
     connect(environment.toAirPorts, building.toAmbientAirPorts)
       annotation (Line(points={{-12,-4},{11,-4}},color={85,170,255},smooth=Smooth.None));
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('prescribedAirchange'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('prescribedAirchange'):
     connect(environment.TAirRef, building.TAirAmb)
       annotation (Line(points={{-28.2,7},{-30,7},{-30,12},{-30,14},{26.2,14},{26.2,9.8}}, color={0,0,127}));
     connect(environment.xAir, building.xAirAmb)
@@ -372,7 +404,7 @@ for ele in data['elementsDoor']:
       annotation (Line(points={{29.8,3.5},{44,3.5},{44,-10},{49.6,-10}}, color={0,0,127}));
     % endfor
     % endif
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('calcIdealLoads'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('calcIdealLoads'):
 
     // Heating set temperature of each thermal zones
     % for i in range(len(data['zones'])):
@@ -388,7 +420,7 @@ for ele in data['elementsDoor']:
     % endif
 
     // Heating source of each thermal zones
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('intHeaSou'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('intHeaSou'):
       % for i in range(len(data['zones'])):
     connect(heatsources_${data['zones'][i].name}.y, heatFlow[${i+1}].Q_flow)
       annotation (Line(points={{32,26},{35.6,26}}, color={0,0,127}));
@@ -400,7 +432,7 @@ for ele in data['elementsDoor']:
     connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:${len(data['zones'])}])
       annotation (Line(points={{20,19},{20,10.5}}, color={191,0,0}));
     % endif
-    % if generatorCfg['MODELICA_SWITCHES'].getboolean('useWinAirPaths'):
+    % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
 
     // Air paths between the windows and the environment
     connect(environment.toAirpathPorts, building.toAmbientAirpathPorts)
