@@ -56,7 +56,7 @@ def mapIFCtoBuildingDataModel(file,filename):
     walls = []
     walls_decomposed = []
     for w in all_walls:
-        print("\nnext wall")
+        #print("\nnext wall")
         shape_tup = ifcopenshell.geom.create_shape(settings, w)
         toposhape = shape_tup.geometry
         mesh = DataClasses.Mesh(toposhape)
@@ -76,7 +76,7 @@ def mapIFCtoBuildingDataModel(file,filename):
     all_doors = file.by_type("IfcDoor")
     originalDoors = []
     for d in all_doors:
-        print("\nnext door")
+        # print("\nnext door")
         shape_tup = ifcopenshell.geom.create_shape(settings, d)
         toposhape = shape_tup.geometry
         mesh = DataClasses.Mesh(toposhape)
@@ -88,7 +88,7 @@ def mapIFCtoBuildingDataModel(file,filename):
     originalSlabs = []
     slabs = []
     for s in all_slabs:
-        print("\nnext slab")
+        # print("\nnext slab")
         shape_tup = ifcopenshell.geom.create_shape(settings, s)
         toposhape = shape_tup.geometry
         mesh = DataClasses.Mesh(toposhape)
@@ -99,7 +99,7 @@ def mapIFCtoBuildingDataModel(file,filename):
     originalColumns = []
     columns = []
     for c in all_columns:
-        print("\nnext column")
+        # print("\nnext column")
         shape_tup = ifcopenshell.geom.create_shape(settings, c)
         toposhape = shape_tup.geometry
         mesh = DataClasses.Mesh(toposhape)
@@ -109,7 +109,7 @@ def mapIFCtoBuildingDataModel(file,filename):
     all_windows = file.by_type("IfcWindow")
     originalWindows = []
     for w in all_windows:
-        print("\nnext window")
+        # print("\nnext window")
         shape_tup = ifcopenshell.geom.create_shape(settings, w)
         toposhape = shape_tup.geometry
         mesh = DataClasses.Mesh(toposhape)
@@ -331,7 +331,7 @@ def mapIFCtoBuildingDataModel(file,filename):
                         iwi = iwi + 1
 
         ## Thermal zones
-        print('numberOfWindows: ', iwiz)
+        # print('numberOfWindows: ', iwiz)
         buildingData.addZone(bdm.BuildingZone(name=treatedZones[space.Space.GlobalId],
                                               pos=(0.0,0.0,0.0),
                                               volume=space.Volume,
@@ -424,7 +424,7 @@ def getGeneratorData(buildingData):
     ## Element <-> zone
     conEleZon = []
     eleZoneRel = buildingData.getElementZoneRelations()
-    print("Element <-> zone", eleZoneRel)
+    # print("Element <-> zone", eleZoneRel)
     for zone in eleZoneRel.keys():
         i = 1
         for con in eleZoneRel[zone]:
@@ -437,7 +437,7 @@ def getGeneratorData(buildingData):
     ## Element <-> ambient
     conEleAmb = []
     eleAmbRel = buildingData.getElementAmbientRelations()
-    print("Element <-> ambient", eleAmbRel)
+    # print("Element <-> ambient", eleAmbRel)
     i = 1
     for con in eleAmbRel:
         conEleAmb.append(dmg.ConnectionElementAmbient(element=con[0],
@@ -448,7 +448,7 @@ def getGeneratorData(buildingData):
     ## Element <-> solid ambient
     conEleSol = []
     eleSolRel = buildingData.getElementGroundRelations()
-    print("Element <-> solid ambient", eleSolRel)
+    # print("Element <-> solid ambient", eleSolRel)
     i = 1
     for con in eleSolRel:
         conEleSol.append(dmg.ConnectionElementSolid(element=con[0],

@@ -10,7 +10,7 @@ within;
 % endif
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on ${systemCfg['timestamp']()}
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model
@@ -440,5 +440,8 @@ for ele in data['elementsDoor']:
     % endif
 
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
+    % if generatorCfg['MODELICA_MOSPATHS'].getboolean('mosPath'):
+    __Dymola_Commands(file="${generatorCfg['MODELICA_MOSPATHS'].get('ModelicaMosPath')}${data['buildingSystem'].name}.mos" "Simulate and plot"),
+    % endif
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
   end ${data['buildingSystem'].name};

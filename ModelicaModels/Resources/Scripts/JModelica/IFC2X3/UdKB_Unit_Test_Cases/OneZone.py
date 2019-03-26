@@ -17,7 +17,7 @@ print(os.getcwd())
 
 # compile model to fmu
 from pymodelica import compile_fmu
-model_name = 'ModelicaModels.IFC2X3.UdKB_Test_Cases.MultiZoneBuilding'
+model_name = 'ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases.OneZone'
 my_fmu = compile_fmu(model_name, moLibs)
 
 # simulate the fmu and store results
@@ -45,20 +45,18 @@ P.clf()
 # temperatures
 y1 = res['ambient.TAirRef']
 y2 = res['building.zone_1.TAir']
-y3 = res['building.zone_2.TAir']
-y4 = res['building.zone_1.TOperative']
+y3 = res['building.zone_1.TOperative']
 t = res['time']
 P.subplot(2,1,1)
-P.plot(t, y1, t, y2, t, y3, t, y4)
-P.legend(['ambient.TAirRef','building.zone_1.TAir','building.zone_2.TAir', 'building.zone_1.TOperative'])
+P.plot(t, y1, t, y2, t, y3)
+P.legend(['ambient.TAirRef','building.zone_1.TAir','building.zone_1.TOperative'])
 P.ylabel('Temperature (K)')
 P.xlabel('Time (s)')
 # Heating load
 y1 = res['building.zone_1.Q_flow_heating']
-y2 = res['building.zone_2.Q_flow_heating']
 P.subplot(2,1,2)
-P.plot(t, y1, t, y2)
-P.legend(['building.zone_1.Q_flow_heating','building.zone_2.Q_flow_heating'])
+P.plot(t, y1)
+P.legend(['building.zone_1.Q_flow_heating'])
 P.ylabel('power (W)')
 P.xlabel('Time (s)')
 P.show()

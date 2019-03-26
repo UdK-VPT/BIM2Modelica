@@ -17,7 +17,7 @@ print(os.getcwd())
 
 # compile model to fmu
 from pymodelica import compile_fmu
-model_name = 'ModelicaModels.IFC2X3.UdKB_Test_Cases.MultiZoneBuilding'
+model_name = 'ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases.MultiZoneBuilding'
 my_fmu = compile_fmu(model_name, moLibs)
 
 # simulate the fmu and store results

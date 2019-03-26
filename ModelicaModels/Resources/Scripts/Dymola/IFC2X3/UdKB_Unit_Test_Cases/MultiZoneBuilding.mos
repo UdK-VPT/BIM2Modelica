@@ -1,4 +1,4 @@
-simulateModel("ModelicaModels.IFC2X3.UdKB_Test_Cases.MultiZoneBuilding", startTime = 0, stopTime=31536000, method="dassl", resultFile="MultiZoneBuilding");
+simulateModel("ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases.MultiZoneBuilding", startTime = 0, stopTime=31536000, method="dassl", resultFile="MultiZoneBuilding");
 removePlots();
 createPlot(
   id = 1,

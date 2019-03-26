@@ -1,13 +1,35 @@
-within ModelicaModels.IFC2X3.UdKB_Test_Cases;
+within ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases;
+/**************************************************************************************/
+// Automatically generated thermal building model by
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar 26 12:49:33 2019
+//
+// Used MODELICA_CODE_SWITCHES for code generation:
+// surTemOut = on: sets surface temperatures as an output of the building model
+// used value: off
+//
+// intHeaSou = on: sets internal heat sources for all thermal zones:
+// used value: on
+//
+// useAirPaths = on: uses air paths of windows and doors to calculate ventilation rates:
+// used value: off
+//
+// prescribedAirchange = on: defines ventilation rates for each thermal zone as
+// a prescribed air change rate:
+// used value: on
+//
+// calcIdealLoads = on: calculates the ideal heating and cooling loads for each
+// thermal zone for prescribed set temperatures:
+// used value: on
+/***************************************************************************************/
 model RooftopBuilding3ZonesThin
-  "Model of a building with its climate ambient"
+  "Model of a building with its climate environment"
   extends Modelica.Icons.Example;
 
   record Construction1
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
       nLayers=1,
       thickness={
-        0.160
+        0.16
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()
@@ -17,7 +39,7 @@ model RooftopBuilding3ZonesThin
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
       nLayers=1,
       thickness={
-        0.320
+        0.32
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()
@@ -27,7 +49,7 @@ model RooftopBuilding3ZonesThin
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
       nLayers=1,
       thickness={
-        0.100
+        0.1
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()
@@ -47,7 +69,7 @@ model RooftopBuilding3ZonesThin
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
       nLayers=1,
       thickness={
-        0.270
+        0.27
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()
@@ -77,7 +99,7 @@ model RooftopBuilding3ZonesThin
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
       nLayers=1,
       thickness={
-        0.250
+        0.25
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()
@@ -87,7 +109,7 @@ model RooftopBuilding3ZonesThin
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
       nLayers=1,
       thickness={
-        0.30
+        0.03
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()
@@ -137,7 +159,7 @@ model RooftopBuilding3ZonesThin
     extends BuildingSystems.Buildings.Data.Constructions.OpaqueThermalConstruction(
       nLayers=1,
       thickness={
-        0.350
+        0.35
       },
       material={
         BuildingSystems.HAM.Data.MaterialProperties.Thermal.Masea.Concrete()
@@ -148,64 +170,75 @@ model RooftopBuilding3ZonesThin
     "Automatically generated multi-zone building model"
     extends BuildingSystems.Buildings.BaseClasses.BuildingTemplate(
     nZones = 7,
-    surfacesToAmbient(nSurfaces = 41),
+    surfacesToAmbient(nSurfaces = 40),
     nSurfacesSolid = 0,
     surfacesToSolids(nSurfaces = nSurfacesSolid),
-    convectionOnSurfaces = BuildingSystems.HAM.ConvectiveHeatTransfer.Types.Convection.forced,
     useAirPaths = false,
+    calcIdealLoads = true,
+    prescribedAirchange = true,
     heatSources = true,
-    nHeatSources = 7);
+    nHeatSources = 7,
+    convectionOnSurfaces = BuildingSystems.HAM.ConvectiveHeatTransfer.Types.Convection.forced);
 
+    // Thermal zones
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_1(
       V=36.54874911706399,
-      height=3.0,
-      //nConstructions=22,
-      nConstructions=18,
-      heatSources=true,
-      nHeatSources=1);
+      nConstructions = 18,
+      calcIdealLoads = true,
+      prescribedAirchange = true,
+      heatSources = true,
+      nHeatSources = 1,
+      height=3.0);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_2(
       V=35.09808750210856,
-      height=3.0,
-      //nConstructions=18,
-      nConstructions=13,
-      heatSources=true,
-      nHeatSources=1);
+      nConstructions = 13,
+      calcIdealLoads = true,
+      prescribedAirchange = true,
+      heatSources = true,
+      nHeatSources = 1,
+      height=3.0);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_3(
       V=36.874553999999996,
-      height=3.0,
-      //nConstructions=10,
-      nConstructions=8,
-      heatSources=true,
-      nHeatSources=1);
+      nConstructions = 8,
+      calcIdealLoads = true,
+      prescribedAirchange = true,
+      heatSources = true,
+      nHeatSources = 1,
+      height=3.0);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_4(
       V=19.730265000000003,
-      height=3.0,
-      //nConstructions=10,
-      nConstructions=7,
-      heatSources=true,
-      nHeatSources=1);
+      nConstructions = 7,
+      calcIdealLoads = true,
+      prescribedAirchange = true,
+      heatSources = true,
+      nHeatSources = 1,
+      height=3.0);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_5(
       V=11.34642,
-      height=3.0,
-      //nConstructions=12,
-      nConstructions=11,
-      heatSources=true,
-      nHeatSources=1);
+      nConstructions = 10,
+      calcIdealLoads = true,
+      prescribedAirchange = true,
+      heatSources = true,
+      nHeatSources = 1,
+      height=3.0);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_6(
       V=8.257824,
-      height=3.0,
-      //nConstructions=12,
-      nConstructions=11,
-      heatSources=true,
-      nHeatSources=1);
+      nConstructions = 11,
+      calcIdealLoads = true,
+      prescribedAirchange = true,
+      heatSources = true,
+      nHeatSources = 1,
+      height=3.0);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_7(
       V=4.49466875,
-      height=3.0,
-      //nConstructions=9,
-      nConstructions=7,
-      heatSources=true,
-      nHeatSources=1);
+      nConstructions = 7,
+      calcIdealLoads = true,
+      prescribedAirchange = true,
+      heatSources = true,
+      nHeatSources = 1,
+      height=3.0);
 
+    // Opaque construction elements
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_1(
       redeclare Construction4 constructionData,
       angleDegAzi = 90.0,
@@ -240,7 +273,7 @@ model RooftopBuilding3ZonesThin
       angleDegTil = 90.0,
       AInnSur = 0.0,
       height = 2.675,
-      width = 0.10000000000000014);
+      width = 0.09999999999999977);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_6(
       redeclare Construction9 constructionData,
       angleDegAzi = 180.0,
@@ -550,27 +583,20 @@ model RooftopBuilding3ZonesThin
       height = 2.675,
       width = 0.050000000000000266);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_25(
-      redeclare Construction10 constructionData,
-      angleDegAzi = 90.0,
-      angleDegTil = 90.0,
-      AInnSur = 0.0,
-      height = 0.015000000000000013,
-      width = 0.6200000000000001);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_26(
       redeclare Construction13 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
       AInnSur = 0.0,
       height = 1.65,
       width = 1.77);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_27(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_26(
       redeclare Construction13 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
       AInnSur = 0.0,
       height = 0.5700000000000003,
       width = 1.9);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_28(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_27(
       redeclare Construction13 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
@@ -584,28 +610,28 @@ model RooftopBuilding3ZonesThin
       AInnSur = 0.0,
       height = 2.675,
       width = 2.385);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_29(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_28(
       redeclare Construction11 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
       AInnSur = -0.0,
       height = 0.7799999999999998,
       width = 2.2199999999999998);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_30(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_29(
       redeclare Construction11 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
       AInnSur = 0.0,
       height = 0.16500000000000004,
       width = 0.7799999999999998);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_31(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_30(
       redeclare Construction11 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
       AInnSur = 0.0,
       height = 0.5,
       width = 2.385);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_32(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_31(
       redeclare Construction10 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
@@ -613,8 +639,13 @@ model RooftopBuilding3ZonesThin
       height = 0.6499999999999999,
       width = 2.585);
 
+    // Transparent construction elements
+
+    // Door elements
+
   equation
-    // connections between construction elements and zones
+
+    // connections between construction elements and thermal zones
     connect(wall_1.toSurfacePort_1, zone_1.toConstructionPorts[1]);
     connect(wall_2.toSurfacePort_1, zone_1.toConstructionPorts[2]);
     connect(wall_3.toSurfacePort_1, zone_1.toConstructionPorts[3]);
@@ -641,16 +672,16 @@ model RooftopBuilding3ZonesThin
     connect(wall_18.toSurfacePort_2, zone_6.toConstructionPorts[6]);
     connect(wall_23.toSurfacePort_2, zone_6.toConstructionPorts[7]);
     connect(wall_26.toSurfacePort_1, zone_6.toConstructionPorts[8]);
-    connect(slab_29.toSurfacePort_1, zone_6.toConstructionPorts[9]);
-    connect(slab_30.toSurfacePort_1, zone_6.toConstructionPorts[10]);
-    connect(slab_31.toSurfacePort_1, zone_6.toConstructionPorts[11]);
+    connect(slab_28.toSurfacePort_1, zone_6.toConstructionPorts[9]);
+    connect(slab_29.toSurfacePort_1, zone_6.toConstructionPorts[10]);
+    connect(slab_30.toSurfacePort_1, zone_6.toConstructionPorts[11]);
     connect(wall_5.toSurfacePort_2, zone_7.toConstructionPorts[1]);
     connect(wall_17.toSurfacePort_2, zone_7.toConstructionPorts[2]);
     connect(wall_19.toSurfacePort_2, zone_7.toConstructionPorts[3]);
     connect(wall_24.toSurfacePort_2, zone_7.toConstructionPorts[4]);
     connect(wall_25.toSurfacePort_2, zone_7.toConstructionPorts[5]);
     connect(wall_26.toSurfacePort_2, zone_7.toConstructionPorts[6]);
-    connect(slab_32.toSurfacePort_1, zone_7.toConstructionPorts[7]);
+    connect(slab_31.toSurfacePort_1, zone_7.toConstructionPorts[7]);
     connect(wall_6.toSurfacePort_2, zone_5.toConstructionPorts[1]);
     connect(wall_15.toSurfacePort_2, zone_5.toConstructionPorts[2]);
     connect(wall_21.toSurfacePort_2, zone_5.toConstructionPorts[3]);
@@ -661,7 +692,6 @@ model RooftopBuilding3ZonesThin
     connect(slab_25.toSurfacePort_1, zone_5.toConstructionPorts[8]);
     connect(slab_26.toSurfacePort_1, zone_5.toConstructionPorts[9]);
     connect(slab_27.toSurfacePort_1, zone_5.toConstructionPorts[10]);
-    connect(slab_28.toSurfacePort_1, zone_5.toConstructionPorts[11]);
     connect(wall_11.toSurfacePort_1, zone_2.toConstructionPorts[1]);
     connect(wall_12.toSurfacePort_1, zone_2.toConstructionPorts[2]);
     connect(wall_13.toSurfacePort_1, zone_2.toConstructionPorts[3]);
@@ -690,7 +720,8 @@ model RooftopBuilding3ZonesThin
     connect(slab_22.toSurfacePort_1, zone_4.toConstructionPorts[5]);
     connect(slab_23.toSurfacePort_1, zone_4.toConstructionPorts[6]);
     connect(slab_24.toSurfacePort_1, zone_4.toConstructionPorts[7]);
-    // connections between construction elements and ambient
+
+    // connections between construction elements and environment
     connect(wall_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[1]);
     connect(wall_4.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[2]);
     connect(wall_10.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[3]);
@@ -731,9 +762,8 @@ model RooftopBuilding3ZonesThin
     connect(slab_29.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[38]);
     connect(slab_30.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[39]);
     connect(slab_31.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[40]);
-    connect(slab_32.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[41]);
-    // connections between construction elements and ground
-  // Heating set temperature of each thermal zones
+
+    // Heating set temperature of each thermal zones
     connect(zone_1.T_setHeating, T_setHeating[1]);
     connect(zone_2.T_setHeating, T_setHeating[2]);
     connect(zone_3.T_setHeating, T_setHeating[3]);
@@ -741,7 +771,8 @@ model RooftopBuilding3ZonesThin
     connect(zone_5.T_setHeating, T_setHeating[5]);
     connect(zone_6.T_setHeating, T_setHeating[6]);
     connect(zone_7.T_setHeating, T_setHeating[7]);
-  // Cooling set temperatures of each thermal zones
+
+    // Cooling set temperatures of each thermal zones
     connect(zone_1.T_setCooling, T_setCooling[1]);
     connect(zone_2.T_setCooling, T_setCooling[2]);
     connect(zone_3.T_setCooling, T_setCooling[3]);
@@ -749,31 +780,8 @@ model RooftopBuilding3ZonesThin
     connect(zone_5.T_setCooling, T_setCooling[5]);
     connect(zone_6.T_setCooling, T_setCooling[6]);
     connect(zone_7.T_setCooling, T_setCooling[7]);
-  // airchange rates of each thermal zones
-    connect(zone_1.airchange, airchange[1]);
-    connect(zone_2.airchange, airchange[2]);
-    connect(zone_3.airchange, airchange[3]);
-    connect(zone_4.airchange, airchange[4]);
-    connect(zone_5.airchange, airchange[5]);
-    connect(zone_6.airchange, airchange[6]);
-    connect(zone_7.airchange, airchange[7]);
-  // ambient temperature of each thermal zones
-    connect(zone_1.TAirAmb, TAirAmb);
-    connect(zone_2.TAirAmb, TAirAmb);
-    connect(zone_3.TAirAmb, TAirAmb);
-    connect(zone_4.TAirAmb, TAirAmb);
-    connect(zone_5.TAirAmb, TAirAmb);
-    connect(zone_6.TAirAmb, TAirAmb);
-    connect(zone_7.TAirAmb, TAirAmb);
-  // ambient moisture of each thermal zones
-    connect(zone_1.xAirAmb, xAirAmb);
-    connect(zone_2.xAirAmb, xAirAmb);
-    connect(zone_3.xAirAmb, xAirAmb);
-    connect(zone_4.xAirAmb, xAirAmb);
-    connect(zone_5.xAirAmb, xAirAmb);
-    connect(zone_6.xAirAmb, xAirAmb);
-    connect(zone_7.xAirAmb, xAirAmb);
-  // Cooling load of each thermal zones
+
+    // Cooling load of each thermal zones
     connect(zone_1.Q_flow_cooling, Q_flow_cooling[1]);
     connect(zone_2.Q_flow_cooling, Q_flow_cooling[2]);
     connect(zone_3.Q_flow_cooling, Q_flow_cooling[3]);
@@ -781,7 +789,8 @@ model RooftopBuilding3ZonesThin
     connect(zone_5.Q_flow_cooling, Q_flow_cooling[5]);
     connect(zone_6.Q_flow_cooling, Q_flow_cooling[6]);
     connect(zone_7.Q_flow_cooling, Q_flow_cooling[7]);
-  // Heating load of each thermal zones
+
+    // Heating load of each thermal zones
     connect(zone_1.Q_flow_heating, Q_flow_heating[1]);
     connect(zone_2.Q_flow_heating, Q_flow_heating[2]);
     connect(zone_3.Q_flow_heating, Q_flow_heating[3]);
@@ -789,7 +798,34 @@ model RooftopBuilding3ZonesThin
     connect(zone_5.Q_flow_heating, Q_flow_heating[5]);
     connect(zone_6.Q_flow_heating, Q_flow_heating[6]);
     connect(zone_7.Q_flow_heating, Q_flow_heating[7]);
-  // Radiative heating source of each thermal zones
+
+    // airchange rates of each thermal zones
+    connect(zone_1.airchange, airchange[1]);
+    connect(zone_2.airchange, airchange[2]);
+    connect(zone_3.airchange, airchange[3]);
+    connect(zone_4.airchange, airchange[4]);
+    connect(zone_5.airchange, airchange[5]);
+    connect(zone_6.airchange, airchange[6]);
+    connect(zone_7.airchange, airchange[7]);
+
+    // ambient temperature of each thermal zones
+    connect(zone_1.TAirAmb, TAirAmb);
+    connect(zone_2.TAirAmb, TAirAmb);
+    connect(zone_3.TAirAmb, TAirAmb);
+    connect(zone_4.TAirAmb, TAirAmb);
+    connect(zone_5.TAirAmb, TAirAmb);
+    connect(zone_6.TAirAmb, TAirAmb);
+    connect(zone_7.TAirAmb, TAirAmb);
+
+    // ambient moisture of each thermal zones
+    connect(zone_1.xAirAmb, xAirAmb);
+    connect(zone_2.xAirAmb, xAirAmb);
+    connect(zone_3.xAirAmb, xAirAmb);
+    connect(zone_4.xAirAmb, xAirAmb);
+    connect(zone_5.xAirAmb, xAirAmb);
+    connect(zone_6.xAirAmb, xAirAmb);
+    connect(zone_7.xAirAmb, xAirAmb);
+    // Radiative heating source of each thermal zones
     connect(zone_1.radHeatSourcesPorts[1], radHeatSourcesPorts[1]);
     connect(zone_2.radHeatSourcesPorts[1], radHeatSourcesPorts[2]);
     connect(zone_3.radHeatSourcesPorts[1], radHeatSourcesPorts[3]);
@@ -797,7 +833,8 @@ model RooftopBuilding3ZonesThin
     connect(zone_5.radHeatSourcesPorts[1], radHeatSourcesPorts[5]);
     connect(zone_6.radHeatSourcesPorts[1], radHeatSourcesPorts[6]);
     connect(zone_7.radHeatSourcesPorts[1], radHeatSourcesPorts[7]);
-  // Convective heating source of each thermal zones
+
+    // Convective heating source of each thermal zones
     connect(zone_1.conHeatSourcesPorts[1], conHeatSourcesPorts[1]);
     connect(zone_2.conHeatSourcesPorts[1], conHeatSourcesPorts[2]);
     connect(zone_3.conHeatSourcesPorts[1], conHeatSourcesPorts[3]);
@@ -811,90 +848,188 @@ model RooftopBuilding3ZonesThin
     nZones = 7)
     annotation (Placement(transformation(extent={{10,-10},{30,10}})));
 
-  BuildingSystems.Buildings.Ambient ambient(
+  BuildingSystems.Buildings.Ambient environment(
     nSurfaces = building.nSurfacesAmbient,
     redeclare block WeatherData = BuildingSystems.Climate.WeatherDataMeteonorm.Germany_Berlin_Meteonorm_ASCII)
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
+
     // Heating set temperature of the thermal zones
-    Modelica.Blocks.Sources.Constant TSetHeating_zone_1(k=273.15 + 20.0);
-    Modelica.Blocks.Sources.Constant TSetHeating_zone_2(k=273.15 + 20.0);
-    Modelica.Blocks.Sources.Constant TSetHeating_zone_3(k=273.15 + 20.0);
-    Modelica.Blocks.Sources.Constant TSetHeating_zone_4(k=273.15 + 20.0);
-    Modelica.Blocks.Sources.Constant TSetHeating_zone_5(k=273.15 + 20.0);
-    Modelica.Blocks.Sources.Constant TSetHeating_zone_6(k=273.15 + 20.0);
-    Modelica.Blocks.Sources.Constant TSetHeating_zone_7(k=273.15 + 20.0);
+    Modelica.Blocks.Sources.Constant TSetHeating_zone_1(
+      k=273.15 + 20.0)
+      annotation (Placement(transformation(extent={{58,16},{50,24}})));
+    Modelica.Blocks.Sources.Constant TSetHeating_zone_2(
+      k=273.15 + 20.0)
+      annotation (Placement(transformation(extent={{58,16},{50,24}})));
+    Modelica.Blocks.Sources.Constant TSetHeating_zone_3(
+      k=273.15 + 20.0)
+      annotation (Placement(transformation(extent={{58,16},{50,24}})));
+    Modelica.Blocks.Sources.Constant TSetHeating_zone_4(
+      k=273.15 + 20.0)
+      annotation (Placement(transformation(extent={{58,16},{50,24}})));
+    Modelica.Blocks.Sources.Constant TSetHeating_zone_5(
+      k=273.15 + 20.0)
+      annotation (Placement(transformation(extent={{58,16},{50,24}})));
+    Modelica.Blocks.Sources.Constant TSetHeating_zone_6(
+      k=273.15 + 20.0)
+      annotation (Placement(transformation(extent={{58,16},{50,24}})));
+    Modelica.Blocks.Sources.Constant TSetHeating_zone_7(
+      k=273.15 + 20.0)
+      annotation (Placement(transformation(extent={{58,16},{50,24}})));
+
     // Cooling set temperature of each thermal zones
-    Modelica.Blocks.Sources.Constant TSetCooling_zone_1(k=273.15 + 24.0);
-    Modelica.Blocks.Sources.Constant TSetCooling_zone_2(k=273.15 + 24.0);
-    Modelica.Blocks.Sources.Constant TSetCooling_zone_3(k=273.15 + 24.0);
-    Modelica.Blocks.Sources.Constant TSetCooling_zone_4(k=273.15 + 24.0);
-    Modelica.Blocks.Sources.Constant TSetCooling_zone_5(k=273.15 + 24.0);
-    Modelica.Blocks.Sources.Constant TSetCooling_zone_6(k=273.15 + 24.0);
-    Modelica.Blocks.Sources.Constant TSetCooling_zone_7(k=273.15 + 24.0);
+    Modelica.Blocks.Sources.Constant TSetCooling_zone_1(
+      k=273.15 + 24.0)
+      annotation (Placement(transformation(extent={{58,2},{50,10}})));
+    Modelica.Blocks.Sources.Constant TSetCooling_zone_2(
+      k=273.15 + 24.0)
+      annotation (Placement(transformation(extent={{58,2},{50,10}})));
+    Modelica.Blocks.Sources.Constant TSetCooling_zone_3(
+      k=273.15 + 24.0)
+      annotation (Placement(transformation(extent={{58,2},{50,10}})));
+    Modelica.Blocks.Sources.Constant TSetCooling_zone_4(
+      k=273.15 + 24.0)
+      annotation (Placement(transformation(extent={{58,2},{50,10}})));
+    Modelica.Blocks.Sources.Constant TSetCooling_zone_5(
+      k=273.15 + 24.0)
+      annotation (Placement(transformation(extent={{58,2},{50,10}})));
+    Modelica.Blocks.Sources.Constant TSetCooling_zone_6(
+      k=273.15 + 24.0)
+      annotation (Placement(transformation(extent={{58,2},{50,10}})));
+    Modelica.Blocks.Sources.Constant TSetCooling_zone_7(
+      k=273.15 + 24.0)
+      annotation (Placement(transformation(extent={{58,2},{50,10}})));
     // Air change rate of each thermal zones
-    Modelica.Blocks.Sources.Constant airchange_zone_1(k=0.5);
-    Modelica.Blocks.Sources.Constant airchange_zone_2(k=0.5);
-    Modelica.Blocks.Sources.Constant airchange_zone_3(k=0.5);
-    Modelica.Blocks.Sources.Constant airchange_zone_4(k=0.5);
-    Modelica.Blocks.Sources.Constant airchange_zone_5(k=0.5);
-    Modelica.Blocks.Sources.Constant airchange_zone_6(k=0.5);
-    Modelica.Blocks.Sources.Constant airchange_zone_7(k=0.5);
+    Modelica.Blocks.Sources.Constant airchange_zone_1(
+      k=0.5)
+    annotation (Placement(transformation(extent={{58,-14},{50,-6}})));
+    Modelica.Blocks.Sources.Constant airchange_zone_2(
+      k=0.5)
+    annotation (Placement(transformation(extent={{58,-14},{50,-6}})));
+    Modelica.Blocks.Sources.Constant airchange_zone_3(
+      k=0.5)
+    annotation (Placement(transformation(extent={{58,-14},{50,-6}})));
+    Modelica.Blocks.Sources.Constant airchange_zone_4(
+      k=0.5)
+    annotation (Placement(transformation(extent={{58,-14},{50,-6}})));
+    Modelica.Blocks.Sources.Constant airchange_zone_5(
+      k=0.5)
+    annotation (Placement(transformation(extent={{58,-14},{50,-6}})));
+    Modelica.Blocks.Sources.Constant airchange_zone_6(
+      k=0.5)
+    annotation (Placement(transformation(extent={{58,-14},{50,-6}})));
+    Modelica.Blocks.Sources.Constant airchange_zone_7(
+      k=0.5)
+    annotation (Placement(transformation(extent={{58,-14},{50,-6}})));
+
     // Heating source of each thermal zones
-    Modelica.Blocks.Sources.Constant heatsources_zone_1(k=0.0);
-    Modelica.Blocks.Sources.Constant heatsources_zone_2(k=0.0);
-    Modelica.Blocks.Sources.Constant heatsources_zone_3(k=0.0);
-    Modelica.Blocks.Sources.Constant heatsources_zone_4(k=0.0);
-    Modelica.Blocks.Sources.Constant heatsources_zone_5(k=0.0);
-    Modelica.Blocks.Sources.Constant heatsources_zone_6(k=0.0);
-    Modelica.Blocks.Sources.Constant heatsources_zone_7(k=0.0);
-    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heatFlow[7];
-    BuildingSystems.Buildings.BaseClasses.RelationRadiationConvection relationRadiationConvection[7](each radiationportion = 0.5);
+    Modelica.Blocks.Sources.Constant heatsources_zone_1(
+      k=0.0)
+      annotation (Placement(transformation(extent={{44,22},{36,30}})));
+    Modelica.Blocks.Sources.Constant heatsources_zone_2(
+      k=0.0)
+      annotation (Placement(transformation(extent={{44,22},{36,30}})));
+    Modelica.Blocks.Sources.Constant heatsources_zone_3(
+      k=0.0)
+      annotation (Placement(transformation(extent={{44,22},{36,30}})));
+    Modelica.Blocks.Sources.Constant heatsources_zone_4(
+      k=0.0)
+      annotation (Placement(transformation(extent={{44,22},{36,30}})));
+    Modelica.Blocks.Sources.Constant heatsources_zone_5(
+      k=0.0)
+      annotation (Placement(transformation(extent={{44,22},{36,30}})));
+    Modelica.Blocks.Sources.Constant heatsources_zone_6(
+      k=0.0)
+      annotation (Placement(transformation(extent={{44,22},{36,30}})));
+    Modelica.Blocks.Sources.Constant heatsources_zone_7(
+      k=0.0)
+      annotation (Placement(transformation(extent={{44,22},{36,30}})));
+    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heatFlow[7]
+      annotation (Placement(transformation(extent={{32,22},{24,30}})));
+    BuildingSystems.Buildings.BaseClasses.RelationRadiationConvection relationRadiationConvection[7](
+      each radiationportion = 0.5)
+      annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation=-90,origin={21,21})));
   equation
-    connect(ambient.toSurfacePorts, building.toAmbientSurfacesPorts)
+    // building constructions to the environment
+    connect(environment.toSurfacePorts, building.toAmbientSurfacesPorts)
       annotation (Line(points={{-12,4},{11,4}},color={0,255,0},smooth=Smooth.None));
-    connect(ambient.toAirPorts, building.toAmbientAirPorts)
+    connect(environment.toAirPorts, building.toAmbientAirPorts)
       annotation (Line(points={{-12,-4},{11,-4}},color={85,170,255},smooth=Smooth.None));
-    connect(ambient.TAirRef, building.TAirAmb)
+    connect(environment.TAirRef, building.TAirAmb)
       annotation (Line(points={{-28.2,7},{-30,7},{-30,12},{-30,14},{26.2,14},{26.2,9.8}}, color={0,0,127}));
-    connect(ambient.xAir, building.xAirAmb)
+    connect(environment.xAir, building.xAirAmb)
       annotation (Line(points={{-28.2,5},{-32,5},{-32,16},{28.4,16},{28.4,9.8}}, color={0,0,127}));
-    // Heating set temperature of each thermal zones
-    connect(TSetHeating_zone_1.y, building.T_setHeating[1]);
-    connect(TSetHeating_zone_2.y, building.T_setHeating[2]);
-    connect(TSetHeating_zone_3.y, building.T_setHeating[3]);
-    connect(TSetHeating_zone_4.y, building.T_setHeating[4]);
-    connect(TSetHeating_zone_5.y, building.T_setHeating[5]);
-    connect(TSetHeating_zone_6.y, building.T_setHeating[6]);
-    connect(TSetHeating_zone_7.y, building.T_setHeating[7]);
-    // Cooling set temperature of each thermal zones
-    connect(TSetCooling_zone_1.y, building.T_setCooling[1]);
-    connect(TSetCooling_zone_2.y, building.T_setCooling[2]);
-    connect(TSetCooling_zone_3.y, building.T_setCooling[3]);
-    connect(TSetCooling_zone_4.y, building.T_setCooling[4]);
-    connect(TSetCooling_zone_5.y, building.T_setCooling[5]);
-    connect(TSetCooling_zone_6.y, building.T_setCooling[6]);
-    connect(TSetCooling_zone_7.y, building.T_setCooling[7]);
+
     // Air change rate of each thermal zones
-    connect(airchange_zone_1.y, building.airchange[1]);
-    connect(airchange_zone_2.y, building.airchange[2]);
-    connect(airchange_zone_3.y, building.airchange[3]);
-    connect(airchange_zone_4.y, building.airchange[4]);
-    connect(airchange_zone_5.y, building.airchange[5]);
-    connect(airchange_zone_6.y, building.airchange[6]);
-    connect(airchange_zone_7.y, building.airchange[7]);
+    connect(airchange_zone_1.y, building.airchange[1])
+      annotation (Line(points={{29.8,3.5},{44,3.5},{44,-10},{49.6,-10}}, color={0,0,127}));
+    connect(airchange_zone_2.y, building.airchange[2])
+      annotation (Line(points={{29.8,3.5},{44,3.5},{44,-10},{49.6,-10}}, color={0,0,127}));
+    connect(airchange_zone_3.y, building.airchange[3])
+      annotation (Line(points={{29.8,3.5},{44,3.5},{44,-10},{49.6,-10}}, color={0,0,127}));
+    connect(airchange_zone_4.y, building.airchange[4])
+      annotation (Line(points={{29.8,3.5},{44,3.5},{44,-10},{49.6,-10}}, color={0,0,127}));
+    connect(airchange_zone_5.y, building.airchange[5])
+      annotation (Line(points={{29.8,3.5},{44,3.5},{44,-10},{49.6,-10}}, color={0,0,127}));
+    connect(airchange_zone_6.y, building.airchange[6])
+      annotation (Line(points={{29.8,3.5},{44,3.5},{44,-10},{49.6,-10}}, color={0,0,127}));
+    connect(airchange_zone_7.y, building.airchange[7])
+      annotation (Line(points={{29.8,3.5},{44,3.5},{44,-10},{49.6,-10}}, color={0,0,127}));
+
+    // Heating set temperature of each thermal zones
+    connect(TSetHeating_zone_1.y, building.T_setHeating[1])
+      annotation (Line(points={{29.8,7.5},{44,7.5},{44,20},{49.6,20}}, color={0,0,127}));
+    connect(TSetHeating_zone_2.y, building.T_setHeating[2])
+      annotation (Line(points={{29.8,7.5},{44,7.5},{44,20},{49.6,20}}, color={0,0,127}));
+    connect(TSetHeating_zone_3.y, building.T_setHeating[3])
+      annotation (Line(points={{29.8,7.5},{44,7.5},{44,20},{49.6,20}}, color={0,0,127}));
+    connect(TSetHeating_zone_4.y, building.T_setHeating[4])
+      annotation (Line(points={{29.8,7.5},{44,7.5},{44,20},{49.6,20}}, color={0,0,127}));
+    connect(TSetHeating_zone_5.y, building.T_setHeating[5])
+      annotation (Line(points={{29.8,7.5},{44,7.5},{44,20},{49.6,20}}, color={0,0,127}));
+    connect(TSetHeating_zone_6.y, building.T_setHeating[6])
+      annotation (Line(points={{29.8,7.5},{44,7.5},{44,20},{49.6,20}}, color={0,0,127}));
+    connect(TSetHeating_zone_7.y, building.T_setHeating[7])
+      annotation (Line(points={{29.8,7.5},{44,7.5},{44,20},{49.6,20}}, color={0,0,127}));
+
+    // Cooling set temperature of each thermal zones
+    connect(TSetCooling_zone_1.y, building.T_setCooling[1])
+      annotation (Line(points={{29.8,5.5},{39.6,5.5},{39.6,6},{49.6,6}}, color={0,0,127}));
+    connect(TSetCooling_zone_2.y, building.T_setCooling[2])
+      annotation (Line(points={{29.8,5.5},{39.6,5.5},{39.6,6},{49.6,6}}, color={0,0,127}));
+    connect(TSetCooling_zone_3.y, building.T_setCooling[3])
+      annotation (Line(points={{29.8,5.5},{39.6,5.5},{39.6,6},{49.6,6}}, color={0,0,127}));
+    connect(TSetCooling_zone_4.y, building.T_setCooling[4])
+      annotation (Line(points={{29.8,5.5},{39.6,5.5},{39.6,6},{49.6,6}}, color={0,0,127}));
+    connect(TSetCooling_zone_5.y, building.T_setCooling[5])
+      annotation (Line(points={{29.8,5.5},{39.6,5.5},{39.6,6},{49.6,6}}, color={0,0,127}));
+    connect(TSetCooling_zone_6.y, building.T_setCooling[6])
+      annotation (Line(points={{29.8,5.5},{39.6,5.5},{39.6,6},{49.6,6}}, color={0,0,127}));
+    connect(TSetCooling_zone_7.y, building.T_setCooling[7])
+      annotation (Line(points={{29.8,5.5},{39.6,5.5},{39.6,6},{49.6,6}}, color={0,0,127}));
+
     // Heating source of each thermal zones
-    connect(heatsources_zone_1.y, heatFlow[1].Q_flow);
-    connect(heatsources_zone_2.y, heatFlow[2].Q_flow);
-    connect(heatsources_zone_3.y, heatFlow[3].Q_flow);
-    connect(heatsources_zone_4.y, heatFlow[4].Q_flow);
-    connect(heatsources_zone_5.y, heatFlow[5].Q_flow);
-    connect(heatsources_zone_6.y, heatFlow[6].Q_flow);
-    connect(heatsources_zone_7.y, heatFlow[7].Q_flow);
-    connect(relationRadiationConvection.heatPort, heatFlow.port);
-    connect(relationRadiationConvection.heatPortCv, building.conHeatSourcesPorts[1:7]);
-    connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:7]);
+    connect(heatsources_zone_1.y, heatFlow[1].Q_flow)
+      annotation (Line(points={{32,26},{35.6,26}}, color={0,0,127}));
+    connect(heatsources_zone_2.y, heatFlow[2].Q_flow)
+      annotation (Line(points={{32,26},{35.6,26}}, color={0,0,127}));
+    connect(heatsources_zone_3.y, heatFlow[3].Q_flow)
+      annotation (Line(points={{32,26},{35.6,26}}, color={0,0,127}));
+    connect(heatsources_zone_4.y, heatFlow[4].Q_flow)
+      annotation (Line(points={{32,26},{35.6,26}}, color={0,0,127}));
+    connect(heatsources_zone_5.y, heatFlow[5].Q_flow)
+      annotation (Line(points={{32,26},{35.6,26}}, color={0,0,127}));
+    connect(heatsources_zone_6.y, heatFlow[6].Q_flow)
+      annotation (Line(points={{32,26},{35.6,26}}, color={0,0,127}));
+    connect(heatsources_zone_7.y, heatFlow[7].Q_flow)
+      annotation (Line(points={{32,26},{35.6,26}}, color={0,0,127}));
+    connect(relationRadiationConvection.heatPort, heatFlow.port)
+      annotation (Line(points={{21,22.5},{21,26},{24,26}}, color={191,0,0}));
+    connect(relationRadiationConvection.heatPortCv, building.conHeatSourcesPorts[1:7])
+      annotation (Line(points={{22,19},{22,10.5}}, color={191,0,0}));
+    connect(relationRadiationConvection.heatPortLw, building.radHeatSourcesPorts[1:7])
+      annotation (Line(points={{20,19},{20,10.5}}, color={191,0,0}));
 
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
+    __Dymola_Commands(file="modelica://ModelicaModels/Resources/Scripts/Dymola/IFC2X3/UdKB_Unit_Test_Cases/RooftopBuilding3ZonesThin.mos" "Simulate and plot"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
-
   end RooftopBuilding3ZonesThin;
