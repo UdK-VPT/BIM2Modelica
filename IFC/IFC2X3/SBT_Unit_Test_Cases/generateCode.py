@@ -18,7 +18,6 @@ con = Controller()
 gen = con.generators['IFC_MultiZoneBuildings_Modelica::0.2']
 
 # ... und ausführen. Argumente: Liste von Inputs, Output(-präfix)
-# sollte auch mehrfach in einer Schleife funktionieren :-)
 files = [
 ('AWS-1_SB.ifc','AWS1_SB'),
 ('AWS-2_SB.ifc','AWS2_SB'),
@@ -54,7 +53,6 @@ files = [
 ('Wi-6_SB.ifc','Wi6_SB'),
 ('Wi-7_SB.ifc','Wi7_SB'),
 ('Wi-9_SB.ifc','Wi9_SB'),
-('WW-3_SB.ifc','WW3_SB')]       
+('WW-3_SB.ifc','WW3_SB')]
 for f in files:
     gen.execute(('../'+f[0], ), f[1])
-

@@ -18,7 +18,6 @@ con = Controller()
 gen = con.generators['IFC_MultiZoneBuildings_Modelica::0.2']
 
 # ... und ausführen. Argumente: Liste von Inputs, Output(-präfix)
-# sollte auch mehrfach in einer Schleife funktionieren :-)
 files = [
 ('OneZone.ifc','OneZone'),
 ('TwoZones.ifc','TwoZones'),
