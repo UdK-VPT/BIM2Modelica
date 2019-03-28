@@ -10,3 +10,7 @@
 	path = BuildingSystems
 	url = https://github.com/UdK-VPT/BuildingSystems.git
 	branch = master
+[submodule "Buildings"]
+	path = Buildings
+	url = https://github.com/lbl-srg/modelica-buildings.git
+	branch = master
