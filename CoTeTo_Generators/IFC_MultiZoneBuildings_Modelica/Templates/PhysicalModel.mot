@@ -10,7 +10,7 @@ within;
 % endif
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on ${systemCfg['timestamp']()}
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model

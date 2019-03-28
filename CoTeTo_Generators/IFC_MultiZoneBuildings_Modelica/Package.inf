@@ -32,7 +32,7 @@ calcIdealLoads = on
 
 [MODELICA_LIBPATHS]
 # Use of a libray path for the within statement: libPath = on
-libPath = off
+libPath = on
 # Library pathes
 ModelicaLibPath = ModelicaModels.IFC2X3.UdKB_Test_Cases
 #ModelicaLibPath = ModelicaModels.IFC2X3.SBT_Test_Cases
@@ -41,6 +41,11 @@ ModelicaLibPath = ModelicaModels.IFC2X3.UdKB_Test_Cases
 topFile = PhysicalModel.mot
 type = mako
 ext = .mo
+
+[TEMPLATE_MODELICA_BUILDINGSLIB]
+topFile = PhysicalModel_BuildingsLib.mot
+type = mako
+ext = _BuildingsLib.mo
 
 [TEMPLATE_UNITY_STATE_VARIABLES]
 topFile = StateVariables.unt
