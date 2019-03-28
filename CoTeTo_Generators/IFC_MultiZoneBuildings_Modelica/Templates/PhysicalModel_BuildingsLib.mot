@@ -45,17 +45,17 @@ model ${data['buildingSystem'].name}_BuildingsLib
 
   parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic matLayRoo(
     material={
-      HeatTransfer.Data.Solids.InsulationBoard(x=0.2),
-      HeatTransfer.Data.Solids.Concrete(x=0.2)},
+      Buildings.HeatTransfer.Data.Solids.InsulationBoard(x=0.2),
+      Buildings.HeatTransfer.Data.Solids.Concrete(x=0.2)},
       final nLay=2)
     "Construction material for roof"
     annotation (Placement(transformation(extent={{20,140},{40,160}})));
 
   parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic matLayFlo(
     material={
-      HeatTransfer.Data.Solids.Concrete(x=0.2),
-      HeatTransfer.Data.Solids.InsulationBoard(x=0.15),
-      HeatTransfer.Data.Solids.Concrete(x=0.05)},
+      Buildings.HeatTransfer.Data.Solids.Concrete(x=0.2),
+      Buildings.HeatTransfer.Data.Solids.InsulationBoard(x=0.15),
+      Buildings.HeatTransfer.Data.Solids.Concrete(x=0.05)},
       final nLay=3)
     "Construction material for floor"
     annotation (Placement(transformation(extent={{60,140},{80,160}})));
@@ -97,6 +97,12 @@ model ${data['buildingSystem'].name}_BuildingsLib
     if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] != "AMB":
       nConPar = nConPar + 1
   %>
+  <%
+  nConBou = 0
+  %>
+  <%
+  nSurBou = 0
+  %>
   Buildings.ThermalZones.Detailed.MixedAir ${zone.name}(
     redeclare package Medium = MediumA,
     AFlo=6*4,
@@ -125,7 +131,7 @@ model ${data['buildingSystem'].name}_BuildingsLib
       azi={
     % for ele in data['elementsOpaque']:
     % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-        ${ele.angleDegAzi}${',' if not loop.last else '},'}
+        ${ele.angleDegAzi}${',' if not loop.last else '}'}
     % endif
     % endfor
     ),
@@ -182,23 +188,29 @@ model ${data['buildingSystem'].name}_BuildingsLib
       % endfor
       ),
     % endif
+    % if nConPar > 0:
     nConPar=${nConPar},
     datConPar(
       layers={matLayPar},
       each A=10,
       each til=Buildings.Types.Tilt.Wall),
+    % endif
+    % if nConBou > 0:
     nConBou=1,
     datConBou(
       layers={matLayFlo},
       each A=6*4,
       each til=Buildings.Types.Tilt.Floor,
       each stateAtSurface_a = false),
+    % endif
+    % if nSurBou > 0:
     nSurBou=1,
     surBou(
       each A=6*3,
       each absIR=0.9,
       each absSol=0.9,
       each til=Buildings.Types.Tilt.Wall),
+    % endif
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     T_start=273.15+22,
     lat=0.73268921998722)
@@ -230,23 +242,6 @@ model ${data['buildingSystem'].name}_BuildingsLib
   Modelica.Blocks.Routing.Replicator replicator(nout=max(1,nConExtWin))
     annotation (Placement(transformation(extent={{10,90},{30,110}})));
 
-  Buildings.HeatTransfer.Sources.FixedTemperature TSoi[nConBou](each T = 283.15)
-    "Boundary condition for construction"
-    annotation (Placement(transformation(extent={{10,-10},{-10,10}},origin={150,-10})));
-
-  Buildings.HeatTransfer.Sources.FixedTemperature TBou[nSurBou](each T=288.15)
-    "Boundary condition for construction"
-    annotation (Placement(transformation(extent={{10,-10},{-10,10}},origin={150,-50})));
-
-  HeatTransfer.Conduction.MultiLayer conOut[nSurBou](
-    each A=6*4,
-    each layers=matLayPar,
-    each steadyStateInitial=true,
-    each stateAtSurface_a=true,
-    each stateAtSurface_b=false)
-    "Construction that is modeled outside of room"
-    annotation (Placement(transformation(extent={{100,-60},{120,-40}})));
-
 equation
   connect(qRadGai_flow.y, multiplex3_1.u1[1])
     annotation (Line(points={{-39,90},{-32,90},{-32,57},{-22,57}},color={0,0,127},smooth=Smooth.None));
@@ -266,17 +261,8 @@ equation
   connect(uSha.y, replicator.u)
     annotation (Line(points={{1,100},{8,100}},color={0,0,127},smooth=Smooth.None));
 
-  connect(TBou.port,conOut. port_b)
-    annotation (Line(points={{140,-50},{120,-50}},color={191,0,0},smooth=Smooth.None));
-
-  connect(roo.surf_surBou, conOut.port_a)
-    annotation (Line(points={{62.2,26},{62,26},{62,-50},{100,-50}},color={191,0,0},smooth=Smooth.None));
-
   connect(roo.uSha, replicator.y)
     annotation (Line(points={{44.4,58},{40,58},{40,100},{31,100}},color={0,0,127},smooth=Smooth.None));
-
-  connect(TSoi.port, roo.surf_conBou)
-    annotation (Line(points={{140,-10},{128,-10},{72,-10},{72,24}}, color={191,0,0}));
 
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));

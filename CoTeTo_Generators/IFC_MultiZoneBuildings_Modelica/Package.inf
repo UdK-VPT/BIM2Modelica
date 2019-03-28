@@ -32,7 +32,7 @@ calcIdealLoads = on
 
 [MODELICA_LIBPATHS]
 # Use of a libray path for the within statement: libPath = on
-libPath = on
+libPath = off
 # Library pathes
 ModelicaLibPath = ModelicaModels.IFC2X3.UdKB_Test_Cases
 #ModelicaLibPath = ModelicaModels.IFC2X3.SBT_Test_Cases
