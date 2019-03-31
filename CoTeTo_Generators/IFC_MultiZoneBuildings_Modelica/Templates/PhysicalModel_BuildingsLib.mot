@@ -52,6 +52,13 @@ model ${data['buildingSystem'].name}_BuildingsLib
     "Construction material for roof"
     annotation (Placement(transformation(extent={{20,140},{40,160}})));
 
+  parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic matLayDoo(
+    material={
+      Buildings.HeatTransfer.Data.Solids.Plywood(x=0.05)},
+      final nLay=1)
+    "Construction material for door"
+    annotation (Placement(transformation(extent={{-100,140},{-80,160}})));
+
   parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic matLayFlo(
     material={
       Buildings.HeatTransfer.Data.Solids.Concrete(x=0.2),
@@ -68,15 +75,32 @@ model ${data['buildingSystem'].name}_BuildingsLib
     haveExteriorShade=false)
     "Data record for the glazing system"
     annotation (Placement(transformation(extent={{100,140},{120,160}})));
-
+<%
+ConSurBouDoo = {}
+ConSurBou = {}
+%>
   // Thermal zones
   % for zone in data['zones']:
   <%
+  ConSurBouDoo[zone.name] = []
+  ConSurBou[zone.name] = []
   ConExt = []
+  ConExtDoo = []
   ConExtWin = []
   ConPar = []
   ConBou = []
-  nSurBou = 0
+  SurBouDoo = []
+  SurBou = []
+  for ele in data['elementsDoor']:
+    if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
+      ConExtDoo.append(ele)
+    elif (ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] != "AMB") or (ele.memberOfZone[1] == zone.name and ele.memberOfZone[0] != "AMB"):
+      SurBouDoo.append(ele)
+      if ele.memberOfZone[0] == zone.name:
+        port = 'a'
+      else:
+        port = 'b'
+      ConSurBouDoo[zone.name].append((ele.name,port))
   for ele in data['elementsOpaque']:
     if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB" and len(ele.includedWindows) == 0:
       ConExt.append(ele)
@@ -84,29 +108,46 @@ model ${data['buildingSystem'].name}_BuildingsLib
       ConExtWin.append(ele)
     elif ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == zone.name:
       ConPar.append(ele)
-    elif ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] != "AMB":
-      nSurBou = nSurBou + 1
+    elif (ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] != "AMB") or (ele.memberOfZone[1] == zone.name and ele.memberOfZone[0] != "AMB"):
+      SurBou.append(ele)
+      if ele.memberOfZone[0] == zone.name:
+        port = 'a'
+      else:
+        port = 'b'
+      ConSurBou[zone.name].append((ele.name,port))
   %>
   Buildings.ThermalZones.Detailed.MixedAir ${zone.name}(
     redeclare package Medium = MediumA,
     AFlo=${zone.volume/zone.height},
     hRoo=${zone.height},
-    nConExt=${len(ConExt)},
+    nConExt=${len(ConExt)+len(ConExtDoo)},
     % if len(ConExt) > 0:
     datConExt(
       layers={
+    % for ele in ConExtDoo:
+        matLayDoo,
+    % endfor
     % for ele in ConExt:
         matLayExt${',' if not loop.last else '},'}
     % endfor
       A={
+    % for ele in ConExtDoo:
+        ${ele.width*ele.height},
+    % endfor
     % for ele in ConExt:
-        ${ele.width*ele.height}${',' if not loop.last else '},'}
+        ${ele.width*ele.height-ele.AInnSur}${',' if not loop.last else '},'}
     % endfor
       til={
+    % for ele in ConExtDoo:
+        ${ele.angleDegTil*math.pi/180.0},
+    % endfor
     % for ele in ConExt:
         ${ele.angleDegTil*math.pi/180.0}${',' if not loop.last else '},'}
     % endfor
       azi={
+    % for ele in ConExtDoo:
+        ${ele.angleDegAzi*math.pi/180.0},
+    % endfor
     % for ele in ConExt:
         ${ele.angleDegAzi*math.pi/180.0}${',' if not loop.last else '}'}
     % endfor
@@ -154,13 +195,13 @@ model ${data['buildingSystem'].name}_BuildingsLib
       ),
     % endif
     % if len(ConPar) > 0:
-    nConPar=${nConPar},
+    nConPar=${len(ConPar)},
     datConPar(
       layers={matLayPar},
       each A=10,
       each til=Buildings.Types.Tilt.Wall),
     % else:
-      nConPar=0,
+    nConPar=0,
     % endif
     % if len(ConBou) > 0:
     nConBou=${len(ConBou)},
@@ -170,15 +211,27 @@ model ${data['buildingSystem'].name}_BuildingsLib
       each til=Buildings.Types.Tilt.Floor,
       each stateAtSurface_a = false),
     % else:
-      nConBou=0,
+    nConBou=0,
     % endif
-    % if nSurBou > 0:
-    nSurBou=${nSurBou},
+    % if len(SurBou) > 0:
+    nSurBou=${len(SurBou)+len(SurBouDoo)},
     surBou(
-      each A=6*3,
+      A={
+    % for ele in SurBouDoo:
+        ${ele.width*ele.height},
+    % endfor
+    % for ele in SurBou:
+        ${ele.width*ele.height-ele.AInnSur}${',' if not loop.last else '},'}
+    % endfor
+      til={
+    % for ele in SurBouDoo:
+        ${ele.angleDegTil*math.pi/180.0},
+    % endfor
+    % for ele in SurBou:
+        ${ele.angleDegTil*math.pi/180.0}${',' if not loop.last else '},'}
+    % endfor
       each absIR=0.9,
-      each absSol=0.9,
-      each til=Buildings.Types.Tilt.Wall),
+      each absSol=0.9),
     % else:
       nSurBou=0,
     % endif
@@ -188,6 +241,36 @@ model ${data['buildingSystem'].name}_BuildingsLib
     "Room model"
     annotation (Placement(transformation(extent={{46,20},{86,60}})));
   % endfor
+  <%
+  SurBouDoo = []
+  SurBou = []
+  for zone in data['zones']:
+    for ele in data['elementsDoor']:
+      if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] != "AMB":
+        SurBouDoo.append(ele)
+    for ele in data['elementsOpaque']:
+      if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] != "AMB":
+        SurBou.append(ele)
+  %>
+  % if len(SurBouDoo) + len(SurBou) > 0:
+  % for ele in SurBouDoo:
+  Buildings.HeatTransfer.Conduction.MultiLayer ${ele.name}(
+    A=${ele.width*ele.height},
+    layers=matLayDoo,
+    stateAtSurface_b=false)
+    "Construction that is modeled outside of room"
+    annotation (Placement(transformation(extent={{80,-20},{100,0}})));
+  % endfor
+
+  % for ele in SurBou:
+  Buildings.HeatTransfer.Conduction.MultiLayer ${ele.name}(
+    A=${ele.width*ele.height-ele.AInnSur},
+    layers=matLayPar,
+    stateAtSurface_b=false)
+    "Construction that is modeled outside of room"
+    annotation (Placement(transformation(extent={{80,-20},{100,0}})));
+  % endfor
+  % endif
 
   Modelica.Blocks.Sources.Constant qConGai_flow(k=0) "Convective heat gain"
     annotation (Placement(transformation(extent={{-60,40},{-40,60}})));
@@ -222,6 +305,23 @@ equation
 
   connect(qLatGai_flow.y, multiplex3_1.u3[1])
     annotation (Line(points={{-41,12},{-32,12},{-32,43},{-22,43}},color={0,0,127},smooth=Smooth.None));
+
+  % if len(SurBouDoo) + len(SurBou) > 0:
+  // connections between construction elements and thermal zones
+  % for zone in data['zones']:
+<% i = 1 %>\
+  % for con in ConSurBouDoo[zone.name]:
+  connect(${con[0]}.port_${con[1]}, ${zone.name}.surf_surBou[${i}])
+    annotation (Line(points={{62.2,26},{62,26},{62,-10},{80,-10}}, color={191,0,0}));
+<% i = i + 1 %>\
+  % endfor
+  % for con in ConSurBou[zone.name]:
+  connect(${con[0]}.port_${con[1]}, ${zone.name}.surf_surBou[${i}])
+    annotation (Line(points={{62.2,26},{62,26},{62,-10},{80,-10}}, color={191,0,0}));
+<% i = i + 1 %>\
+  % endfor
+  % endfor
+  % endif
 
   % for zone in data['zones']:
   connect(multiplex3_1.y, ${zone.name}.qGai_flow)
