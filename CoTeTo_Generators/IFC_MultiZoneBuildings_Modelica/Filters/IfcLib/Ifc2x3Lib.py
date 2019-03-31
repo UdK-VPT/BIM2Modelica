@@ -1025,14 +1025,13 @@ def UpdateSecondLvLBoundaries(Spaces, WallInfo, ColumnsInfo, black_list):
                                                 [b_cmonFace, area, boundary.Normal, sp2.Space.GlobalId])
 
                 if new_shapes:  # We found common parts
-                    # print "new shape section: "
                     RemainingF = boundary.Face
                     for element in new_shapes:
                         B = IfcLib.DataClasses.BoundaryContainer(element[0], element[1], element[2])
                         B.RelatedBuildingElement = boundary.RelatedBuildingElement
                         B.OtherSideSpace = str(element[3])
                         B.thickness = boundary.thickness
-                        B.Id = "B" + str(boundaryIdGen) + "_" + sp.Space.GlobalId
+                        B.Id = "B" + str(boundaryIdGen) + "_" + sp.Space.GlobalId + "_" + str(boundary.RelatedBuildingElement)
                         boundaryIdGen = boundaryIdGen + 1
                         new_boundaries.append(B)
                         RemainingF = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(RemainingF, element[0])
@@ -1053,7 +1052,7 @@ def UpdateSecondLvLBoundaries(Spaces, WallInfo, ColumnsInfo, black_list):
                         B.RelatedBuildingElement = boundary.RelatedBuildingElement
                         B.thickness = boundary.thickness
                         B.OtherSideSpace = "Unknown"
-                        B.Id = "B" + str(boundaryIdGen) + "_" + sp.Space.GlobalId
+                        B.Id = "B" + str(boundaryIdGen) + "_" + sp.Space.GlobalId + "_" + str(boundary.RelatedBuildingElement)
                         boundaryIdGen = boundaryIdGen + 1
                         new_boundaries.append(B)
                         exp.Next()
@@ -1062,7 +1061,7 @@ def UpdateSecondLvLBoundaries(Spaces, WallInfo, ColumnsInfo, black_list):
                         boundary.OtherSideSpace = str(spacefound)
                     else:
                         boundary.OtherSideSpace = "EXTERNAL"
-                    boundary.Id = "B" + str(boundaryIdGen) + "_" + sp.Space.GlobalId
+                    boundary.Id = "B" + str(boundaryIdGen) + "_" + sp.Space.GlobalId + "_" + str(boundary.RelatedBuildingElement)
                     boundaryIdGen = boundaryIdGen + 1
                     new_boundaries.append(boundary)
         spC = IfcLib.DataClasses.SpaceContainer(
@@ -1289,7 +1288,7 @@ def CorrectThirdLevelBoundaries(Spaces, ifc_file, WallInfo, ColumnsInfo):
                         B.RelatedBuildingElement = b.RelatedBuildingElement
                         B.OtherSideSpace = str(element[3])
                         B.thickness = b.thickness
-                        B.Id = "B_" + str(boundaryIdGen) + "_" + sp.Space.GlobalId
+                        B.Id = "B" + str(boundaryIdGen) + "_" + sp.Space.GlobalId + "_" + str(b.RelatedBuildingElement)
                         boundaryIdGen = boundaryIdGen + 1
                         new_boundaries.append(B)
                         RemainingF = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(RemainingF, element[0])
@@ -1307,6 +1306,21 @@ def CorrectThirdLevelBoundaries(Spaces, ifc_file, WallInfo, ColumnsInfo):
             sp.RelatedColumn)
         Spaces_new.append(spC)
     return Spaces_new
+
+
+def StoreEnclosedBoundaries(Spaces, WallInfo, OpeningsDict):
+    """
+    Add the id's of included space boundaries to their related space boundaries
+    """
+    for sp in Spaces:
+        for b in sp.Boundaries:
+            if b.RelatedBuildingElement in WallInfo.keys() and (len(b.GapsProfile)>0 or len(b.Profile)>4):
+                for o in OpeningsDict.values():
+                    if o[2][0] in b.Id:
+                        for b2 in sp.Boundaries:
+                            if o[1][0] in b2.Id:
+                                b.IncludedBoundariesIds.append(b2.Id)
+    return Spaces
 
 
 def CorrectNormalVector(Spaces):
@@ -1390,7 +1404,6 @@ def getOverlappedelements(ifc_file, walls):
     """
     props = OCC.GProp.GProp_GProps()
     spaces = ifc_file.by_type("IfcSpace")
-    # walls = ifc_file.by_type("IfcWall")
     slabs = ifc_file.by_type("IfcSlab")
     overlappedId = {}
     overlappedShape = {}
@@ -1476,9 +1489,7 @@ def Profiles(Spaces):
     that defined the main face and faces of any gap present in the boundary.
     """
     for sp in Spaces:
-        # print("Space: ", sp.Space.GlobalId)
         for b in sp.Boundaries:
-            # print("Boundaries: ", b.Id)
             shape, profile, gaps = RebuildFace(b.Face)
             b.Profile = profile
             b.GapsProfile = gaps
