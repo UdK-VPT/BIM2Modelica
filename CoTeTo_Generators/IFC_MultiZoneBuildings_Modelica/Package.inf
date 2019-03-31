@@ -32,10 +32,16 @@ calcIdealLoads = on
 
 [MODELICA_LIBPATHS]
 # Use of a libray path for the within statement: libPath = on
-libPath = off
+libPath = on
 # Library pathes
 ModelicaLibPath = ModelicaModels.IFC2X3.UdKB_Test_Cases
 #ModelicaLibPath = ModelicaModels.IFC2X3.SBT_Test_Cases
+[MODELICA_MOSPATHS]
+# Use of a path for the mos files: mosPath = on
+mosPath = on
+# Library pathes
+#ModelicaMosPath = modelica://ModelicaModels/Resources/Scripts/Dymola/IFC2X3/UdKB_Unit_Test_Cases/
+ModelicaMosPath = modelica://ModelicaModels/Resources/Scripts/Dymola/IFC2X3/SBT_Unit_Test_Cases/
 
 [TEMPLATE_MODELICA]
 topFile = PhysicalModel.mot
