@@ -1,5 +1,6 @@
 <%
 ## Data of the multi-zone building model
+import math
 for filename in d:
     data = d[filename]['_buildingData']
 %>\
@@ -68,148 +69,118 @@ model ${data['buildingSystem'].name}_BuildingsLib
     "Data record for the glazing system"
     annotation (Placement(transformation(extent={{100,140},{120,160}})));
 
-  parameter Integer nConExtWin = 1
-    "Number of constructions with a window";
-
-  parameter Integer nConBou = 1
-    "Number of surface that are connected to constructions that are modeled inside the room";
-
-  parameter Integer nSurBou = 1
-    "Number of surface that are connected to the room air volume";
-
   // Thermal zones
   % for zone in data['zones']:
   <%
-  nConExt = 0
-  for ele in data['elementsOpaque']:
-    if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-      nConExt = nConExt + 1
-  %>
-  <%
-  nConExtWin = 0
-  for ele in data['elementsTransparent']:
-    if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-      nConExtWin = nConExtWin + 1
-  %>
-  <%
-  nConPar = 0
-  for ele in data['elementsOpaque']:
-    if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] != "AMB":
-      nConPar = nConPar + 1
-  %>
-  <%
-  nConBou = 0
-  %>
-  <%
+  ConExt = []
+  ConExtWin = []
+  ConPar = []
+  ConBou = []
   nSurBou = 0
+  for ele in data['elementsOpaque']:
+    if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB" and len(ele.includedWindows) == 0:
+      ConExt.append(ele)
+    elif ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB" and len(ele.includedWindows) > 0:
+      ConExtWin.append(ele)
+    elif ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == zone.name:
+      ConPar.append(ele)
+    elif ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] != "AMB":
+      nSurBou = nSurBou + 1
   %>
   Buildings.ThermalZones.Detailed.MixedAir ${zone.name}(
     redeclare package Medium = MediumA,
-    AFlo=6*4,
-    hRoo=2.7,
-    nConExt=${nConExt},
-    % if nConExt > 0:
+    AFlo=${zone.volume/zone.height},
+    hRoo=${zone.height},
+    nConExt=${len(ConExt)},
+    % if len(ConExt) > 0:
     datConExt(
       layers={
-    % for ele in data['elementsOpaque']:
-    % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
+    % for ele in ConExt:
         matLayExt${',' if not loop.last else '},'}
-    % endif
     % endfor
       A={
-    % for ele in data['elementsOpaque']:
-    % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
+    % for ele in ConExt:
         ${ele.width*ele.height}${',' if not loop.last else '},'}
-    % endif
     % endfor
       til={
-    % for ele in data['elementsOpaque']:
-    % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-        ${ele.angleDegTil}${',' if not loop.last else '},'}
-    % endif
+    % for ele in ConExt:
+        ${ele.angleDegTil*math.pi/180.0}${',' if not loop.last else '},'}
     % endfor
       azi={
-    % for ele in data['elementsOpaque']:
-    % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-        ${ele.angleDegAzi}${',' if not loop.last else '}'}
-    % endif
+    % for ele in ConExt:
+        ${ele.angleDegAzi*math.pi/180.0}${',' if not loop.last else '}'}
     % endfor
     ),
     % endif
-    nConExtWin=${nConExtWin},
-    % if nConExtWin > 0:
+    nConExtWin=${len(ConExtWin)},
+    % if len(ConExtWin) > 0:
     datConExtWin(
       layers={
-    % for ele in data['elementsTransparent']:
-    % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
+    % for ele in ConExtWin:
         matLayExt${',' if not loop.last else '},'}
-    % endif
     % endfor
       A={
-    % for ele in data['elementsTransparent']:
-    % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
+    % for ele in ConExtWin:
         ${ele.width*ele.height}${',' if not loop.last else '},'}
-    % endif
     % endfor
       glaSys={
-    % for ele in data['elementsTransparent']:
-    % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
+    % for ele in ConExtWin:
         glaSys${',' if not loop.last else '},'}
-    % endif
     % endfor
       hWin={
-    % for ele in data['elementsTransparent']:
-    % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-        ${ele.height}${',' if not loop.last else '},'}
-    % endif
+    % for ele in ConExtWin:
+        ${ele.includedWindows[0][1]}${',' if not loop.last else '},'}
     % endfor
       wWin={
-    % for ele in data['elementsTransparent']:
-    % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-        ${ele.width}${',' if not loop.last else '},'}
-    % endif
+    % for ele in ConExtWin:
+        ${ele.includedWindows[0][0]}${',' if not loop.last else '},'}
     % endfor
       ove(wR={0},
       wL={0},
       gap={0.1},
       dep={1}),
-      each fFra=0.1,
+      fFra={
+      % for ele in ConExtWin:
+      0.1${',' if not loop.last else '},'}
+      % endfor
       til={
-      % for ele in data['elementsOpaque']:
-      % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-      ${ele.angleDegTil}${',' if not loop.last else '},'}
-      % endif
+      % for ele in ConExtWin:
+      ${ele.angleDegTil*math.pi/180.0}${',' if not loop.last else '},'}
       % endfor
       azi={
-      % for ele in data['elementsOpaque']:
-      % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-      ${ele.angleDegAzi}${',' if not loop.last else '}'}
-      % endif
+      % for ele in ConExtWin:
+      ${ele.angleDegAzi*math.pi/180.0}${',' if not loop.last else '}'}
       % endfor
       ),
     % endif
-    % if nConPar > 0:
+    % if len(ConPar) > 0:
     nConPar=${nConPar},
     datConPar(
       layers={matLayPar},
       each A=10,
       each til=Buildings.Types.Tilt.Wall),
+    % else:
+      nConPar=0,
     % endif
-    % if nConBou > 0:
-    nConBou=1,
+    % if len(ConBou) > 0:
+    nConBou=${len(ConBou)},
     datConBou(
       layers={matLayFlo},
       each A=6*4,
       each til=Buildings.Types.Tilt.Floor,
       each stateAtSurface_a = false),
+    % else:
+      nConBou=0,
     % endif
     % if nSurBou > 0:
-    nSurBou=1,
+    nSurBou=${nSurBou},
     surBou(
       each A=6*3,
       each absIR=0.9,
       each absSol=0.9,
       each til=Buildings.Types.Tilt.Wall),
+    % else:
+      nSurBou=0,
     % endif
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     T_start=273.15+22,
@@ -239,7 +210,7 @@ model ${data['buildingSystem'].name}_BuildingsLib
     "Control signal for the shading device"
     annotation (Placement(transformation(extent={{-20,90},{0,110}})));
 
-  Modelica.Blocks.Routing.Replicator replicator(nout=max(1,nConExtWin))
+  Modelica.Blocks.Routing.Replicator replicator(nout=max(1,${len(ConExtWin)}))
     annotation (Placement(transformation(extent={{10,90},{30,110}})));
 
 equation
@@ -252,18 +223,20 @@ equation
   connect(qLatGai_flow.y, multiplex3_1.u3[1])
     annotation (Line(points={{-41,12},{-32,12},{-32,43},{-22,43}},color={0,0,127},smooth=Smooth.None));
 
-  connect(multiplex3_1.y, roo.qGai_flow)
+  % for zone in data['zones']:
+  connect(multiplex3_1.y, ${zone.name}.qGai_flow)
     annotation (Line(points={{1,50},{22,50},{22,48},{44.4,48}},color={0,0,127},smooth=Smooth.None));
 
-  connect(weaDat.weaBus, roo.weaBus)
+  connect(weaDat.weaBus, ${zone.name}.weaBus)
     annotation (Line(points={{180,150},{190,150},{190,57.9},{83.9,57.9}},color={255,204,51},thickness=0.5,smooth=Smooth.None));
+
+  connect(${zone.name}.uSha, replicator.y)
+    annotation (Line(points={{44.4,58},{40,58},{40,100},{31,100}},color={0,0,127},smooth=Smooth.None));
+  % endfor
 
   connect(uSha.y, replicator.u)
     annotation (Line(points={{1,100},{8,100}},color={0,0,127},smooth=Smooth.None));
 
-  connect(roo.uSha, replicator.y)
-    annotation (Line(points={{44.4,58},{40,58},{40,100},{31,100}},color={0,0,127},smooth=Smooth.None));
-
   annotation(experiment(StartTime=0, StopTime=31536000, __Dymola_Algorithm="Dassl"),
-    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
+    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{200,200}})));
   end ${data['buildingSystem'].name}_BuildingsLib;

@@ -65,9 +65,9 @@ class BuildingElement:
     '''
     This class describes the properties of a general building element.
     '''
-    att = ['name',
+    att = ['id',
+           'name',
            'pos',
-           'memberOfZone',
            'angleDegAzi',
            'angleDegTil',
            'adjZoneSide1',
@@ -79,7 +79,8 @@ class BuildingElement:
            'thickness',
            'mesh']
 
-    def __init__(self, name, pos, **kwargs):
+    def __init__(self, id, name, pos, **kwargs):
+        self.id = str(id)
         self.name = str(name)
         self.pos = OCC.gp.gp_Pnt(pos[0], pos[1], pos[2])
         self.angleDegAzi = None
@@ -107,10 +108,14 @@ class BuildingElementOpaque(BuildingElement):
     This class describes the properties of an opaque building element.
     '''
 
-    def __init__(self, name='', pos=(0.0, 0.0, 0.0), **kwargs):
-        BuildingElement.__init__(self, name, pos, **kwargs)
+    def __init__(self, id = '', name='', pos=(0.0, 0.0, 0.0), **kwargs):
+        BuildingElement.__init__(self, id, name, pos, **kwargs)
         BuildingElement.att.append('constructionData')
+        BuildingElement.att.append('includedWindows')
+        BuildingElement.att.append('includedDoors')
         self.constructionData = None
+        self.includedWindows = None
+        self.includedDoors = None
         self.setParameter(**kwargs)
 
 
@@ -119,8 +124,8 @@ class BuildingElementTransparent(BuildingElement):
     This class describes the properties of a transparent building element.
     '''
 
-    def __init__(self, name='', pos=(0.0, 0.0, 0.0), **kwargs):
-        BuildingElement.__init__(self, name, pos, **kwargs)
+    def __init__(self, id = '', name='', pos=(0.0, 0.0, 0.0), **kwargs):
+        BuildingElement.__init__(self, id, name, pos, **kwargs)
         self.setParameter(**kwargs)
 
 class BuildingElementDoor(BuildingElement):
@@ -128,8 +133,8 @@ class BuildingElementDoor(BuildingElement):
     This class describes the properties of a door building element.
     '''
 
-    def __init__(self, name='', pos=(0.0, 0.0, 0.0), **kwargs):
-        BuildingElement.__init__(self, name, pos, **kwargs)
+    def __init__(self, id='', name='', pos=(0.0, 0.0, 0.0), **kwargs):
+        BuildingElement.__init__(self, id, name, pos, **kwargs)
         BuildingElement.att.append('constructionData')
         self.constructionData = None
         self.setParameter(**kwargs)
@@ -138,7 +143,8 @@ class BuildingZone:
     '''
     This class describes the properties of a thermal building zone.
     '''
-    att = ('name',
+    att = ('id',
+           'name',
            'pos',
            'volume',
            'height',
@@ -153,7 +159,8 @@ class BuildingZone:
            'airchange',
            'thermalLoads')
 
-    def __init__(self, name='', pos=(0.0, 0.0, 0.0), **kwargs):
+    def __init__(self, id='', name='', pos=(0.0, 0.0, 0.0), **kwargs):
+        self.id = str(id)
         self.name = str(name)
         self.pos = OCC.gp.gp_Pnt(pos[0], pos[1], pos[2])
         self.volume = None
@@ -183,7 +190,8 @@ class Building:
     '''
     This class describes the properties of a thermal building.
     '''
-    att = ('name',
+    att = ('id',
+           'name',
            'longitude',
            'latitude',
            'levelOverSea',
@@ -207,7 +215,8 @@ class Building:
            'nSto',
            'thermalLoads')
 
-    def __init__(self, name='', pos=(0.0, 0.0, 0.0), **kwargs):
+    def __init__(self, id='', name='', pos=(0.0, 0.0, 0.0), **kwargs):
+        self.id = str(id)
         self.name = str(name)
         self.longitude = pos[0]
         self.latitude = pos[1]
@@ -417,7 +426,7 @@ class Building:
             if element.adjZoneSide2 == 'GRO':
                 l.append((element.name, '2'))
         return l
-        
+
 
 class District:
     '''

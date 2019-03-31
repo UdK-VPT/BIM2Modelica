@@ -35,10 +35,12 @@ class Element:
         self.mesh = mesh
 
 class ElementOpaque(Element):
-    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh, constructionData, AInnSur):
+    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh, constructionData, AInnSur, includedWindows, includedDoors):
         Element.__init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh)
         self.constructionData = constructionData
         self.AInnSur = AInnSur
+        self.includedWindows=includedWindows
+        self.includedDoors=includedDoors
 
 class ElementTransparent(Element):
     def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh):
@@ -49,7 +51,7 @@ class ElementDoor(Element):
         Element.__init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh)
         self.constructionData = constructionData
         self.AInnSur = AInnSur
-        
+
 class ConnectionElementZone:
     def __init__(self, element, elementPort, zone, zonePort):
         self.element = element

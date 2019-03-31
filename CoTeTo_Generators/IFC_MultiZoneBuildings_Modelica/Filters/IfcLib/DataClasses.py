@@ -58,6 +58,7 @@ class BoundaryContainer(object):
 
     def __init__(self, Face, area=0, normal=0):
         self.Id = ""  # Automatic generated Identification for the BoundaryContainer instance.
+        self.IncludedBoundariesIds = [] # List of the Id's of the included boundaries
         self.Face = Face  # TopoDS_Face of the Boundary
         # RefId of the Neighbour Space (IfcSpace), BuildingElement
         # (IfcWall,IfcSlab, ...) or 'EXTERNAL'
@@ -74,7 +75,7 @@ class BoundaryContainer(object):
         self.Height = 0
         self.Width = 0
         self.Profile = []  # Ordered points of the the outer profile of the boundary face.
-        self.GapsProfile = []  # If gap is present, list/s with ordered points of face profile of gaps in the boudnary face
+        self.GapsProfile = []  # If gap is present, list/s with ordered points of face profile of gaps in the boundary face
 
 
 class Mesh(object):

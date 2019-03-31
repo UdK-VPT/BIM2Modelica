@@ -56,7 +56,6 @@ def mapIFCtoBuildingDataModel(file,filename):
     walls = []
     walls_decomposed = []
     for w in all_walls:
-        print("\nnext wall")
         shape_tup = ifcopenshell.geom.create_shape(settings, w)
         toposhape = shape_tup.geometry
         mesh = DataClasses.Mesh(toposhape)
@@ -76,7 +75,6 @@ def mapIFCtoBuildingDataModel(file,filename):
     all_doors = file.by_type("IfcDoor")
     originalDoors = []
     for d in all_doors:
-        print("\nnext door")
         shape_tup = ifcopenshell.geom.create_shape(settings, d)
         toposhape = shape_tup.geometry
         mesh = DataClasses.Mesh(toposhape)
@@ -88,7 +86,6 @@ def mapIFCtoBuildingDataModel(file,filename):
     originalSlabs = []
     slabs = []
     for s in all_slabs:
-        print("\nnext slab")
         shape_tup = ifcopenshell.geom.create_shape(settings, s)
         toposhape = shape_tup.geometry
         mesh = DataClasses.Mesh(toposhape)
@@ -99,7 +96,6 @@ def mapIFCtoBuildingDataModel(file,filename):
     originalColumns = []
     columns = []
     for c in all_columns:
-        print("\nnext column")
         shape_tup = ifcopenshell.geom.create_shape(settings, c)
         toposhape = shape_tup.geometry
         mesh = DataClasses.Mesh(toposhape)
@@ -109,7 +105,6 @@ def mapIFCtoBuildingDataModel(file,filename):
     all_windows = file.by_type("IfcWindow")
     originalWindows = []
     for w in all_windows:
-        print("\nnext window")
         shape_tup = ifcopenshell.geom.create_shape(settings, w)
         toposhape = shape_tup.geometry
         mesh = DataClasses.Mesh(toposhape)
@@ -141,8 +136,7 @@ def mapIFCtoBuildingDataModel(file,filename):
     # Instantiation of SpaceContainer using Spaces Volumes
     SpacesW, Spaces = ifcLib.initSpaceContainer(file, black_list["IfcSpace"])
     # Find contacts between space boundaries (from space volume) and IfcWalls
-    SpacesW, black_list["IfcWall"], black_list["IfcSlab"] = ifcLib.RelatedElementsWalls(
-        SpacesW, file, WallInfo, SlabsInfo)
+    SpacesW, black_list["IfcWall"], black_list["IfcSlab"] = ifcLib.RelatedElementsWalls(SpacesW, file, WallInfo, SlabsInfo)
     # Modify SpaceContainer accordingly with Walls information.
     SpacesW = ifcLib.SecondLvLBoundariesWalls(SpacesW, WallInfo, SlabsInfo)
     # Remove any boundary attached to a IfcWall of the previously initialized SpaceContainer list -Spaces-
@@ -175,6 +169,8 @@ def mapIFCtoBuildingDataModel(file,filename):
     Spaces = ifcLib.Profiles(Spaces)
     # Definition of all positions (spaces, elements)
     Spaces = ifcLib.DefinePosition(Spaces)
+    # Add the id's of included space boundaries to their related space boundaries
+    Spaces = ifcLib.StoreEnclosedBoundaries(Spaces, WallInfo, OpeningsDict)
     '''
     Instantiation and parameterisation of the building data model
     '''
@@ -239,6 +235,8 @@ def mapIFCtoBuildingDataModel(file,filename):
         islz = 0
         idoz = 0
         iwiz = 0
+        heightMin = 0.0
+        heightMax = 0.0
         ## Construction elements
         for bound in space.Boundaries:
             if bound.OtherSideSpace in treatedZones.keys() or bound.OtherSideSpace == "EXTERNAL":
@@ -253,9 +251,17 @@ def mapIFCtoBuildingDataModel(file,filename):
                     iel = iel + 1
                     iwaz = iwaz + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
-                        mesh=DataClasses.Mesh(bound.Face)
                         treatedBuildingEle[bound.Id] = "wall_"+str(iwa)
-                        buildingData.addOpaqueElement(bdm.BuildingElementOpaque(name="wall_"+str(iwa),
+                        includedWindows = []
+                        includedDoors = []
+                        for b in space.Boundaries:
+                            if b.Id in bound.IncludedBoundariesIds:
+                                if b.RelatedBuildingElement in WindowToStyle.keys():
+                                    includedWindows.append((b.Width,b.Height))
+                                if b.RelatedBuildingElement in DoorToStyle.keys():
+                                    includedDoors.append((b.Width,b.Height))
+                        buildingData.addOpaqueElement(bdm.BuildingElementOpaque(id=bound.Id,
+                                                                                name="wall_"+str(iwa),
                                                                                 pos=(bound.Position.X(),bound.Position.Y(),bound.Position.Z()),
                                                                                 angleDegAzi=azimuthAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                 angleDegTil=tiltAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
@@ -266,7 +272,9 @@ def mapIFCtoBuildingDataModel(file,filename):
                                                                                 areaNet=bound.Area,
                                                                                 thickness=bound.thickness[0],
                                                                                 constructionData=treatedCon[BuildingElementToMaterialLayerSet[bound.RelatedBuildingElement]],
-                                                                                mesh=DataClasses.Mesh(bound.Face)))
+                                                                                mesh=DataClasses.Mesh(bound.Face),
+                                                                                includedWindows=includedWindows,
+                                                                                includedDoors=includedDoors))
                         iwa = iwa + 1
 
                 ## Slabs
@@ -275,7 +283,12 @@ def mapIFCtoBuildingDataModel(file,filename):
                     islz = islz + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
                         treatedBuildingEle[bound.Id] = "slab_"+str(isl)
-                        buildingData.addOpaqueElement(bdm.BuildingElementOpaque(name="slab_"+str(isl),
+                        if bound.Position.Z() > heightMax:
+                            heightMax = bound.Position.Z()
+                        if bound.Position.Z() < heightMin:
+                            heightMin = bound.Position.Z()
+                        buildingData.addOpaqueElement(bdm.BuildingElementOpaque(id=bound.Id,
+                                                                                name="slab_"+str(isl),
                                                                                 pos=(bound.Position.X(),bound.Position.Y(),bound.Position.Z()),
                                                                                 angleDegAzi=azimuthAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                 angleDegTil=tiltAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
@@ -286,7 +299,9 @@ def mapIFCtoBuildingDataModel(file,filename):
                                                                                 areaNet=bound.Area,
                                                                                 thickness=bound.thickness[0],
                                                                                 constructionData=treatedCon[BuildingElementToMaterialLayerSet[bound.RelatedBuildingElement]],
-                                                                                mesh=DataClasses.Mesh(bound.Face)))
+                                                                                mesh=DataClasses.Mesh(bound.Face),
+                                                                                includedWindows=[],
+                                                                                includedDoors=[]))
                         isl = isl + 1
 
                 ## Doors
@@ -296,7 +311,8 @@ def mapIFCtoBuildingDataModel(file,filename):
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
                         mesh=DataClasses.Mesh(bound.Face)
                         treatedBuildingEle[bound.Id] = "door_"+str(ido)
-                        buildingData.addDoorElement(bdm.BuildingElementDoor(name="door_"+str(ido),
+                        buildingData.addDoorElement(bdm.BuildingElementDoor(id=bound.Id,
+                                                                            name="door_"+str(ido),
                                                                             pos=(bound.Position.X(),bound.Position.Y(),bound.Position.Z()),
                                                                             angleDegAzi=azimuthAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                             angleDegTil=tiltAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
@@ -317,7 +333,8 @@ def mapIFCtoBuildingDataModel(file,filename):
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
                         mesh=DataClasses.Mesh(bound.Face)
                         treatedBuildingEle[bound.Id] = "window_"+str(iwi)
-                        buildingData.addTransparentElement(bdm.BuildingElementTransparent(name="window_"+str(iwi),
+                        buildingData.addTransparentElement(bdm.BuildingElementTransparent(id=bound.Id,
+                                                                                          name="window_"+str(iwi),
                                                                                           pos=(bound.Position.X(),bound.Position.Y(),bound.Position.Z()),
                                                                                           angleDegAzi=azimuthAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
                                                                                           angleDegTil=tiltAngle(bound.Normal.X(),bound.Normal.Y(),bound.Normal.Z()),
@@ -331,11 +348,11 @@ def mapIFCtoBuildingDataModel(file,filename):
                         iwi = iwi + 1
 
         ## Thermal zones
-        print('numberOfWindows: ', iwiz)
-        buildingData.addZone(bdm.BuildingZone(name=treatedZones[space.Space.GlobalId],
+        buildingData.addZone(bdm.BuildingZone(id=space.Space.GlobalId,
+                                              name=treatedZones[space.Space.GlobalId],
                                               pos=(0.0,0.0,0.0),
                                               volume=space.Volume,
-                                              height=3.0,
+                                              height=abs(heightMax-heightMin),
                                               numberOfElements=iel,
                                               numberOfWalls=iwaz,
                                               numberOfSlabs=islz,
@@ -391,7 +408,9 @@ def getGeneratorData(buildingData):
                                                 thickness=eleOpa.thickness,
                                                 mesh=eleOpa.mesh,
                                                 constructionData=eleOpa.constructionData,
-                                                AInnSur=round(eleOpa.width*eleOpa.height-eleOpa.areaNet,3)))
+                                                AInnSur=round(eleOpa.width*eleOpa.height-eleOpa.areaNet,3),
+                                                includedWindows=eleOpa.includedWindows,
+                                                includedDoors=eleOpa.includedDoors))
 
     ## Transparent elements
     elementsTransparent = []
@@ -424,7 +443,6 @@ def getGeneratorData(buildingData):
     ## Element <-> zone
     conEleZon = []
     eleZoneRel = buildingData.getElementZoneRelations()
-    print("Element <-> zone", eleZoneRel)
     for zone in eleZoneRel.keys():
         i = 1
         for con in eleZoneRel[zone]:
@@ -437,7 +455,6 @@ def getGeneratorData(buildingData):
     ## Element <-> ambient
     conEleAmb = []
     eleAmbRel = buildingData.getElementAmbientRelations()
-    print("Element <-> ambient", eleAmbRel)
     i = 1
     for con in eleAmbRel:
         conEleAmb.append(dmg.ConnectionElementAmbient(element=con[0],
@@ -448,7 +465,6 @@ def getGeneratorData(buildingData):
     ## Element <-> solid ambient
     conEleSol = []
     eleSolRel = buildingData.getElementGroundRelations()
-    print("Element <-> solid ambient", eleSolRel)
     i = 1
     for con in eleSolRel:
         conEleSol.append(dmg.ConnectionElementSolid(element=con[0],
