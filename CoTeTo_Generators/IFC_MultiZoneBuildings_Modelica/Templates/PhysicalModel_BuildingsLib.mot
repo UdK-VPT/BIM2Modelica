@@ -118,7 +118,7 @@ ConSurBou = {}
   %>
   Buildings.ThermalZones.Detailed.MixedAir ${zone.name}(
     redeclare package Medium = MediumA,
-    AFlo=${zone.volume/zone.height},
+    AFlo=${zone.volume/(zone.height+0.000001)},
     hRoo=${zone.height},
     nConExt=${len(ConExt)+len(ConExtDoo)},
     % if len(ConExt) > 0:
