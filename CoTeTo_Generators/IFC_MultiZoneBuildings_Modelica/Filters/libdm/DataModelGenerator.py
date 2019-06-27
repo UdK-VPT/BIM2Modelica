@@ -11,10 +11,10 @@ class Zone:
         self.name = name
         self.pos = pos
         self.nElements = nElements
-        self.nWalls = nWalls,
-        self.nSlabs = nSlabs,
-        self.nDoors = nDoors,
-        self.nWindows = nWindows,
+        self.nWalls = nWalls
+        self.nSlabs = nSlabs
+        self.nDoors = nDoors
+        self.nWindows = nWindows
         self.volume = volume
         self.height = height
         self.TSetHeating = TSetHeating
