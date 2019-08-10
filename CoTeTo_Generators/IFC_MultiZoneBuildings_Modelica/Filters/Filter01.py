@@ -19,7 +19,7 @@ def cmp(a, b):
 
 def azimuthAngle(x,y,z):
     '''
-    returns the azimuth angle of a vector
+    returns the azimuth angle of a surface based on its normal vector
     '''
     if x == 0.0 and y == 0.0:
         return 0.0
@@ -30,7 +30,7 @@ def azimuthAngle(x,y,z):
 
 def tiltAngle(x,y,z):
     '''
-    returns the tilt angle of a vector
+    returns the tilt angle of a surface based on its normal vector
     '''
     return math.acos(z*1.0/math.sqrt(x*x+y*y+z*z))/math.pi*180.0
 
