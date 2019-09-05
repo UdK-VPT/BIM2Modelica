@@ -1,7 +1,7 @@
 within ModelicaModels.IFC2X3.SBT_Unit_Test_Cases;
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar 26 12:32:32 2019
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Thu Sep  5 15:17:14 2019
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model
@@ -22,7 +22,7 @@ within ModelicaModels.IFC2X3.SBT_Unit_Test_Cases;
 // used value: on
 /***************************************************************************************/
 model CSC1_SB
-  "Model of a building with its climate environment"
+  "Model of a building with its climate ambience"
   extends Modelica.Icons.Example;
 
   record Construction1
@@ -40,7 +40,7 @@ model CSC1_SB
     "Automatically generated multi-zone building model"
     extends BuildingSystems.Buildings.BaseClasses.BuildingTemplate(
     nZones = 3,
-    surfacesToAmbient(nSurfaces = 13),
+    surfacesToAmbience(nSurfaces = 13),
     nSurfacesSolid = 0,
     surfacesToSolids(nSurfaces = nSurfacesSolid),
     useAirPaths = false,
@@ -58,7 +58,7 @@ model CSC1_SB
       prescribedAirchange = true,
       heatSources = true,
       nHeatSources = 1,
-      height=3.0);
+      height=3.8000000000000003);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_2(
       V=375.28799999999995,
       nConstructions = 7,
@@ -66,7 +66,7 @@ model CSC1_SB
       prescribedAirchange = true,
       heatSources = true,
       nHeatSources = 1,
-      height=3.0);
+      height=3.8000000000000003);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_3(
       V=759.9999999999998,
       nConstructions = 7,
@@ -74,7 +74,7 @@ model CSC1_SB
       prescribedAirchange = true,
       heatSources = true,
       nHeatSources = 1,
-      height=3.0);
+      height=7.8);
 
     // Opaque construction elements
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_1(
@@ -227,19 +227,19 @@ model CSC1_SB
     connect(slab_5.toSurfacePort_1, zone_3.toConstructionPorts[7]);
 
     // connections between construction elements and environment
-    connect(wall_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[1]);
-    connect(wall_4.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[2]);
-    connect(wall_5.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[3]);
-    connect(slab_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[4]);
-    connect(wall_6.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[5]);
-    connect(wall_7.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[6]);
-    connect(wall_8.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[7]);
-    connect(slab_3.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[8]);
-    connect(wall_9.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[9]);
-    connect(wall_10.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[10]);
-    connect(wall_11.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[11]);
-    connect(wall_12.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[12]);
-    connect(slab_5.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[13]);
+    connect(wall_1.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[1]);
+    connect(wall_4.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[2]);
+    connect(wall_5.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[3]);
+    connect(slab_1.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[4]);
+    connect(wall_6.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[5]);
+    connect(wall_7.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[6]);
+    connect(wall_8.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[7]);
+    connect(slab_3.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[8]);
+    connect(wall_9.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[9]);
+    connect(wall_10.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[10]);
+    connect(wall_11.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[11]);
+    connect(wall_12.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[12]);
+    connect(slab_5.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[13]);
 
     // Heating set temperature of each thermal zones
     connect(zone_1.T_setHeating, T_setHeating[1]);
@@ -290,8 +290,8 @@ model CSC1_SB
     nZones = 3)
     annotation (Placement(transformation(extent={{10,-10},{30,10}})));
 
-  BuildingSystems.Buildings.Ambient environment(
-    nSurfaces = building.nSurfacesAmbient,
+  BuildingSystems.Buildings.Ambience ambience(
+    nSurfaces = building.nSurfacesAmbience,
     redeclare block WeatherData = BuildingSystems.Climate.WeatherDataMeteonorm.Germany_Berlin_Meteonorm_ASCII)
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
 
@@ -343,14 +343,14 @@ model CSC1_SB
       each radiationportion = 0.5)
       annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation=-90,origin={21,21})));
   equation
-    // building constructions to the environment
-    connect(environment.toSurfacePorts, building.toAmbientSurfacesPorts)
+    // building constructions to the ambience
+    connect(ambience.toSurfacePorts, building.toAmbienceSurfacesPorts)
       annotation (Line(points={{-12,4},{11,4}},color={0,255,0},smooth=Smooth.None));
-    connect(environment.toAirPorts, building.toAmbientAirPorts)
+    connect(ambience.toAirPorts, building.toAmbienceAirPorts)
       annotation (Line(points={{-12,-4},{11,-4}},color={85,170,255},smooth=Smooth.None));
-    connect(environment.TAirRef, building.TAirAmb)
+    connect(ambience.TAirRef, building.TAirAmb)
       annotation (Line(points={{-28.2,7},{-30,7},{-30,12},{-30,14},{26.2,14},{26.2,9.8}}, color={0,0,127}));
-    connect(environment.xAir, building.xAirAmb)
+    connect(ambience.xAir, building.xAirAmb)
       annotation (Line(points={{-28.2,5},{-32,5},{-32,16},{28.4,16},{28.4,9.8}}, color={0,0,127}));
 
     // Air change rate of each thermal zones

@@ -459,7 +459,7 @@ def getGeneratorData(buildingData):
     for con in eleAmbRel:
         conEleAmb.append(dmg.ConnectionElementAmbient(element=con[0],
                                                       elementPort=con[1],
-                                                      ambientPort=str(i)))
+                                                      ambiencePort=str(i)))
         i = i + 1
 
     ## Element <-> solid ambient

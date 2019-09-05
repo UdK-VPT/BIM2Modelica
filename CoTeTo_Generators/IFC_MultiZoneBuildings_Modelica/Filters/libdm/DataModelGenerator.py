@@ -60,10 +60,10 @@ class ConnectionElementZone:
         self.zonePort = zonePort
 
 class ConnectionElementAmbient:
-    def __init__(self, element, elementPort, ambientPort):
+    def __init__(self, element, elementPort, ambiencePort):
         self.element = element
         self.elementPort = elementPort
-        self.ambientPort = ambientPort
+        self.ambiencePort = ambiencePort
 
 class ConnectionElementSolid:
     def __init__(self, element, elementPort, solidPort):

@@ -56,3 +56,4 @@ files = [
 ('WW-3_SB.ifc','WW3_SB')]
 for f in files:
     gen.execute(('../'+f[0], ), f[1])
+print('All files have been generated')

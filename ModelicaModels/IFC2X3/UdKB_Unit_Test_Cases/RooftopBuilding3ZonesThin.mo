@@ -1,7 +1,7 @@
 within ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases;
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar 26 12:49:33 2019
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Thu Sep  5 15:23:14 2019
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model
@@ -22,7 +22,7 @@ within ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases;
 // used value: on
 /***************************************************************************************/
 model RooftopBuilding3ZonesThin
-  "Model of a building with its climate environment"
+  "Model of a building with its climate ambience"
   extends Modelica.Icons.Example;
 
   record Construction1
@@ -170,7 +170,7 @@ model RooftopBuilding3ZonesThin
     "Automatically generated multi-zone building model"
     extends BuildingSystems.Buildings.BaseClasses.BuildingTemplate(
     nZones = 7,
-    surfacesToAmbient(nSurfaces = 40),
+    surfacesToAmbience(nSurfaces = 40),
     nSurfacesSolid = 0,
     surfacesToSolids(nSurfaces = nSurfacesSolid),
     useAirPaths = false,
@@ -188,7 +188,7 @@ model RooftopBuilding3ZonesThin
       prescribedAirchange = true,
       heatSources = true,
       nHeatSources = 1,
-      height=3.0);
+      height=0.8);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_2(
       V=35.09808750210856,
       nConstructions = 13,
@@ -196,7 +196,7 @@ model RooftopBuilding3ZonesThin
       prescribedAirchange = true,
       heatSources = true,
       nHeatSources = 1,
-      height=3.0);
+      height=0.8);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_3(
       V=36.874553999999996,
       nConstructions = 8,
@@ -204,7 +204,7 @@ model RooftopBuilding3ZonesThin
       prescribedAirchange = true,
       heatSources = true,
       nHeatSources = 1,
-      height=3.0);
+      height=0.8);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_4(
       V=19.730265000000003,
       nConstructions = 7,
@@ -212,7 +212,7 @@ model RooftopBuilding3ZonesThin
       prescribedAirchange = true,
       heatSources = true,
       nHeatSources = 1,
-      height=3.0);
+      height=0.8);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_5(
       V=11.34642,
       nConstructions = 10,
@@ -220,7 +220,7 @@ model RooftopBuilding3ZonesThin
       prescribedAirchange = true,
       heatSources = true,
       nHeatSources = 1,
-      height=3.0);
+      height=0.785);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_6(
       V=8.257824,
       nConstructions = 11,
@@ -228,7 +228,7 @@ model RooftopBuilding3ZonesThin
       prescribedAirchange = true,
       heatSources = true,
       nHeatSources = 1,
-      height=3.0);
+      height=0.77);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_7(
       V=4.49466875,
       nConstructions = 7,
@@ -236,7 +236,7 @@ model RooftopBuilding3ZonesThin
       prescribedAirchange = true,
       heatSources = true,
       nHeatSources = 1,
-      height=3.0);
+      height=0.8);
 
     // Opaque construction elements
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_1(
@@ -722,46 +722,46 @@ model RooftopBuilding3ZonesThin
     connect(slab_24.toSurfacePort_1, zone_4.toConstructionPorts[7]);
 
     // connections between construction elements and environment
-    connect(wall_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[1]);
-    connect(wall_4.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[2]);
-    connect(wall_10.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[3]);
-    connect(slab_1.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[4]);
-    connect(slab_2.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[5]);
-    connect(slab_3.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[6]);
-    connect(slab_4.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[7]);
-    connect(slab_5.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[8]);
-    connect(slab_6.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[9]);
-    connect(slab_7.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[10]);
-    connect(slab_8.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[11]);
-    connect(wall_11.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[12]);
-    connect(wall_12.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[13]);
-    connect(wall_13.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[14]);
-    connect(wall_14.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[15]);
-    connect(slab_9.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[16]);
-    connect(slab_10.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[17]);
-    connect(slab_11.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[18]);
-    connect(slab_12.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[19]);
-    connect(slab_13.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[20]);
-    connect(slab_14.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[21]);
-    connect(slab_15.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[22]);
-    connect(slab_16.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[23]);
-    connect(wall_16.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[24]);
-    connect(slab_17.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[25]);
-    connect(slab_18.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[26]);
-    connect(slab_19.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[27]);
-    connect(slab_20.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[28]);
-    connect(wall_20.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[29]);
-    connect(slab_21.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[30]);
-    connect(slab_22.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[31]);
-    connect(slab_23.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[32]);
-    connect(slab_24.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[33]);
-    connect(slab_25.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[34]);
-    connect(slab_26.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[35]);
-    connect(slab_27.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[36]);
-    connect(slab_28.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[37]);
-    connect(slab_29.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[38]);
-    connect(slab_30.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[39]);
-    connect(slab_31.toSurfacePort_2, surfacesToAmbient.toConstructionPorts[40]);
+    connect(wall_1.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[1]);
+    connect(wall_4.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[2]);
+    connect(wall_10.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[3]);
+    connect(slab_1.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[4]);
+    connect(slab_2.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[5]);
+    connect(slab_3.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[6]);
+    connect(slab_4.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[7]);
+    connect(slab_5.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[8]);
+    connect(slab_6.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[9]);
+    connect(slab_7.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[10]);
+    connect(slab_8.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[11]);
+    connect(wall_11.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[12]);
+    connect(wall_12.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[13]);
+    connect(wall_13.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[14]);
+    connect(wall_14.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[15]);
+    connect(slab_9.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[16]);
+    connect(slab_10.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[17]);
+    connect(slab_11.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[18]);
+    connect(slab_12.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[19]);
+    connect(slab_13.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[20]);
+    connect(slab_14.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[21]);
+    connect(slab_15.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[22]);
+    connect(slab_16.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[23]);
+    connect(wall_16.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[24]);
+    connect(slab_17.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[25]);
+    connect(slab_18.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[26]);
+    connect(slab_19.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[27]);
+    connect(slab_20.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[28]);
+    connect(wall_20.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[29]);
+    connect(slab_21.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[30]);
+    connect(slab_22.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[31]);
+    connect(slab_23.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[32]);
+    connect(slab_24.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[33]);
+    connect(slab_25.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[34]);
+    connect(slab_26.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[35]);
+    connect(slab_27.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[36]);
+    connect(slab_28.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[37]);
+    connect(slab_29.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[38]);
+    connect(slab_30.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[39]);
+    connect(slab_31.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[40]);
 
     // Heating set temperature of each thermal zones
     connect(zone_1.T_setHeating, T_setHeating[1]);
@@ -848,8 +848,8 @@ model RooftopBuilding3ZonesThin
     nZones = 7)
     annotation (Placement(transformation(extent={{10,-10},{30,10}})));
 
-  BuildingSystems.Buildings.Ambient environment(
-    nSurfaces = building.nSurfacesAmbient,
+  BuildingSystems.Buildings.Ambience ambience(
+    nSurfaces = building.nSurfacesAmbience,
     redeclare block WeatherData = BuildingSystems.Climate.WeatherDataMeteonorm.Germany_Berlin_Meteonorm_ASCII)
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
 
@@ -949,14 +949,14 @@ model RooftopBuilding3ZonesThin
       each radiationportion = 0.5)
       annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation=-90,origin={21,21})));
   equation
-    // building constructions to the environment
-    connect(environment.toSurfacePorts, building.toAmbientSurfacesPorts)
+    // building constructions to the ambience
+    connect(ambience.toSurfacePorts, building.toAmbienceSurfacesPorts)
       annotation (Line(points={{-12,4},{11,4}},color={0,255,0},smooth=Smooth.None));
-    connect(environment.toAirPorts, building.toAmbientAirPorts)
+    connect(ambience.toAirPorts, building.toAmbienceAirPorts)
       annotation (Line(points={{-12,-4},{11,-4}},color={85,170,255},smooth=Smooth.None));
-    connect(environment.TAirRef, building.TAirAmb)
+    connect(ambience.TAirRef, building.TAirAmb)
       annotation (Line(points={{-28.2,7},{-30,7},{-30,12},{-30,14},{26.2,14},{26.2,9.8}}, color={0,0,127}));
-    connect(environment.xAir, building.xAirAmb)
+    connect(ambience.xAir, building.xAirAmb)
       annotation (Line(points={{-28.2,5},{-32,5},{-32,16},{28.4,16},{28.4,9.8}}, color={0,0,127}));
 
     // Air change rate of each thermal zones

@@ -31,7 +31,7 @@ within;
 // used value: ${generatorCfg['MODELICA_CODE_SWITCHES'].get('calcIdealLoads')}
 /***************************************************************************************/
 model ${data['buildingSystem'].name}
-  "Model of a building with its climate environment"
+  "Model of a building with its climate ambience"
   extends Modelica.Icons.Example;
 
   % for con in data['constructions']:
@@ -55,7 +55,7 @@ model ${data['buildingSystem'].name}
     "Automatically generated multi-zone building model"
     extends BuildingSystems.Buildings.BaseClasses.BuildingTemplate(
     nZones = ${len(data['zones'])},
-    surfacesToAmbient(nSurfaces = ${len(data['conEleAmb'])}),
+    surfacesToAmbience(nSurfaces = ${len(data['conEleAmb'])}),
     nSurfacesSolid = ${len(data['conEleSol'])},
     surfacesToSolids(nSurfaces = nSurfacesSolid),
     % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
@@ -205,7 +205,7 @@ for ele in data['elementsDoor']:
 
     // connections between construction elements and environment
   % for con in data['conEleAmb']:
-    connect(${con.element}.toSurfacePort_${con.elementPort}, surfacesToAmbient.toConstructionPorts[${con.ambientPort}]);
+    connect(${con.element}.toSurfacePort_${con.elementPort}, surfacesToAmbience.toConstructionPorts[${con.ambiencePort}]);
   % endfor
   % endif
   % if len(data['conEleSol']) > 0:
@@ -256,8 +256,8 @@ for ele in data['elementsDoor']:
 <% i = i + 2 %>\
   % endif
   % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-    connect(toAmbientAirpathPorts[${j}], ${ele.name}.port_a2);
-    connect(toAmbientAirpathPorts[${j+1}], ${ele.name}.port_b1);
+    connect(toAmbienceAirpathPorts[${j}], ${ele.name}.port_a2);
+    connect(toAmbienceAirpathPorts[${j+1}], ${ele.name}.port_b1);
 <% j = j + 2 %>\
   % endif
   % endfor
@@ -275,8 +275,8 @@ for ele in data['elementsDoor']:
 <% i = i + 2 %>\
   % endif
   % if ele.memberOfZone[0] == zone.name and ele.memberOfZone[1] == "AMB":
-    connect(toAmbientAirpathPorts[${j}], ${ele.name}.port_a2);
-    connect(toAmbientAirpathPorts[${j+1}], ${ele.name}.port_b1);
+    connect(toAmbienceAirpathPorts[${j}], ${ele.name}.port_a2);
+    connect(toAmbienceAirpathPorts[${j+1}], ${ele.name}.port_b1);
 <% j = j + 2 %>\
   % endif
   % endfor
@@ -341,11 +341,11 @@ for ele in data['elementsDoor']:
     nZones = ${len(data['zones'])})
     annotation (Placement(transformation(extent={{10,-10},{30,10}})));
 
-  BuildingSystems.Buildings.Ambient environment(
+  BuildingSystems.Buildings.Ambience ambience(
     % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
     nAirpaths = ${nAirpathsBuilding},
     % endif
-    nSurfaces = building.nSurfacesAmbient,
+    nSurfaces = building.nSurfacesAmbience,
     redeclare block WeatherData = ${data['buildingSystem'].location})
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
 
@@ -387,15 +387,15 @@ for ele in data['elementsDoor']:
       annotation (Placement(transformation(extent={{-5,-5},{5,5}},rotation=-90,origin={21,21})));
     % endif
   equation
-    // building constructions to the environment
-    connect(environment.toSurfacePorts, building.toAmbientSurfacesPorts)
+    // building constructions to the ambience
+    connect(ambience.toSurfacePorts, building.toAmbienceSurfacesPorts)
       annotation (Line(points={{-12,4},{11,4}},color={0,255,0},smooth=Smooth.None));
-    connect(environment.toAirPorts, building.toAmbientAirPorts)
+    connect(ambience.toAirPorts, building.toAmbienceAirPorts)
       annotation (Line(points={{-12,-4},{11,-4}},color={85,170,255},smooth=Smooth.None));
     % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('prescribedAirchange'):
-    connect(environment.TAirRef, building.TAirAmb)
+    connect(ambience.TAirRef, building.TAirAmb)
       annotation (Line(points={{-28.2,7},{-30,7},{-30,12},{-30,14},{26.2,14},{26.2,9.8}}, color={0,0,127}));
-    connect(environment.xAir, building.xAirAmb)
+    connect(ambience.xAir, building.xAirAmb)
       annotation (Line(points={{-28.2,5},{-32,5},{-32,16},{28.4,16},{28.4,9.8}}, color={0,0,127}));
 
     // Air change rate of each thermal zones
@@ -434,8 +434,8 @@ for ele in data['elementsDoor']:
     % endif
     % if generatorCfg['MODELICA_CODE_SWITCHES'].getboolean('useAirPaths'):
 
-    // Air paths between the windows and the environment
-    connect(environment.toAirpathPorts, building.toAmbientAirpathPorts)
+    // Air paths between the windows and the ambience
+    connect(ambience.toAirpathPorts, building.toAmbienceAirpathPorts)
       annotation (Line(points={{-17,9},{-17,14},{-34,14},{-34,-14},{40,-14},{40,-2},{29,-2}},color={0,127,255}));
     % endif
 
