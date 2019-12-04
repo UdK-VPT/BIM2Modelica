@@ -21,6 +21,7 @@ For compilation, [Visual Studio 2017 Community](https://www.visualstudio.com/dow
       `conda config --append channels DLR-SC`  
       `conda config --append channels pythonocc`  
       `conda config --append channels oce`  
+      `conda config --show channels`  
     * Then install pythonocc-core:  
       `conda install pythonocc-core`  
     * Check whether installation succeeded:  
