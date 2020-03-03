@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import OCC.gp
+import OCC.Core.gp
 
 class Layer(object):
     '''
@@ -46,7 +46,7 @@ class SpaceContainer(object):
         self.RelatedColumn = RelatedColumn
         self.RelatedVirtual = RelatedVirtual
         self.SurroundingSpaces = []  # Not used so far...
-        self.Position = OCC.gp.gp_Pnt(0, 0, 0)
+        self.Position = OCC.Core.gp.gp_Pnt(0, 0, 0)
 
 
 class BoundaryContainer(object):
@@ -71,7 +71,7 @@ class BoundaryContainer(object):
         self.thickness = [0]  # Thickness of the wall (also for windows and doors!, ...)
         self.Area = area  # Area in m2
         self.Normal = normal  # Normal vector (gp_Dir class). Normal should point out of the volume
-        self.Position = OCC.gp.gp_Pnt(0, 0, 0)
+        self.Position = OCC.Core.gp.gp_Pnt(0, 0, 0)
         self.Height = 0
         self.Width = 0
         self.Profile = []  # Ordered points of the the outer profile of the boundary face.
@@ -80,12 +80,12 @@ class BoundaryContainer(object):
 
 class Mesh(object):
     def __init__(self, shape):
-        from OCC.BRep import BRep_Tool
-        from OCC.BRepMesh import BRepMesh_IncrementalMesh
-        from OCC.TopAbs import TopAbs_FACE, TopAbs_VERTEX
-        from OCC.TopExp import TopExp_Explorer
-        from OCC.TopLoc import TopLoc_Location
-        from OCC.TopoDS import topods_Face, topods_Vertex, TopoDS_Iterator
+        from OCC.Core.BRep import BRep_Tool
+        from OCC.Core.BRepMesh import BRepMesh_IncrementalMesh
+        from OCC.Core.TopAbs import TopAbs_FACE, TopAbs_VERTEX
+        from OCC.Core.TopExp import TopExp_Explorer
+        from OCC.Core.TopLoc import TopLoc_Location
+        from OCC.Core.TopoDS import topods_Face, topods_Vertex, TopoDS_Iterator
 
         vertices = []  # a (nested) list of vec3
         triangles = []  # a (flat) list of integers
@@ -103,7 +103,7 @@ class Mesh(object):
         while expFac.More():
             face = topods_Face(expFac.Current())
             location = TopLoc_Location()
-            facing = (bt.Triangulation(face, location)).GetObject()
+            facing = (bt.Triangulation(face, location))
             try:
                 tri = facing.Triangles()
                 nTri = facing.NbTriangles()

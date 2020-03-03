@@ -1,7 +1,7 @@
 within ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases;
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Thu Sep  5 15:23:14 2019
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar  3 21:12:09 2020
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model
@@ -243,14 +243,14 @@ model RooftopBuilding3ZonesThin
       redeclare Construction4 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.675,
       width = 0.9550596799999997);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_2(
       redeclare Construction3 constructionData,
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.675,
       width = 0.41000000000000014);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_3(
@@ -273,12 +273,12 @@ model RooftopBuilding3ZonesThin
       angleDegTil = 90.0,
       AInnSur = 0.0,
       height = 2.675,
-      width = 0.09999999999999977);
+      width = 0.10000000000000014);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_6(
       redeclare Construction9 constructionData,
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.675,
       width = 1.9000000000000004);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_7(
@@ -306,21 +306,21 @@ model RooftopBuilding3ZonesThin
       redeclare Construction4 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.675,
       width = 0.9550596799999997);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_1(
       redeclare Construction10 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 0.7949999999999985,
       width = 0.9550597000000001);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_2(
       redeclare Construction10 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 0.8750597,
       width = 8.105999999999998);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_3(
@@ -355,7 +355,7 @@ model RooftopBuilding3ZonesThin
       redeclare Construction10 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 0.5599999999999996,
       width = 0.9550597000000001);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_8(
@@ -376,7 +376,7 @@ model RooftopBuilding3ZonesThin
       redeclare Construction4 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.675,
       width = 0.6971522700000025);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_13(
@@ -390,7 +390,7 @@ model RooftopBuilding3ZonesThin
       redeclare Construction6 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.675,
       width = 0.1349999999999998);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_15(
@@ -399,7 +399,7 @@ model RooftopBuilding3ZonesThin
       angleDegTil = 90.0,
       AInnSur = 0.0,
       height = 2.675,
-      width = 1.9000000000000017);
+      width = 1.9000000000000004);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_9(
       redeclare Construction10 constructionData,
       angleDegAzi = 0.0,
@@ -460,7 +460,7 @@ model RooftopBuilding3ZonesThin
       redeclare Construction4 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.675,
       width = 2.28);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_17(
@@ -516,7 +516,7 @@ model RooftopBuilding3ZonesThin
       redeclare Construction4 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.675,
       width = 2.2799999999999994);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_21(
@@ -565,7 +565,7 @@ model RooftopBuilding3ZonesThin
       redeclare Construction7 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.69,
       width = 1.2799999999999998);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_24(
@@ -579,14 +579,14 @@ model RooftopBuilding3ZonesThin
       redeclare Construction6 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.675,
-      width = 0.050000000000000266);
+      width = 0.050000000000000044);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_25(
       redeclare Construction13 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 1.65,
       width = 1.77);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_26(
@@ -600,14 +600,14 @@ model RooftopBuilding3ZonesThin
       redeclare Construction13 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 0.1299999999999999,
       width = 1.65);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_26(
       redeclare Construction8 constructionData,
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.675,
       width = 2.385);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_28(
@@ -621,14 +621,14 @@ model RooftopBuilding3ZonesThin
       redeclare Construction11 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 0.16500000000000004,
       width = 0.7799999999999998);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_30(
       redeclare Construction11 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 0.5,
       width = 2.385);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_31(

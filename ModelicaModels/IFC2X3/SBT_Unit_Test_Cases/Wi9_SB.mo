@@ -1,7 +1,7 @@
 within ModelicaModels.IFC2X3.SBT_Unit_Test_Cases;
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Thu Sep  5 15:20:09 2019
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar  3 21:09:27 2020
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model

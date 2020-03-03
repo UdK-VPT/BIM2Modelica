@@ -2,30 +2,30 @@
 
 import math
 
-import OCC.Bnd
-import OCC.BRep
-from OCC.BRep import BRep_Builder, BRep_Tool
-import OCC.BRepAlgoAPI
-import OCC.BRepBndLib
-import OCC.BRepBuilderAPI
-import OCC.BRepExtrema
-import OCC.BRepGProp
-from OCC.BRepMesh import BRepMesh_IncrementalMesh
-import OCC.BRepPrimAPI
-import OCC.BRepTools
-import OCC.Geom
-import OCC.GeomLib
-import OCC.GeomLProp
-import OCC.GProp
-import OCC.gp
-import OCC.ShapeAnalysis
-import OCC.TopAbs
-from OCC.TopAbs import TopAbs_FACE
-from OCC.TopLoc import TopLoc_Location
-import OCC.TopExp
-from OCC.TopExp import TopExp_Explorer
-import OCC.TopoDS
-from OCC.TopoDS import TopoDS_Compound, topods_Edge, TopoDS_Face, topods_Face
+import OCC.Core.Bnd
+import OCC.Core.BRep
+from OCC.Core.BRep import BRep_Builder, BRep_Tool
+import OCC.Core.BRepAlgoAPI
+import OCC.Core.BRepBndLib
+import OCC.Core.BRepBuilderAPI
+import OCC.Core.BRepExtrema
+import OCC.Core.BRepGProp
+from OCC.Core.BRepMesh import BRepMesh_IncrementalMesh
+import OCC.Core.BRepPrimAPI
+import OCC.Core.BRepTools
+import OCC.Core.Geom
+import OCC.Core.GeomLib
+import OCC.Core.GeomLProp
+import OCC.Core.GProp
+import OCC.Core.gp
+import OCC.Core.ShapeAnalysis
+import OCC.Core.TopAbs
+from OCC.Core.TopAbs import TopAbs_FACE
+from OCC.Core.TopLoc import TopLoc_Location
+import OCC.Core.TopExp
+from OCC.Core.TopExp import TopExp_Explorer
+import OCC.Core.TopoDS
+from OCC.Core.TopoDS import TopoDS_Compound, topods_Edge, TopoDS_Face, topods_Face
 
 import ifcopenshell
 import ifcopenshell.geom
@@ -119,31 +119,31 @@ def ElementFaceToThickness(mylist):
             for some face.. It might be convinient to check if the at a certain distance parallel
             face found is the correct one.
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     element_dict = {}
     problematicElement = []
     for element in mylist:
         shape = element[1]
-        exp0 = OCC.TopExp.TopExp_Explorer(shape, OCC.TopAbs.TopAbs_SOLID)
+        exp0 = OCC.Core.TopExp.TopExp_Explorer(shape, OCC.Core.TopAbs.TopAbs_SOLID)
         aux = {}
         while exp0.More():
-            exp = OCC.TopExp.TopExp_Explorer(exp0.Current(), OCC.TopAbs.TopAbs_FACE)
+            exp = OCC.Core.TopExp.TopExp_Explorer(exp0.Current(), OCC.Core.TopAbs.TopAbs_FACE)
             while exp.More():
                 flag = False
-                face1 = OCC.TopoDS.topods.Face(exp.Current())
-                surf1 = OCC.BRep.BRep_Tool.Surface(face1)
-                uvbounds1 = OCC.BRepTools.breptools_UVBounds(face1)
-                curvature1 = OCC.GeomLProp.GeomLProp_SLProps(
+                face1 = OCC.Core.TopoDS.topods.Face(exp.Current())
+                surf1 = OCC.Core.BRep.BRep_Tool.Surface(face1)
+                uvbounds1 = OCC.Core.BRepTools.breptools_UVBounds(face1)
+                curvature1 = OCC.Core.GeomLProp.GeomLProp_SLProps(
                     surf1, uvbounds1[0], uvbounds1[2], 1, 1e-6)
-                OCC.BRepGProp.brepgprop_SurfaceProperties(face1, props)
-                exp2 = OCC.TopExp.TopExp_Explorer(exp0.Current(), OCC.TopAbs.TopAbs_FACE)
+                OCC.Core.BRepGProp.brepgprop_SurfaceProperties(face1, props)
+                exp2 = OCC.Core.TopExp.TopExp_Explorer(exp0.Current(), OCC.Core.TopAbs.TopAbs_FACE)
                 while exp2.More():
-                    face2 = OCC.TopoDS.topods.Face(exp2.Current())
-                    extrema = OCC.BRepExtrema.BRepExtrema_ExtFF(face1, face2)
-                    if OCC.BRepExtrema.BRepExtrema_ExtFF.IsParallel(extrema):
-                        if OCC.BRepExtrema.BRepExtrema_ExtFF.SquareDistance(extrema, 1) > 0:
+                    face2 = OCC.Core.TopoDS.topods.Face(exp2.Current())
+                    extrema = OCC.Core.BRepExtrema.BRepExtrema_ExtFF(face1, face2)
+                    if OCC.Core.BRepExtrema.BRepExtrema_ExtFF.IsParallel(extrema):
+                        if OCC.Core.BRepExtrema.BRepExtrema_ExtFF.SquareDistance(extrema, 1) > 0:
                             thickness = math.sqrt(
-                                OCC.BRepExtrema.BRepExtrema_ExtFF.SquareDistance(extrema, 1))
+                                OCC.Core.BRepExtrema.BRepExtrema_ExtFF.SquareDistance(extrema, 1))
                             aux[exp.Current()] = [thickness, curvature1.Normal()]
                             flag = True
                     exp2.Next()
@@ -191,7 +191,7 @@ def initSpaceContainer(ifc_file, black_list_spaces):
                               including face area and normal vector are used
                               to initialize the BoundaryContainer.
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     ListOfSpaceContainer1 = []
     ListOfSpaceContainer2 = []
     spaces = ifc_file.by_type("IfcSpace")
@@ -200,11 +200,11 @@ def initSpaceContainer(ifc_file, black_list_spaces):
             addBoundaries = []
             volume_shape = ifcopenshell.geom.create_shape(settings, space).geometry
             # Use TopAbs_COMPOUND instead of ..SOLID (More generic)
-            exp = OCC.TopExp.TopExp_Explorer(volume_shape, OCC.TopAbs.TopAbs_COMPOUND)
+            exp = OCC.Core.TopExp.TopExp_Explorer(volume_shape, OCC.Core.TopAbs.TopAbs_COMPOUND)
             i = 0
             while exp.More():
-                # solid = OCC.TopoDS.topods.Solid(exp.Current())
-                OCC.BRepGProp.brepgprop_VolumeProperties(exp.Current(), props)
+                # solid = OCC.Core.TopoDS.topods.Solid(exp.Current())
+                OCC.Core.BRepGProp.brepgprop_VolumeProperties(exp.Current(), props)
                 space_volume = props.Mass()
                 i = i + 1
                 exp.Next()
@@ -213,17 +213,17 @@ def initSpaceContainer(ifc_file, black_list_spaces):
                 # briefly checked.
                 print("Space ", space.GlobalId, "is composed of more than 1 voume, namely: ",
                       i, "( and is not correctly handled)")
-            exp = OCC.TopExp.TopExp_Explorer(volume_shape, OCC.TopAbs.TopAbs_FACE)
+            exp = OCC.Core.TopExp.TopExp_Explorer(volume_shape, OCC.Core.TopAbs.TopAbs_FACE)
             while exp.More():
-                face = OCC.TopoDS.topods.Face(exp.Current())
-                surf = OCC.BRep.BRep_Tool.Surface(face)
-                uvbounds = OCC.BRepTools.breptools.UVBounds(face)
-                curvature = OCC.GeomLProp.GeomLProp_SLProps(surf,
+                face = OCC.Core.TopoDS.topods.Face(exp.Current())
+                surf = OCC.Core.BRep.BRep_Tool.Surface(face)
+                uvbounds = OCC.Core.BRepTools.breptools.UVBounds(face)
+                curvature = OCC.Core.GeomLProp.GeomLProp_SLProps(surf,
                                                             uvbounds[0],
                                                             uvbounds[2],
                                                             1,
                                                             1e-6)
-                OCC.BRepGProp.brepgprop_SurfaceProperties(face, props)
+                OCC.Core.BRepGProp.brepgprop_SurfaceProperties(face, props)
                 B = IfcLib.DataClasses.BoundaryContainer(face, props.Mass(), curvature.Normal())
                 # Normal vectors (curvature.Normal()) of Faces normally point into the
                 # inner volume! *Checked for walls and spaces
@@ -241,13 +241,14 @@ def commonFace_andArea(shape1, shape2):
     A common shape is obtained from shape1 and shape2 and returned together with the area in m2.
     If there is no such common shape then props.Mass() = 0.0
     """
-    props = OCC.GProp.GProp_GProps()
-    common = OCC.BRepAlgoAPI.BRepAlgoAPI_Common(shape1, shape2)
-    if common.BuilderCanWork():
-        common_shape = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(common)
-        OCC.BRepGProp.brepgprop_SurfaceProperties(common_shape, props)
+    props = OCC.Core.GProp.GProp_GProps()
+    common = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Common(shape1, shape2)
+    #if common.BuilderCanWork():
+    try:       
+        common_shape = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(common)
+        OCC.Core.BRepGProp.brepgprop_SurfaceProperties(common_shape, props)
         return common_shape, props.Mass(), True
-    else:
+    except:
         print("Common shape cannot be created *BRepBuilderAPI_MakeShape would not work... ")
         return shape1, 0.0, False
 
@@ -259,15 +260,17 @@ def commonFace_andArea_rebuildedFace(shape1, shape2):
     is obtained and returned together with its area. Again, if there is no such common
     shape then props.Mass() = 0.0
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     corrected_shape1 = RebuildFace(shape1)[0]
     corrected_shape2 = RebuildFace(shape2)[0]
-    common = OCC.BRepAlgoAPI.BRepAlgoAPI_Common(corrected_shape1, corrected_shape2)
-    if common.BuilderCanWork():
-        common_shape = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(common)
-        OCC.BRepGProp.brepgprop_SurfaceProperties(common_shape, props)
+    common = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Common(corrected_shape1, corrected_shape2)
+    #if common.BuilderCanWork():
+    try:
+        common_shape = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(common)
+        OCC.Core.BRepGProp.brepgprop_SurfaceProperties(common_shape, props)
         return common_shape, props.Mass(), True
-    else:
+    #else:
+    except:
         # print("Common shape cannot be created *BRepBuilderAPI_MakeShape would not work...")
         return shape1, 0.0, False
 
@@ -276,13 +279,15 @@ def CuttedShape(shape1, shape2):
     """
     Shape2 cuts shape1. Resultant face and its area is returned.
     """
-    props = OCC.GProp.GProp_GProps()
-    cut = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(shape1, shape2)
-    if cut.BuilderCanWork():
-        cut_shape = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cut)
-        OCC.BRepGProp.brepgprop_SurfaceProperties(cut_shape, props)
+    props = OCC.Core.GProp.GProp_GProps()
+    cut = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Cut(shape1, shape2)
+    #if cut.BuilderCanWork():
+    try:
+        cut_shape = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cut)
+        OCC.Core.BRepGProp.brepgprop_SurfaceProperties(cut_shape, props)
         return cut_shape, props.Mass(), True
-    else:
+    #else:
+    except:
         return shape1, 0, False
 
 
@@ -298,7 +303,7 @@ def RelatedElementsWalls(Spaces, ifc_file, WallInfo, SlabsInfo):
     An updated list of SpaceContainer as well as a black list of walls is returned.
     The black list contains walls that are inside of a volume (internal walls)
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     all_walls = ifc_file.by_type("IfcWall")
     black_list_walls = []  # add internal IfcWall to a black list
     ToBeRepairWall = []  # add IfcWall that collide to an IfcSpace in this list
@@ -318,10 +323,10 @@ def RelatedElementsWalls(Spaces, ifc_file, WallInfo, SlabsInfo):
         for w in all_walls:
             if w.GlobalId in list(WallInfo.keys()):
                 wall_shape = ifcopenshell.geom.create_shape(settings, w).geometry
-                OCC.BRepGProp.brepgprop_VolumeProperties(wall_shape, props)
+                OCC.Core.BRepGProp.brepgprop_VolumeProperties(wall_shape, props)
                 wall_volume = props.Mass()
                 cmn_shape, area, BuilderCanWork = commonFace_andArea(wall_shape, space_volume)
-                OCC.BRepGProp.brepgprop_VolumeProperties(cmn_shape, props)
+                OCC.Core.BRepGProp.brepgprop_VolumeProperties(cmn_shape, props)
                 if props.Mass() > wall_volume * 0.9:
                     black_list_walls.append(w.GlobalId)
                 elif props.Mass() > 0.01:
@@ -332,10 +337,10 @@ def RelatedElementsWalls(Spaces, ifc_file, WallInfo, SlabsInfo):
         for s in all_slabs:
             if s.GlobalId in list(SlabsInfo.keys()):
                 slab_shape = ifcopenshell.geom.create_shape(settings, s).geometry
-                OCC.BRepGProp.brepgprop_VolumeProperties(slab_shape, props)
+                OCC.Core.BRepGProp.brepgprop_VolumeProperties(slab_shape, props)
                 slab_volume = props.Mass()
                 cmn_shape, area, BuilderCanWork = commonFace_andArea(slab_shape, space_volume)
-                OCC.BRepGProp.brepgprop_VolumeProperties(cmn_shape, props)
+                OCC.Core.BRepGProp.brepgprop_VolumeProperties(cmn_shape, props)
                 if props.Mass() > slab_volume * 0.9:
                     black_list_slabs.append(s.GlobalId)
                 elif props.Mass() > 0.0001:
@@ -411,14 +416,14 @@ def SecondLvLBoundariesWalls(Spaces, WallInfo, SlabsInfo):
     attached to an opening (window or door) the thickness of the wall that contains
     this openings is used!
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     for sp in Spaces:
         addBoundaries = []
         for wall_key in sp.RelatedWall:
             for wall_shape in sp.RelatedWall[wall_key]:
-                face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                    wall_shape[0], OCC.TopAbs.TopAbs_FACE).Current())
-                OCC.BRepGProp.brepgprop_SurfaceProperties(face, props)
+                face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                    wall_shape[0], OCC.Core.TopAbs.TopAbs_FACE).Current())
+                OCC.Core.BRepGProp.brepgprop_SurfaceProperties(face, props)
                 B = IfcLib.DataClasses.BoundaryContainer(
                     face, props.Mass(), WallInfo[wall_key][wall_shape[1]][1])
                 B.RelatedBuildingElement = wall_key
@@ -426,12 +431,12 @@ def SecondLvLBoundariesWalls(Spaces, WallInfo, SlabsInfo):
                 addBoundaries.append(B)
         for slab_key in sp.RelatedSlab:
             for slab_shape in sp.RelatedSlab[slab_key]:
-                face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                    slab_shape[0], OCC.TopAbs.TopAbs_FACE).Current())
-                surf = OCC.BRep.BRep_Tool.Surface(face)
-                uvbounds = OCC.BRepTools.breptools.UVBounds(face)
-                curvature = OCC.GeomLProp.GeomLProp_SLProps(surf, uvbounds[0], uvbounds[2], 1, 1e-6)
-                OCC.BRepGProp.brepgprop_SurfaceProperties(face, props)
+                face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                    slab_shape[0], OCC.Core.TopAbs.TopAbs_FACE).Current())
+                surf = OCC.Core.BRep.BRep_Tool.Surface(face)
+                uvbounds = OCC.Core.BRepTools.breptools.UVBounds(face)
+                curvature = OCC.Core.GeomLProp.GeomLProp_SLProps(surf, uvbounds[0], uvbounds[2], 1, 1e-6)
+                OCC.Core.BRepGProp.brepgprop_SurfaceProperties(face, props)
                 B = IfcLib.DataClasses.BoundaryContainer(face, props.Mass(), curvature.Normal())
                 B.RelatedBuildingElement = slab_key
                 B.thickness = [SlabsInfo[slab_key][slab_shape[1]][0]]
@@ -483,7 +488,7 @@ def RelatedElements(Spaces, ifc_file, WallInfo, ColumnsInfo):
     (IfcRelVoidsElement) to the building element that fills the void (IfcDoor, IfcWindow, ...)
     is created and returned.
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     VoidsElement = ifc_file.by_type("IfcRelVoidsElement")
     FillsElement = ifc_file.by_type("IfcRelFillsElement")
     # key = If of opening element, value = [shape,instance of door/window..., instance of wall]
@@ -575,9 +580,9 @@ def RelatedElements(Spaces, ifc_file, WallInfo, ColumnsInfo):
                         # opening volume might interact with more than one space-Face.
                         # we filter to the face attached to the wall with the opening.
                         if element.RelatedOpeningElement.GlobalId in list(RelatedOpening.keys()):
-                            OCC.BRepGProp.brepgprop_SurfaceProperties(cmn_shape, props)
+                            OCC.Core.BRepGProp.brepgprop_SurfaceProperties(cmn_shape, props)
                             A_new = props.Mass()
-                            OCC.BRepGProp.brepgprop_SurfaceProperties(
+                            OCC.Core.BRepGProp.brepgprop_SurfaceProperties(
                                 RelatedOpening[element.RelatedOpeningElement.GlobalId], props)
                             A = props.Mass()
                             if A_new > A:
@@ -625,7 +630,7 @@ def OverlappedOpenings(Spaces):
     In the worst (not expected) case two boundaries might have the same size. In that case
     another check would be necessary...
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     for sp in Spaces:
         Discard = []
         RelatedOpening_new = {}
@@ -635,9 +640,9 @@ def OverlappedOpenings(Spaces):
                     cmn_shape, area, BuilderCanWork = commonFace_andArea(
                         opening_shape2, opening_shape)
                     if area != 0:
-                        OCC.BRepGProp.brepgprop_SurfaceProperties(opening_shape, props)
+                        OCC.Core.BRepGProp.brepgprop_SurfaceProperties(opening_shape, props)
                         A1 = props.Mass()
-                        OCC.BRepGProp.brepgprop_SurfaceProperties(opening_shape2, props)
+                        OCC.Core.BRepGProp.brepgprop_SurfaceProperties(opening_shape2, props)
                         A2 = props.Mass()
                         if A1 > A2:
                             Discard.append(opening_key2)
@@ -695,16 +700,16 @@ def SecondLvLBoundaries(Spaces, SpacesW, WallInfo, OpeningsDict, SlabsInfo, Colu
     this openings is used!
     """
     # occ_display = ifcopenshell.geom.utils.initialize_display()
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     for sp in Spaces:
         addBoundaries = []
         for sp2 in SpacesW:
             if sp.Space.GlobalId == sp2.Space.GlobalId:  # probably superfluos -if clause-
                 for wall_key in sp2.RelatedWall:
                     for wall_shape in sp2.RelatedWall[wall_key]:
-                        face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                            wall_shape[0], OCC.TopAbs.TopAbs_FACE).Current())
-                        OCC.BRepGProp.brepgprop_SurfaceProperties(face, props)
+                        face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                            wall_shape[0], OCC.Core.TopAbs.TopAbs_FACE).Current())
+                        OCC.Core.BRepGProp.brepgprop_SurfaceProperties(face, props)
                         bou = IfcLib.DataClasses.BoundaryContainer(
                             face, props.Mass(), WallInfo[wall_key][wall_shape[1]][1])
                         bou.RelatedBuildingElement = wall_key
@@ -712,12 +717,12 @@ def SecondLvLBoundaries(Spaces, SpacesW, WallInfo, OpeningsDict, SlabsInfo, Colu
                         addBoundaries.append(bou)
                 for slab_key in sp2.RelatedSlab:
                     for slab_shape in sp2.RelatedSlab[slab_key]:
-                        face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                            slab_shape[0], OCC.TopAbs.TopAbs_FACE).Current())
-                        OCC.BRepGProp.brepgprop_SurfaceProperties(face, props)
-                        uvbounds = OCC.BRepTools.breptools.UVBounds(face)
-                        surf = OCC.BRep.BRep_Tool.Surface(face)
-                        curvature = OCC.GeomLProp.GeomLProp_SLProps(
+                        face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                            slab_shape[0], OCC.Core.TopAbs.TopAbs_FACE).Current())
+                        OCC.Core.BRepGProp.brepgprop_SurfaceProperties(face, props)
+                        uvbounds = OCC.Core.BRepTools.breptools.UVBounds(face)
+                        surf = OCC.Core.BRep.BRep_Tool.Surface(face)
+                        curvature = OCC.Core.GeomLProp.GeomLProp_SLProps(
                             surf, uvbounds[0], uvbounds[2], 1, 1e-6)
                         bou = IfcLib.DataClasses.BoundaryContainer(
                             face, props.Mass(), curvature.Normal())
@@ -728,12 +733,12 @@ def SecondLvLBoundaries(Spaces, SpacesW, WallInfo, OpeningsDict, SlabsInfo, Colu
                 sp.RelatedSlab = sp2.RelatedSlab
                 sp.RelatedWall = sp2.RelatedWall
         for opening_key, opening_shape in list(sp.RelatedOpening.items()):
-            face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                opening_shape, OCC.TopAbs.TopAbs_FACE).Current())
-            surf = OCC.BRep.BRep_Tool.Surface(face)
-            uvbounds = OCC.BRepTools.breptools.UVBounds(face)
-            curvature = OCC.GeomLProp.GeomLProp_SLProps(surf, uvbounds[0], uvbounds[2], 1, 1e-6)
-            OCC.BRepGProp.brepgprop_SurfaceProperties(face, props)
+            face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                opening_shape, OCC.Core.TopAbs.TopAbs_FACE).Current())
+            surf = OCC.Core.BRep.BRep_Tool.Surface(face)
+            uvbounds = OCC.Core.BRepTools.breptools.UVBounds(face)
+            curvature = OCC.Core.GeomLProp.GeomLProp_SLProps(surf, uvbounds[0], uvbounds[2], 1, 1e-6)
+            OCC.Core.BRepGProp.brepgprop_SurfaceProperties(face, props)
             if opening_key in list(OpeningsDict.keys()):
                 bou = IfcLib.DataClasses.BoundaryContainer(face, props.Mass(), curvature.Normal())
                 bou.RelatedBuildingElement = OpeningsDict[opening_key][1].GlobalId
@@ -745,24 +750,24 @@ def SecondLvLBoundaries(Spaces, SpacesW, WallInfo, OpeningsDict, SlabsInfo, Colu
             addBoundaries.append(bou)
         for spaceId in sp.RelatedSpace:
             for shape in sp.RelatedSpace[spaceId]:
-                face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                    shape[0], OCC.TopAbs.TopAbs_FACE).Current())
-                surf = OCC.BRep.BRep_Tool.Surface(face)
-                uvbounds = OCC.BRepTools.breptools.UVBounds(face)
-                curvature = OCC.GeomLProp.GeomLProp_SLProps(surf, uvbounds[0], uvbounds[2], 1, 1e-6)
-                OCC.BRepGProp.brepgprop_SurfaceProperties(face, props)
+                face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                    shape[0], OCC.Core.TopAbs.TopAbs_FACE).Current())
+                surf = OCC.Core.BRep.BRep_Tool.Surface(face)
+                uvbounds = OCC.Core.BRepTools.breptools.UVBounds(face)
+                curvature = OCC.Core.GeomLProp.GeomLProp_SLProps(surf, uvbounds[0], uvbounds[2], 1, 1e-6)
+                OCC.Core.BRepGProp.brepgprop_SurfaceProperties(face, props)
                 bou = IfcLib.DataClasses.BoundaryContainer(face, props.Mass(), curvature.Normal())
                 bou.RelatedBuildingElement = "VIRTUAL"
                 bou.thickness = [0]
                 addBoundaries.append(bou)
         for column_key in sp.RelatedColumn:
             for shape in sp.RelatedColumn[column_key]:
-                face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                    shape[0], OCC.TopAbs.TopAbs_FACE).Current())
-                surf = OCC.BRep.BRep_Tool.Surface(face)
-                uvbounds = OCC.BRepTools.breptools.UVBounds(face)
-                curvature = OCC.GeomLProp.GeomLProp_SLProps(surf, uvbounds[0], uvbounds[2], 1, 1e-6)
-                OCC.BRepGProp.brepgprop_SurfaceProperties(face, props)
+                face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                    shape[0], OCC.Core.TopAbs.TopAbs_FACE).Current())
+                surf = OCC.Core.BRep.BRep_Tool.Surface(face)
+                uvbounds = OCC.Core.BRepTools.breptools.UVBounds(face)
+                curvature = OCC.Core.GeomLProp.GeomLProp_SLProps(surf, uvbounds[0], uvbounds[2], 1, 1e-6)
+                OCC.Core.BRepGProp.brepgprop_SurfaceProperties(face, props)
                 bou = IfcLib.DataClasses.BoundaryContainer(face, props.Mass(), curvature.Normal())
                 bou.RelatedBuildingElement = column_key
                 bou.thickness = [ColumnsInfo[column_key][shape[1]][0]]
@@ -786,17 +791,17 @@ def RebuildFace(shape, round_degree=4):
     # make sure round_degree is an int.
     round_degree = int(round_degree)
     # Make sure the face is of the type TopoDS_Face.
-    face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-        shape, OCC.TopAbs.TopAbs_FACE).Current())
-    surf = OCC.BRep.BRep_Tool.Surface(face)
-    flag = OCC.GeomLib.GeomLib_IsPlanarSurface(surf)
+    face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+        shape, OCC.Core.TopAbs.TopAbs_FACE).Current())
+    surf = OCC.Core.BRep.BRep_Tool.Surface(face)
+    flag = OCC.Core.GeomLib.GeomLib_IsPlanarSurface(surf)
     profiles = []
     pointlist = []
     gaps = []
     Resolution = 1e-12
     if flag.IsPlanar():  # Just planar faces are treated.
-        props = OCC.GProp.GProp_GProps()
-        exp = OCC.TopExp.TopExp_Explorer(shape, OCC.TopAbs.TopAbs_EDGE)
+        props = OCC.Core.GProp.GProp_GProps()
+        exp = OCC.Core.TopExp.TopExp_Explorer(shape, OCC.Core.TopAbs.TopAbs_EDGE)
         list_edges = []
         curvature_flag = False
         # Extract edges of the face
@@ -804,11 +809,11 @@ def RebuildFace(shape, round_degree=4):
             # Check curvature of the edges: Face with curved edges cannot be handle it so far.
             # In this case, process will be interrupted and RebuildFace will return
             # the original face.
-            E = OCC.TopoDS.topods.Edge(exp.Current())
-            H = OCC.BRep.BRep_Tool.Curve(E)
+            E = OCC.Core.TopoDS.topods.Edge(exp.Current())
+            H = OCC.Core.BRep.BRep_Tool.Curve(E)
             U = 0.5 * H[1] + 0.5 * H[2]
-            prop = OCC.GeomLProp.GeomLProp_CLProps(H[0], U, 2, Resolution)
-            curvature = OCC.GeomLProp.GeomLProp_CLProps.Curvature(prop)
+            prop = OCC.Core.GeomLProp.GeomLProp_CLProps(H[0], U, 2, Resolution)
+            curvature = OCC.Core.GeomLProp.GeomLProp_CLProps.Curvature(prop)
             if curvature != 0.0:
                 curvature_flag = True
             list_edges.append(exp.Current())
@@ -819,7 +824,7 @@ def RebuildFace(shape, round_degree=4):
             # single edge was present, starting and ending in the same point.
             decomposed_edge = []  # Extract vertex from edges
             for edge in list_edges:
-                exp = OCC.TopExp.TopExp_Explorer(edge, OCC.TopAbs.TopAbs_VERTEX)
+                exp = OCC.Core.TopExp.TopExp_Explorer(edge, OCC.Core.TopAbs.TopAbs_VERTEX)
                 list_v = []
                 while exp.More():
                     list_v.append(exp.Current())
@@ -828,8 +833,8 @@ def RebuildFace(shape, round_degree=4):
 
             list_gp = []  # Convert Vertex to gp_pnt
             for edge_v in decomposed_edge:
-                list_gp.append([OCC.BRep.BRep_Tool_Pnt(OCC.TopoDS.topods.Vertex(edge_v[0])),
-                                OCC.BRep.BRep_Tool_Pnt(OCC.TopoDS.topods.Vertex(edge_v[1]))])
+                list_gp.append([OCC.Core.BRep.BRep_Tool_Pnt(OCC.Core.TopoDS.topods.Vertex(edge_v[0])),
+                                OCC.Core.BRep.BRep_Tool_Pnt(OCC.Core.TopoDS.topods.Vertex(edge_v[1]))])
             # Round point (vertex) coordinates
             for gp in list_gp:
                 for p in gp:
@@ -884,7 +889,7 @@ def RebuildFace(shape, round_degree=4):
             for ordered in sub_faces:
                 rebuild_edge = []  # Rebuild edges
                 for edge_gp in ordered:
-                    rebuild_edge.append(OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(
+                    rebuild_edge.append(OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(
                         edge_gp[0], edge_gp[1]).Edge())
                     # print("len rebuild_edge ", len(rebuild_edge))
                 # 4 edges is the max allowed by BRepBuilderAPI_MakeWire. Thus a wire with the first 4 edges is created.
@@ -893,22 +898,22 @@ def RebuildFace(shape, round_degree=4):
                 grouped = rebuild_edge[:4]
                 del rebuild_edge[:4]
                 #
-                wire = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeWire(*grouped)
+                wire = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeWire(*grouped)
                 # print("wire: ", wire.Wire(), " and ", rebuild_edge)
                 # If rebuild_edge contain more edges, these are added one by one to the previously created wire.
                 for extra_edge in rebuild_edge:
-                    wire = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeWire(wire.Wire(), extra_edge)
+                    wire = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeWire(wire.Wire(), extra_edge)
                 # A succeful process should end up with a closed wire:
                 if not wire.Wire().Closed():  # Check face
                     print("Function 'RebuildFace' failed to rebuild face!")
-                rebuilded.append(OCC.BRepBuilderAPI.BRepBuilderAPI_MakeFace(wire.Wire()).Face())
+                rebuilded.append(OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeFace(wire.Wire()).Face())
 
             # The following section is used to decide which of the faces contained in "rebuilded" is the main face
             # (the bigger face) and which are gaps (other faces)
             if len(rebuilded) >= 2:
                 maxMass = 0
                 for face in rebuilded:
-                    OCC.BRepGProp.brepgprop_SurfaceProperties(face, props)
+                    OCC.Core.BRepGProp.brepgprop_SurfaceProperties(face, props)
                     if props.Mass() >= maxMass:
                         maxMass = props.Mass()
                         bigface = face
@@ -917,17 +922,17 @@ def RebuildFace(shape, round_degree=4):
                 for face in rebuilded:
                     if face != bigface:
                         finalF, a, BuilderCanWork = CuttedShape(finalF, face)
-                        exp = OCC.TopExp.TopExp_Explorer(face, OCC.TopAbs.TopAbs_VERTEX)
+                        exp = OCC.Core.TopExp.TopExp_Explorer(face, OCC.Core.TopAbs.TopAbs_VERTEX)
                         pointlist_gaps = []
                         while exp.More():
-                            pnt = OCC.BRep.BRep_Tool.Pnt(OCC.TopoDS.topods.Vertex(exp.Current()))
+                            pnt = OCC.Core.BRep.BRep_Tool.Pnt(OCC.Core.TopoDS.topods.Vertex(exp.Current()))
                             pointlist_gaps.append(pnt)
                             exp.Next()  # <- Jump two points (next edge): Avoid to add same point twice !
                             exp.Next()
                         gaps.append(pointlist_gaps)
-                exp = OCC.TopExp.TopExp_Explorer(finalF, OCC.TopAbs.TopAbs_VERTEX)
+                exp = OCC.Core.TopExp.TopExp_Explorer(finalF, OCC.Core.TopAbs.TopAbs_VERTEX)
                 while exp.More():
-                    pnt = OCC.BRep.BRep_Tool.Pnt(OCC.TopoDS.topods.Vertex(exp.Current()))
+                    pnt = OCC.Core.BRep.BRep_Tool.Pnt(OCC.Core.TopoDS.topods.Vertex(exp.Current()))
                     ignore_p = False
                     for list_p in gaps:
                         # Check whether point exists
@@ -935,16 +940,16 @@ def RebuildFace(shape, round_degree=4):
                             ignore_p = True
                     if not ignore_p:
                         pointlist.append(pnt)
-                        V = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(pnt)
+                        V = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeVertex(pnt)
                         # ifcopenshell.geom.utils.display_shape(V.Vertex())
                     exp.Next()
                     exp.Next()
                 profiles = pointlist
             else:
                 finalF = rebuilded[0]
-                exp = OCC.TopExp.TopExp_Explorer(rebuilded[0], OCC.TopAbs.TopAbs_VERTEX)
+                exp = OCC.Core.TopExp.TopExp_Explorer(rebuilded[0], OCC.Core.TopAbs.TopAbs_VERTEX)
                 while exp.More():
-                    pnt = OCC.BRep.BRep_Tool.Pnt(OCC.TopoDS.topods.Vertex(exp.Current()))
+                    pnt = OCC.Core.BRep.BRep_Tool.Pnt(OCC.Core.TopoDS.topods.Vertex(exp.Current()))
                     pointlist.append(pnt)
                     exp.Next()
                     exp.Next()
@@ -971,7 +976,7 @@ def UpdateSecondLvLBoundaries(Spaces, WallInfo, ColumnsInfo, black_list):
     and stored into the BoundaryContainer attributes "OtherSideSpace"
     and "RelatedBuildingElement"
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     BoundaryToElement = {}
     Spaces_new = []
     boundaryIdGen = 1
@@ -983,16 +988,16 @@ def UpdateSecondLvLBoundaries(Spaces, WallInfo, ColumnsInfo, black_list):
                 vect = []
                 # print("Bound: ", boundary.RelatedBuildingElement ,"thick: ", boundary.thickness)
                 for thick in boundary.thickness:
-                    vect.append(OCC.gp.gp_Vec(boundary.Normal) * (abs(thick)))
-                T = OCC.gp.gp_Trsf()
+                    vect.append(OCC.Core.gp.gp_Vec(boundary.Normal) * (abs(thick)))
+                T = OCC.Core.gp.gp_Trsf()
                 spacefound = False
                 for v in vect:
                     # Normals suppose to be corrected.
                     # For some building elements is but the thickness not clear.
                     T.SetTranslation(v)
-                    Translated = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(boundary.Face, T).Shape()
-                    t_face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                        Translated, OCC.TopAbs.TopAbs_FACE).Current())
+                    Translated = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_Transform(boundary.Face, T).Shape()
+                    t_face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                        Translated, OCC.Core.TopAbs.TopAbs_FACE).Current())
                     AREA = boundary.Area
                     for sp2 in Spaces:
                         if True:
@@ -1004,10 +1009,10 @@ def UpdateSecondLvLBoundaries(Spaces, WallInfo, ColumnsInfo, black_list):
                                     # print("AREA: ", area-boundary.Area)
                                     if abs(area - boundary.Area) >= 0.00001:
                                         T.SetTranslation(-v)
-                                        b_cmon = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(
+                                        b_cmon = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_Transform(
                                             cmn_shape, T).Shape()
-                                        b_cmonFace = OCC.TopoDS.topods.Face(
-                                            OCC.TopExp.TopExp_Explorer(b_cmon, OCC.TopAbs.TopAbs_FACE).Current())
+                                        b_cmonFace = OCC.Core.TopoDS.topods.Face(
+                                            OCC.Core.TopExp.TopExp_Explorer(b_cmon, OCC.Core.TopAbs.TopAbs_FACE).Current())
                                         new_shapes.append(
                                             [b_cmonFace, area, boundary.Normal, sp2.Space.GlobalId])
                                 else:
@@ -1017,10 +1022,10 @@ def UpdateSecondLvLBoundaries(Spaces, WallInfo, ColumnsInfo, black_list):
                                         spacefound = sp2.Space.GlobalId
                                         if abs(area - boundary.Area) >= 0.00001:  # What for?
                                             T.SetTranslation(-v)
-                                            b_cmon = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(
+                                            b_cmon = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_Transform(
                                                 cmn_shape, T).Shape()
-                                            b_cmonFace = OCC.TopoDS.topods.Face(
-                                                OCC.TopExp.TopExp_Explorer(b_cmon, OCC.TopAbs.TopAbs_FACE).Current())
+                                            b_cmonFace = OCC.Core.TopoDS.topods.Face(
+                                                OCC.Core.TopExp.TopExp_Explorer(b_cmon, OCC.Core.TopAbs.TopAbs_FACE).Current())
                                             new_shapes.append(
                                                 [b_cmonFace, area, boundary.Normal, sp2.Space.GlobalId])
 
@@ -1034,9 +1039,9 @@ def UpdateSecondLvLBoundaries(Spaces, WallInfo, ColumnsInfo, black_list):
                         B.Id = "B" + str(boundaryIdGen) + "_" + sp.Space.GlobalId + "_" + str(boundary.RelatedBuildingElement)
                         boundaryIdGen = boundaryIdGen + 1
                         new_boundaries.append(B)
-                        RemainingF = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(RemainingF, element[0])
-                        RemainingF = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(RemainingF)
-                    exp = OCC.TopExp.TopExp_Explorer(RemainingF, OCC.TopAbs.TopAbs_FACE)
+                        RemainingF = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Cut(RemainingF, element[0])
+                        RemainingF = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(RemainingF)
+                    exp = OCC.Core.TopExp.TopExp_Explorer(RemainingF, OCC.Core.TopAbs.TopAbs_FACE)
                     while exp.More():
                         # If we had to cut the original boundary, there will be probably some remaining part
                         # These remaining parts might be either 3rd level boundaries (building element is behind the
@@ -1045,10 +1050,10 @@ def UpdateSecondLvLBoundaries(Spaces, WallInfo, ColumnsInfo, black_list):
                         # if there is a common part we have a 3rd level element.
                         # Otherwise we have an external boundary. It might be necessary to cut
                         # again! (TO BE DONE)
-                        Face = OCC.TopoDS.topods.Face(exp.Current())
-                        OCC.BRepGProp.brepgprop_SurfaceProperties(Face, props)
+                        Face = OCC.Core.TopoDS.topods.Face(exp.Current())
+                        OCC.Core.BRepGProp.brepgprop_SurfaceProperties(Face, props)
                         B = IfcLib.DataClasses.BoundaryContainer(
-                            OCC.TopoDS.topods.Face(exp.Current()), props.Mass(), element[2])
+                            OCC.Core.TopoDS.topods.Face(exp.Current()), props.Mass(), element[2])
                         B.RelatedBuildingElement = boundary.RelatedBuildingElement
                         B.thickness = boundary.thickness
                         B.OtherSideSpace = "Unknown"
@@ -1095,29 +1100,29 @@ def DefinePosition(Spaces):
                 Z = Z + pnt.Z()
                 count = count + 1
             if count != 0:
-                b.Position = OCC.gp.gp_Pnt(X / count, Y / count, Z / count)
+                b.Position = OCC.Core.gp.gp_Pnt(X / count, Y / count, Z / count)
             # Faces with curved edges do not have a well defined Profile. (Attribute is empty)
             else:
                 # Alternatively, temporary position is defined from all points.
-                exp = OCC.TopExp.TopExp_Explorer(b.Face, OCC.TopAbs.TopAbs_VERTEX)
+                exp = OCC.Core.TopExp.TopExp_Explorer(b.Face, OCC.Core.TopAbs.TopAbs_VERTEX)
                 while exp.More():
-                    vertex = OCC.TopoDS.topods.Vertex(exp.Current())
-                    pnt = OCC.BRep.BRep_Tool.Pnt(vertex)
+                    vertex = OCC.Core.TopoDS.topods.Vertex(exp.Current())
+                    pnt = OCC.Core.BRep.BRep_Tool.Pnt(vertex)
                     X = X + pnt.X()
                     Y = Y + pnt.Y()
                     Z = Z + pnt.Z()
                     count = count + 1
                     exp.Next()
-                b.Position = OCC.gp.gp_Pnt(X / count, Y / count, Z / count)
+                b.Position = OCC.Core.gp.gp_Pnt(X / count, Y / count, Z / count)
     return Spaces
 
 
 def WD_Vertex(RelatedOpening):
     WindowAndDoorPoints = []
     for key, value in list(RelatedOpening.items()):
-        exp = OCC.TopExp.TopExp_Explorer(value, OCC.TopAbs.TopAbs_VERTEX)
+        exp = OCC.Core.TopExp.TopExp_Explorer(value, OCC.Core.TopAbs.TopAbs_VERTEX)
         while exp.More():
-            vertex = OCC.TopoDS.topods.Vertex(exp.Current())
+            vertex = OCC.Core.TopoDS.topods.Vertex(exp.Current())
             WindowAndDoorPoints.append(WindowAndDoorPoints)
             exp.Next()
     return WindowAndDoorPoints
@@ -1140,34 +1145,34 @@ def BoundariesHeightWidth(Spaces, WindowToStyle, DoorToStyle, ifc_file):
                 boundary.Height = WindowToStyle[boundary.RelatedBuildingElement][0]
             elif boundary.RelatedBuildingElement in [s.GlobalId for s in slabs]:  # Slabs
                 Width = 0
-                exp = OCC.TopExp.TopExp_Explorer(boundary.Face, OCC.TopAbs.TopAbs_EDGE)
+                exp = OCC.Core.TopExp.TopExp_Explorer(boundary.Face, OCC.Core.TopAbs.TopAbs_EDGE)
                 while exp.More():
-                    edge = OCC.TopoDS.topods.Edge(exp.Current())
-                    exp_v = OCC.TopExp.TopExp_Explorer(edge, OCC.TopAbs.TopAbs_VERTEX)
+                    edge = OCC.Core.TopoDS.topods.Edge(exp.Current())
+                    exp_v = OCC.Core.TopExp.TopExp_Explorer(edge, OCC.Core.TopAbs.TopAbs_VERTEX)
                     edge_p = []
                     while exp_v.More():
-                        edge_v = OCC.TopoDS.topods.Vertex(exp_v.Current())
-                        current_pnt = OCC.BRep.BRep_Tool.Pnt(edge_v)
+                        edge_v = OCC.Core.TopoDS.topods.Vertex(exp_v.Current())
+                        current_pnt = OCC.Core.BRep.BRep_Tool.Pnt(edge_v)
                         edge_p.append(current_pnt)
                         exp_v.Next()
-                    vec_h = OCC.gp.gp_Vec(edge_p[0], edge_p[1])
+                    vec_h = OCC.Core.gp.gp_Vec(edge_p[0], edge_p[1])
                     if Width < vec_h.Magnitude():
                         vec_ = vec_h
                         Width = vec_h.Magnitude()
                     exp.Next()
                 Height = 0
-                exp = OCC.TopExp.TopExp_Explorer(boundary.Face, OCC.TopAbs.TopAbs_EDGE)
+                exp = OCC.Core.TopExp.TopExp_Explorer(boundary.Face, OCC.Core.TopAbs.TopAbs_EDGE)
                 while exp.More():
-                    edge = OCC.TopoDS.topods.Edge(exp.Current())
-                    exp_v = OCC.TopExp.TopExp_Explorer(edge, OCC.TopAbs.TopAbs_VERTEX)
+                    edge = OCC.Core.TopoDS.topods.Edge(exp.Current())
+                    exp_v = OCC.Core.TopExp.TopExp_Explorer(edge, OCC.Core.TopAbs.TopAbs_VERTEX)
                     edge_p = []
                     while exp_v.More():
-                        edge_v = OCC.TopoDS.topods.Vertex(exp_v.Current())
-                        current_pnt = OCC.BRep.BRep_Tool.Pnt(edge_v)
+                        edge_v = OCC.Core.TopoDS.topods.Vertex(exp_v.Current())
+                        current_pnt = OCC.Core.BRep.BRep_Tool.Pnt(edge_v)
                         edge_p.append(current_pnt)
                         exp_v.Next()
-                    vec_w = OCC.gp.gp_Vec(edge_p[0], edge_p[1])
-                    if abs(OCC.gp.gp_Vec.Dot(vec_w, vec_)) <= 0.000001:
+                    vec_w = OCC.Core.gp.gp_Vec(edge_p[0], edge_p[1])
+                    if abs(OCC.Core.gp.gp_Vec.Dot(vec_w, vec_)) <= 0.000001:
                         Height = max(Height, vec_w.Magnitude())
                     exp.Next()
                 boundary.Width = Width
@@ -1175,19 +1180,19 @@ def BoundariesHeightWidth(Spaces, WindowToStyle, DoorToStyle, ifc_file):
             else:  # Walls
                 Width = 0
                 Height = 0
-                exp = OCC.TopExp.TopExp_Explorer(boundary.Face, OCC.TopAbs.TopAbs_EDGE)
+                exp = OCC.Core.TopExp.TopExp_Explorer(boundary.Face, OCC.Core.TopAbs.TopAbs_EDGE)
                 while exp.More():
                     # There are probably easier ways to find directions etc
-                    edge = OCC.TopoDS.topods.Edge(exp.Current())
-                    exp_v = OCC.TopExp.TopExp_Explorer(edge, OCC.TopAbs.TopAbs_VERTEX)
+                    edge = OCC.Core.TopoDS.topods.Edge(exp.Current())
+                    exp_v = OCC.Core.TopExp.TopExp_Explorer(edge, OCC.Core.TopAbs.TopAbs_VERTEX)
                     edge_p = []
                     while exp_v.More():
-                        edge_v = OCC.TopoDS.topods.Vertex(exp_v.Current())
-                        current_pnt = OCC.BRep.BRep_Tool.Pnt(edge_v)
+                        edge_v = OCC.Core.TopoDS.topods.Vertex(exp_v.Current())
+                        current_pnt = OCC.Core.BRep.BRep_Tool.Pnt(edge_v)
                         edge_p.append(current_pnt)
                         exp_v.Next()
-                    vec = OCC.gp.gp_Vec(edge_p[0], edge_p[1])
-                    vec_n = OCC.gp.gp_Vec.Normalized(vec)
+                    vec = OCC.Core.gp.gp_Vec(edge_p[0], edge_p[1])
+                    vec_n = OCC.Core.gp.gp_Vec.Normalized(vec)
                     if 0.3 >= vec_n.Z() >= -0.3:
                         Width = max(Width, vec.Magnitude())
                     else:
@@ -1205,24 +1210,24 @@ def ExploreSurroundings(Spaces):
     changes on the boundaries are done the link between opposite boundaries,
     separated by some building element, can be defined.
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     for sp in Spaces:
         for boundary in sp.Boundaries:
             vect = []
             for thick in boundary.thickness:
-                vect.append(OCC.gp.gp_Vec(boundary.Normal) * thick)
-            T = OCC.gp.gp_Trsf()
+                vect.append(OCC.Core.gp.gp_Vec(boundary.Normal) * thick)
+            T = OCC.Core.gp.gp_Trsf()
             for v in vect:  # Not sure whether normal is pointing in or out... need to move face in both directions!
                 T.SetTranslation(v)
-                Translated = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(boundary.Face, T).Shape()
-                t_face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                    Translated, OCC.TopAbs.TopAbs_FACE).Current())
+                Translated = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_Transform(boundary.Face, T).Shape()
+                t_face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                    Translated, OCC.Core.TopAbs.TopAbs_FACE).Current())
                 for sp2 in Spaces:
                     if sp.Space.GlobalId != sp2.Space.GlobalId:
                         for boundary2 in sp2.Boundaries:
-                            cmon = OCC.BRepAlgoAPI.BRepAlgoAPI_Common(t_face, boundary2.Face)
-                            cmon_shape = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cmon)
-                            OCC.BRepGProp.brepgprop_SurfaceProperties(cmon_shape, props)
+                            cmon = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Common(t_face, boundary2.Face)
+                            cmon_shape = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cmon)
+                            OCC.Core.BRepGProp.brepgprop_SurfaceProperties(cmon_shape, props)
                             if props.Mass() > 0:
                                 boundary.OtherSideBoundary = boundary2.Id
     return Spaces
@@ -1246,15 +1251,15 @@ def CorrectThirdLevelBoundaries(Spaces, ifc_file, WallInfo, ColumnsInfo):
                 new_shapes = []
                 vect = []
                 for thick in b.thickness:
-                    vect.append(OCC.gp.gp_Vec(b.Normal) * (abs(thick)))
-                T = OCC.gp.gp_Trsf()
+                    vect.append(OCC.Core.gp.gp_Vec(b.Normal) * (abs(thick)))
+                T = OCC.Core.gp.gp_Trsf()
                 for v in vect:
                     # Normals suppose to be corrected.
                     # For some building elements is but the thickness not clear.
                     T.SetTranslation(v)
-                    Translated = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(b.Face, T).Shape()
-                    t_face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                        Translated, OCC.TopAbs.TopAbs_FACE).Current())
+                    Translated = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_Transform(b.Face, T).Shape()
+                    t_face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                        Translated, OCC.Core.TopAbs.TopAbs_FACE).Current())
                     for w in walls:
                         if w.GlobalId in list(WallInfo.keys()):
                             if w.GlobalId != b.RelatedBuildingElement:
@@ -1262,11 +1267,11 @@ def CorrectThirdLevelBoundaries(Spaces, ifc_file, WallInfo, ColumnsInfo):
                                 cmn_shape, area, BuilderCanWork = commonFace_andArea(t_face, shape)
                                 if area > 0:  # There is a common part!
                                     T.SetTranslation(-v)
-                                    b_cmon = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(
+                                    b_cmon = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_Transform(
                                         cmn_shape, T).Shape()
-                                    b_cmonFace = OCC.TopoDS.topods.Face(
-                                        OCC.TopExp.TopExp_Explorer(
-                                            b_cmon, OCC.TopAbs.TopAbs_FACE).Current())
+                                    b_cmonFace = OCC.Core.TopoDS.topods.Face(
+                                        OCC.Core.TopExp.TopExp_Explorer(
+                                            b_cmon, OCC.Core.TopAbs.TopAbs_FACE).Current())
                                     new_shapes.append([b_cmonFace, area, b.Normal, w.GlobalId])
                     for w in columns:
                         if w.GlobalId in list(ColumnsInfo.keys()):
@@ -1275,11 +1280,11 @@ def CorrectThirdLevelBoundaries(Spaces, ifc_file, WallInfo, ColumnsInfo):
                                 cmn_shape, area, BuilderCanWork = commonFace_andArea(t_face, shape)
                                 if area > 0:  # There is a common part!
                                     T.SetTranslation(-v)
-                                    b_cmon = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(
+                                    b_cmon = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_Transform(
                                         cmn_shape, T).Shape()
-                                    b_cmonFace = OCC.TopoDS.topods.Face(
-                                        OCC.TopExp.TopExp_Explorer(
-                                            b_cmon, OCC.TopAbs.TopAbs_FACE).Current())
+                                    b_cmonFace = OCC.Core.TopoDS.topods.Face(
+                                        OCC.Core.TopExp.TopExp_Explorer(
+                                            b_cmon, OCC.Core.TopAbs.TopAbs_FACE).Current())
                                     new_shapes.append([b_cmonFace, area, b.Normal, w.GlobalId])
                 if new_shapes:  # We found common parts
                     RemainingF = b.Face
@@ -1291,8 +1296,8 @@ def CorrectThirdLevelBoundaries(Spaces, ifc_file, WallInfo, ColumnsInfo):
                         B.Id = "B" + str(boundaryIdGen) + "_" + sp.Space.GlobalId + "_" + str(b.RelatedBuildingElement)
                         boundaryIdGen = boundaryIdGen + 1
                         new_boundaries.append(B)
-                        RemainingF = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(RemainingF, element[0])
-                        RemainingF = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(RemainingF)
+                        RemainingF = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Cut(RemainingF, element[0])
+                        RemainingF = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(RemainingF)
             else:  # Keep other (not unknown) boundaries!
                 new_boundaries.append(b)
         spC = IfcLib.DataClasses.SpaceContainer(
@@ -1329,18 +1334,18 @@ def CorrectNormalVector(Spaces):
     Normal should point out of the volume. Any normal pointing inside is inverted.
     """
     # NEED TO CORRECT! NOT ALWAYS WORKING!
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     for sp in Spaces:
         volume_shape = ifcopenshell.geom.create_shape(settings, sp.Space).geometry
         for b in sp.Boundaries:
-            exp = OCC.TopExp.TopExp_Explorer(b.Face, OCC.TopAbs.TopAbs_VERTEX)
-            vertex = OCC.TopoDS.topods.Vertex(exp.Current())
+            exp = OCC.Core.TopExp.TopExp_Explorer(b.Face, OCC.Core.TopAbs.TopAbs_VERTEX)
+            vertex = OCC.Core.TopoDS.topods.Vertex(exp.Current())
             # GET A POINT OF THE BOUNDARY FACE
-            pnt = OCC.BRep.BRep_Tool.Pnt(vertex)
+            pnt = OCC.Core.BRep.BRep_Tool.Pnt(vertex)
             # CREATE TWO EDGES USING THE POINT AND NORMAL VECTOR (+ AND -)
-            edge1 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(
+            edge1 = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(
                 pnt,
-                OCC.gp.gp_Pnt(
+                OCC.Core.gp.gp_Pnt(
                     pnt.X() +
                     b.Normal.X() *
                     0.01,
@@ -1350,9 +1355,9 @@ def CorrectNormalVector(Spaces):
                     pnt.Z() +
                     b.Normal.Z() *
                     0.01)).Edge()
-            edge2 = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(
+            edge2 = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeEdge(
                 pnt,
-                OCC.gp.gp_Pnt(
+                OCC.Core.gp.gp_Pnt(
                     pnt.X() -
                     b.Normal.X() *
                     0.01,
@@ -1363,28 +1368,28 @@ def CorrectNormalVector(Spaces):
                     b.Normal.Z() *
                     0.01)).Edge()
             # Obtain common part of edges and space volume
-            cmn = OCC.BRepAlgoAPI.BRepAlgoAPI_Common(volume_shape, edge1)
-            cmn_shape = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cmn)
-            OCC.BRepGProp.brepgprop_LinearProperties(cmn_shape, props)
+            cmn = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Common(volume_shape, edge1)
+            cmn_shape = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cmn)
+            OCC.Core.BRepGProp.brepgprop_LinearProperties(cmn_shape, props)
             m1 = props.Mass()
-            cmn = OCC.BRepAlgoAPI.BRepAlgoAPI_Common(volume_shape, edge2)
-            cmn_shape = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cmn)
-            OCC.BRepGProp.brepgprop_LinearProperties(cmn_shape, props)
+            cmn = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Common(volume_shape, edge2)
+            cmn_shape = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cmn)
+            OCC.Core.BRepGProp.brepgprop_LinearProperties(cmn_shape, props)
             m2 = props.Mass()
             if m1 >= 0.0005:  # Common part for edge1 (normal +) found.
                 if m2 >= 0.0005:  # Common part for edge2 (normal -) found.
                     # Thus we have a closed angle (like an "L"). Further checks are necessary
                     # Boundary face is moved in normal direction and common face with space volume is obtained
                     # and evaluated.
-                    v = OCC.gp.gp_Vec(b.Normal) * 0.01
-                    T = OCC.gp.gp_Trsf()
+                    v = OCC.Core.gp.gp_Vec(b.Normal) * 0.01
+                    T = OCC.Core.gp.gp_Trsf()
                     T.SetTranslation(v)
-                    Translated = OCC.BRepBuilderAPI.BRepBuilderAPI_Transform(b.Face, T).Shape()
-                    t_face = OCC.TopoDS.topods.Face(OCC.TopExp.TopExp_Explorer(
-                        Translated, OCC.TopAbs.TopAbs_FACE).Current())
-                    cmon = OCC.BRepAlgoAPI.BRepAlgoAPI_Common(t_face, volume_shape)
-                    cmon_shape = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cmon)
-                    OCC.BRepGProp.brepgprop_SurfaceProperties(cmon_shape, props)
+                    Translated = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_Transform(b.Face, T).Shape()
+                    t_face = OCC.Core.TopoDS.topods.Face(OCC.Core.TopExp.TopExp_Explorer(
+                        Translated, OCC.Core.TopAbs.TopAbs_FACE).Current())
+                    cmon = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Common(t_face, volume_shape)
+                    cmon_shape = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cmon)
+                    OCC.Core.BRepGProp.brepgprop_SurfaceProperties(cmon_shape, props)
                     if props.Mass() >= b.Area * 0.9:
                         # Common face is found (normal pointing into the volume). Invert it
                         b.Normal.SetX(-b.Normal.X())
@@ -1394,7 +1399,7 @@ def CorrectNormalVector(Spaces):
                     b.Normal.SetX(-b.Normal.X())
                     b.Normal.SetY(-b.Normal.Y())
                     b.Normal.SetZ(-b.Normal.Z())
-                vec = OCC.gp.gp_Vec(b.Normal)
+                vec = OCC.Core.gp.gp_Vec(b.Normal)
     return Spaces
 
 
@@ -1402,7 +1407,7 @@ def getOverlappedelements(ifc_file, walls):
     """
     Function created to detect overlap between elements. (Currently not used)
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     spaces = ifc_file.by_type("IfcSpace")
     slabs = ifc_file.by_type("IfcSlab")
     overlappedId = {}
@@ -1413,32 +1418,32 @@ def getOverlappedelements(ifc_file, walls):
             elementsId = []
             elementsShape = []
             current_space = ifcopenshell.geom.create_shape(settings, sp).geometry
-            OCC.BRepGProp.brepgprop_VolumeProperties(current_space, props)
+            OCC.Core.BRepGProp.brepgprop_VolumeProperties(current_space, props)
             Space_Volume = props.Mass()
             for element in slabs:
                 current = ifcopenshell.geom.create_shape(settings, element).geometry
-                cut = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(current_space, current)
+                cut = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Cut(current_space, current)
                 if cut.BuilderCanWork():
-                    cut_shape = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cut)
-                    OCC.BRepGProp.brepgprop_VolumeProperties(cut_shape, props)
+                    cut_shape = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cut)
+                    OCC.Core.BRepGProp.brepgprop_VolumeProperties(cut_shape, props)
                     if props.Mass() + local_tolerance < Space_Volume:
                         elementsId.append(element.GlobalId)
                         elementsShape.append(current)
             for element in walls:
                 current = ifcopenshell.geom.create_shape(settings, element).geometry
-                cut = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(current_space, current)
+                cut = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Cut(current_space, current)
                 if cut.BuilderCanWork():
-                    cut_shape = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cut)
-                    OCC.BRepGProp.brepgprop_VolumeProperties(cut_shape, props)
+                    cut_shape = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cut)
+                    OCC.Core.BRepGProp.brepgprop_VolumeProperties(cut_shape, props)
                     if props.Mass() + local_tolerance < Space_Volume:
                         elementsId.append(element.GlobalId)
                         elementsShape.append(current)
             for element in spaces:
                 current = ifcopenshell.geom.create_shape(settings, element).geometry
-                cut = OCC.BRepAlgoAPI.BRepAlgoAPI_Cut(current_space, current)
+                cut = OCC.Core.BRepAlgoAPI.BRepAlgoAPI_Cut(current_space, current)
                 if cut.BuilderCanWork():
-                    cut_shape = OCC.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cut)
-                    OCC.BRepGProp.brepgprop_VolumeProperties(cut_shape, props)
+                    cut_shape = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeShape.Shape(cut)
+                    OCC.Core.BRepGProp.brepgprop_VolumeProperties(cut_shape, props)
                     if props.Mass() + local_tolerance < Space_Volume:
                         elementsId.append(element.GlobalId)
                         elementsShape.append(current)
@@ -1453,7 +1458,7 @@ def getOverlappedSpaces(ifc_file):
     """
     Function created to detect overlap spaces
     """
-    props = OCC.GProp.GProp_GProps()
+    props = OCC.Core.GProp.GProp_GProps()
     spaces = ifc_file.by_type("IfcSpace")
     black_list = []
     local_tolerance = 0.1
@@ -1463,7 +1468,7 @@ def getOverlappedSpaces(ifc_file):
 
     for key1 in shapes:
         current = shapes[key1]
-        OCC.BRepGProp.brepgprop_VolumeProperties(current, props)
+        OCC.Core.BRepGProp.brepgprop_VolumeProperties(current, props)
         Space_Volume = props.Mass()
         for key2 in shapes:
             if key1 != key2:
@@ -1472,10 +1477,10 @@ def getOverlappedSpaces(ifc_file):
                 # I think the operation can just be perform if the geometry that cuts the other is simple.
                 # It means geometry that has to be cut can be "complex" the other one not.
                 # If buildercanwork == False we pass and wait for the loop to twist the order
-                OCC.BRepGProp.brepgprop_VolumeProperties(sh, props)
+                OCC.Core.BRepGProp.brepgprop_VolumeProperties(sh, props)
                 vol = props.Mass()
                 if round(vol, 5) != round(Space_Volume, 5):
-                    OCC.BRepGProp.brepgprop_VolumeProperties(shapes[key2], props)
+                    OCC.Core.BRepGProp.brepgprop_VolumeProperties(shapes[key2], props)
                     if Space_Volume > props.Mass() and key1 not in black_list:
                         black_list.append(key1)
                         # print("1: ", key1, " 2: ", key2, " ... ", Space_Volume, " != ", vol )

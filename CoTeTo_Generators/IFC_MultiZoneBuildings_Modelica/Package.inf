@@ -34,8 +34,8 @@ calcIdealLoads = on
 # Use of a libray path for the within statement: libPath = on
 libPath = on
 # Library pathes
-#ModelicaLibPath = ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases
-ModelicaLibPath = ModelicaModels.IFC2X3.SBT_Unit_Test_Cases
+ModelicaLibPath = ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases
+#ModelicaLibPath = ModelicaModels.IFC2X3.SBT_Unit_Test_Cases
 [MODELICA_MOSPATHS]
 # Use of a path for the mos files: mosPath = on
 mosPath = on

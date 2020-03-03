@@ -1,7 +1,7 @@
 within ModelicaModels.IFC2X3.SBT_Unit_Test_Cases;
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Thu Sep  5 15:19:51 2019
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar  3 21:09:12 2020
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model
@@ -85,7 +85,7 @@ model SWW5_SB
       height=3.8);
     BuildingSystems.Buildings.Zones.ZoneTemplateAirvolumeMixed zone_5(
       V=72.45931531461997,
-      nConstructions = 8,
+      nConstructions = 7,
       calcIdealLoads = true,
       prescribedAirchange = true,
       heatSources = true,
@@ -129,7 +129,7 @@ model SWW5_SB
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
       width = 5.0000272);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_2(
@@ -143,8 +143,8 @@ model SWW5_SB
       redeclare Construction1 constructionData,
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
-      height = 3.8,
+      AInnSur = -0.0,
+      height = 3.7999999999999994,
       width = 5.0000272);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_4(
       redeclare Construction1 constructionData,
@@ -194,14 +194,14 @@ model SWW5_SB
       angleDegTil = 90.0,
       AInnSur = 0.0,
       height = 3.8,
-      width = 0.8000000000000014);
+      width = 0.8000000000000026);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_7(
       redeclare Construction1 constructionData,
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
       height = 3.8,
-      width = 14.799973);
+      width = 14.7999731);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_8(
       redeclare Construction1 constructionData,
       angleDegAzi = 90.0,
@@ -242,7 +242,7 @@ model SWW5_SB
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
-      height = 3.8,
+      height = 3.7999999999999994,
       width = 5.0);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_10(
       redeclare Construction1 constructionData,
@@ -318,7 +318,7 @@ model SWW5_SB
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 0.0,
-      AInnSur = -0.0,
+      AInnSur = 0.0,
       height = 2.0716002000000002,
       width = 3.071572900000005);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_16(
@@ -339,9 +339,9 @@ model SWW5_SB
       redeclare Construction1 constructionData,
       angleDegAzi = -45.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8000000000000007,
-      width = 3.8585786043831476);
+      width = 3.8585786043831485);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_16(
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
@@ -354,15 +354,8 @@ model SWW5_SB
       angleDegAzi = -135.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
-      height = 3.8,
-      width = 3.858540283578753);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_18(
-      redeclare Construction1 constructionData,
-      angleDegAzi = -135.0,
-      angleDegTil = 90.0,
-      AInnSur = 0.0,
-      height = 3.8,
-      width = 3.858540283578753);
+      height = 3.8000000000000007,
+      width = 3.8585786100966057);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_17(
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
@@ -370,25 +363,25 @@ model SWW5_SB
       AInnSur = -19.068,
       height = 0,
       width = 9.7171573);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_19(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_18(
       redeclare Construction1 constructionData,
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
       height = 3.8,
       width = 19.717157);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_20(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_19(
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
-      width = 14.1432);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_21(
+      width = 14.143145999999994);
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_20(
       redeclare Construction1 constructionData,
       angleDegAzi = -45.0,
       angleDegTil = 90.0,
-      AInnSur = -0.0,
+      AInnSur = 0.0,
       height = 3.8000000000000007,
       width = 3.858578610096605);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_18(
@@ -398,27 +391,20 @@ model SWW5_SB
       AInnSur = -46.353,
       height = 0,
       width = 19.717157);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_22(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_21(
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
       width = 14.143145999999998);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_23(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_22(
       redeclare Construction1 constructionData,
       angleDegAzi = -90.00000000000001,
       angleDegTil = 90.0,
       AInnSur = 0.0,
       height = 3.8,
       width = 4.1431458);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_24(
-      redeclare Construction1 constructionData,
-      angleDegAzi = 180.0,
-      angleDegTil = 90.0,
-      AInnSur = 0.0,
-      height = 3.8,
-      width = 14.1432);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_19(
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
@@ -426,20 +412,20 @@ model SWW5_SB
       AInnSur = 0.0,
       height = 4.1431458,
       width = 14.143146);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_25(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_23(
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
       height = 3.8,
       width = 9.7171573);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_26(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_24(
       redeclare Construction1 constructionData,
       angleDegAzi = 45.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8000000000000007,
-      width = 3.8585786043831485);
+      width = 3.858578604383147);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_20(
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
@@ -447,7 +433,7 @@ model SWW5_SB
       AInnSur = -19.068,
       height = 0,
       width = 9.7171573);
-    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_27(
+    BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_25(
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
@@ -500,24 +486,23 @@ model SWW5_SB
     connect(slab_12.toSurfacePort_2, zone_7.toConstructionPorts[3]);
     connect(slab_15.toSurfacePort_2, zone_7.toConstructionPorts[4]);
     connect(wall_16.toSurfacePort_2, zone_7.toConstructionPorts[5]);
-    connect(wall_20.toSurfacePort_2, zone_7.toConstructionPorts[6]);
-    connect(wall_22.toSurfacePort_1, zone_7.toConstructionPorts[7]);
-    connect(wall_23.toSurfacePort_1, zone_7.toConstructionPorts[8]);
-    connect(wall_24.toSurfacePort_1, zone_7.toConstructionPorts[9]);
-    connect(slab_19.toSurfacePort_1, zone_7.toConstructionPorts[10]);
+    connect(wall_19.toSurfacePort_2, zone_7.toConstructionPorts[6]);
+    connect(wall_21.toSurfacePort_1, zone_7.toConstructionPorts[7]);
+    connect(wall_22.toSurfacePort_1, zone_7.toConstructionPorts[8]);
+    connect(slab_19.toSurfacePort_1, zone_7.toConstructionPorts[9]);
     connect(slab_3.toSurfacePort_2, zone_8.toConstructionPorts[1]);
     connect(slab_16.toSurfacePort_2, zone_8.toConstructionPorts[2]);
-    connect(wall_21.toSurfacePort_2, zone_8.toConstructionPorts[3]);
-    connect(wall_23.toSurfacePort_2, zone_8.toConstructionPorts[4]);
-    connect(wall_25.toSurfacePort_1, zone_8.toConstructionPorts[5]);
-    connect(wall_26.toSurfacePort_1, zone_8.toConstructionPorts[6]);
+    connect(wall_20.toSurfacePort_2, zone_8.toConstructionPorts[3]);
+    connect(wall_22.toSurfacePort_2, zone_8.toConstructionPorts[4]);
+    connect(wall_23.toSurfacePort_1, zone_8.toConstructionPorts[5]);
+    connect(wall_24.toSurfacePort_1, zone_8.toConstructionPorts[6]);
     connect(slab_20.toSurfacePort_1, zone_8.toConstructionPorts[7]);
     connect(slab_4.toSurfacePort_2, zone_9.toConstructionPorts[1]);
     connect(slab_8.toSurfacePort_2, zone_9.toConstructionPorts[2]);
     connect(wall_15.toSurfacePort_2, zone_9.toConstructionPorts[3]);
-    connect(wall_22.toSurfacePort_2, zone_9.toConstructionPorts[4]);
-    connect(wall_26.toSurfacePort_2, zone_9.toConstructionPorts[5]);
-    connect(wall_27.toSurfacePort_1, zone_9.toConstructionPorts[6]);
+    connect(wall_21.toSurfacePort_2, zone_9.toConstructionPorts[4]);
+    connect(wall_24.toSurfacePort_2, zone_9.toConstructionPorts[5]);
+    connect(wall_25.toSurfacePort_1, zone_9.toConstructionPorts[6]);
     connect(slab_21.toSurfacePort_1, zone_9.toConstructionPorts[7]);
     connect(wall_7.toSurfacePort_2, zone_3.toConstructionPorts[1]);
     connect(wall_9.toSurfacePort_1, zone_3.toConstructionPorts[2]);
@@ -533,17 +518,14 @@ model SWW5_SB
     connect(wall_15.toSurfacePort_1, zone_5.toConstructionPorts[4]);
     connect(wall_16.toSurfacePort_1, zone_5.toConstructionPorts[5]);
     connect(wall_17.toSurfacePort_1, zone_5.toConstructionPorts[6]);
-    connect(wall_18.toSurfacePort_1, zone_5.toConstructionPorts[7]);
-    connect(slab_17.toSurfacePort_1, zone_5.toConstructionPorts[8]);
+    connect(slab_17.toSurfacePort_1, zone_5.toConstructionPorts[7]);
     connect(slab_11.toSurfacePort_2, zone_6.toConstructionPorts[1]);
     connect(slab_14.toSurfacePort_2, zone_6.toConstructionPorts[2]);
     connect(wall_17.toSurfacePort_2, zone_6.toConstructionPorts[3]);
-    connect(wall_18.toSurfacePort_2, zone_6.toConstructionPorts[4]);
+    connect(wall_18.toSurfacePort_1, zone_6.toConstructionPorts[4]);
     connect(wall_19.toSurfacePort_1, zone_6.toConstructionPorts[5]);
     connect(wall_20.toSurfacePort_1, zone_6.toConstructionPorts[6]);
-    connect(wall_21.toSurfacePort_1, zone_6.toConstructionPorts[7]);
-    connect(slab_18.toSurfacePort_1, zone_6.toConstructionPorts[8]);
-    connect(wall_24.toSurfacePort_2, zone_6.toConstructionPorts[9]);
+    connect(slab_18.toSurfacePort_1, zone_6.toConstructionPorts[7]);
 
     // connections between construction elements and environment
     connect(wall_1.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[1]);
@@ -560,12 +542,12 @@ model SWW5_SB
     connect(slab_13.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[12]);
     connect(wall_14.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[13]);
     connect(slab_17.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[14]);
-    connect(wall_19.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[15]);
+    connect(wall_18.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[15]);
     connect(slab_18.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[16]);
     connect(slab_19.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[17]);
-    connect(wall_25.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[18]);
+    connect(wall_23.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[18]);
     connect(slab_20.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[19]);
-    connect(wall_27.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[20]);
+    connect(wall_25.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[20]);
     connect(slab_21.toSurfacePort_2, surfacesToAmbience.toConstructionPorts[21]);
 
     // Heating set temperature of each thermal zones

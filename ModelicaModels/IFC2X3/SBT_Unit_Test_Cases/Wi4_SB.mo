@@ -1,7 +1,7 @@
 within ModelicaModels.IFC2X3.SBT_Unit_Test_Cases;
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Thu Sep  5 15:19:59 2019
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar  3 21:09:19 2020
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model
@@ -92,13 +92,13 @@ model Wi4_SB
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
-      height = 3.8,
+      height = 3.7999999999999994,
       width = 20.0);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_2(
       redeclare Construction1 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
       width = 4.85);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_3(
@@ -106,7 +106,7 @@ model Wi4_SB
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
-      height = 3.8,
+      height = 3.7999999999999994,
       width = 20.0);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_4(
       redeclare Construction1 constructionData,
@@ -133,7 +133,7 @@ model Wi4_SB
       redeclare Construction1 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
       width = 4.85);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_6(
@@ -147,7 +147,7 @@ model Wi4_SB
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
       width = 3.0);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_3(
@@ -204,14 +204,14 @@ model Wi4_SB
     BuildingSystems.Buildings.Constructions.Windows.Window window_1(
       calcAirchange = false,
       redeclare BuildingSystems.Buildings.Data.Constructions.Transparent.DoubleGlazing constructionData,
-      angleDegAzi = -90.0,
+      angleDegAzi = -90.00000000000001,
       angleDegTil = 90.0,
       height = 3.8,
       width = 4.0);
     BuildingSystems.Buildings.Constructions.Windows.Window window_2(
       calcAirchange = false,
       redeclare BuildingSystems.Buildings.Data.Constructions.Transparent.DoubleGlazing constructionData,
-      angleDegAzi = -90.0,
+      angleDegAzi = -90.00000000000001,
       angleDegTil = 90.0,
       height = 3.8,
       width = 4.0);

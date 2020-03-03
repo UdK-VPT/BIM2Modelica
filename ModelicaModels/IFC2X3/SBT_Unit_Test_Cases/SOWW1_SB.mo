@@ -1,7 +1,7 @@
 within ModelicaModels.IFC2X3.SBT_Unit_Test_Cases;
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Thu Sep  5 15:18:57 2019
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar  3 21:08:27 2020
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model
@@ -97,7 +97,7 @@ model SOWW1_SB
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
       width = 4.9000001);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_2(
@@ -105,28 +105,28 @@ model SOWW1_SB
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
-      height = 3.8,
+      height = 3.7999999999999994,
       width = 20.0);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_3(
       redeclare Construction1 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
       width = 4.900000010592947);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_4(
       redeclare Construction1 constructionData,
       angleDegAzi = 8.537736462515939e-07,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
-      height = 3.8000000000000003,
-      width = 4.799999950000001);
+      AInnSur = -0.0,
+      height = 3.8000000000000007,
+      width = 4.799999950000003);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_5(
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
       AInnSur = 0.0,
-      height = 3.8,
+      height = 3.7999999999999994,
       width = 5.2);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_1(
       redeclare Construction1 constructionData,
@@ -195,14 +195,14 @@ model SOWW1_SB
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
       width = 0.1999999999999993);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_10(
       redeclare Construction1 constructionData,
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
       width = 0.1999999999999993);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_11(
@@ -216,7 +216,7 @@ model SOWW1_SB
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
       width = 0.1999999999999993);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_7(
@@ -237,14 +237,14 @@ model SOWW1_SB
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.8,
-      width = 3.00000015);
+      width = 3.0000001499999995);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_14(
       redeclare Construction1 constructionData,
       angleDegAzi = 180.0,
       angleDegTil = 90.0,
-      AInnSur = -0.0,
+      AInnSur = 0.0,
       height = 3.8,
       width = 9.70000005);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_15(
@@ -258,7 +258,7 @@ model SOWW1_SB
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
-      AInnSur = -0.0,
+      AInnSur = 0.0,
       height = 3.8,
       width = 9.70000005);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_17(

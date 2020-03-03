@@ -1,7 +1,7 @@
 within ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases;
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Thu Sep  5 15:22:29 2019
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar  3 21:11:32 2020
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model
@@ -205,7 +205,7 @@ model MultiZoneBuilding
       redeclare Construction3 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.7,
       width = 4.85);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_2(
@@ -233,7 +233,7 @@ model MultiZoneBuilding
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.075,
       width = 4.85);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_5(
@@ -303,7 +303,7 @@ model MultiZoneBuilding
       redeclare Construction3 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.7,
       width = 4.85);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_13(
@@ -324,7 +324,7 @@ model MultiZoneBuilding
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.075,
       width = 4.85);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_15(
@@ -380,7 +380,7 @@ model MultiZoneBuilding
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
       angleDegTil = 180.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 3.0,
       width = 6.3);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_21(

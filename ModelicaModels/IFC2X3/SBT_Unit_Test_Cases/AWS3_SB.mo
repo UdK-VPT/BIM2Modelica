@@ -1,7 +1,7 @@
 within ModelicaModels.IFC2X3.SBT_Unit_Test_Cases;
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Thu Sep  5 15:16:58 2019
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar  3 21:06:48 2020
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model
@@ -99,7 +99,7 @@ model AWS3_SB
       angleDegTil = 90.0,
       AInnSur = 0.0,
       height = 3.8,
-      width = 9.849999999999998);
+      width = 9.850000000000001);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_4(
       redeclare Construction1 constructionData,
       angleDegAzi = 180.0,
@@ -118,7 +118,7 @@ model AWS3_SB
       redeclare Construction1 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 7.8,
       width = 10.000000000000004);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_7(

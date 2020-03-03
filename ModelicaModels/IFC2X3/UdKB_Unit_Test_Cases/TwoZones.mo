@@ -1,7 +1,7 @@
 within ModelicaModels.IFC2X3.UdKB_Unit_Test_Cases;
 /**************************************************************************************/
 // Automatically generated thermal building model by
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Thu Sep  5 15:20:54 2019
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on Tue Mar  3 21:10:17 2020
 //
 // Used MODELICA_CODE_SWITCHES for code generation:
 // surTemOut = on: sets surface temperatures as an output of the building model
@@ -87,7 +87,7 @@ model TwoZones
       redeclare Construction1 constructionData,
       angleDegAzi = 90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.9999999999999996,
       width = 3.0);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_2(
@@ -101,7 +101,7 @@ model TwoZones
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.9999999999999996,
       width = 3.0);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_4(
@@ -131,7 +131,7 @@ model TwoZones
       angleDegTil = 90.0,
       AInnSur = 0.0,
       height = 2.9999999999999996,
-      width = 3.0000000000000004);
+      width = 3.000000000000001);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes wall_6(
       redeclare Construction1 constructionData,
       angleDegAzi = 0.0,
@@ -143,9 +143,9 @@ model TwoZones
       redeclare Construction1 constructionData,
       angleDegAzi = -90.0,
       angleDegTil = 90.0,
-      AInnSur = 0.0,
+      AInnSur = -0.0,
       height = 2.9999999999999996,
-      width = 3.0000000000000004);
+      width = 3.0);
     BuildingSystems.Buildings.Constructions.Walls.WallThermal1DNodes slab_3(
       redeclare Construction2 constructionData,
       angleDegAzi = 0.0,
