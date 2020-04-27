@@ -3,15 +3,14 @@
 for filename in d:
     data = d[filename]['_buildingData']
 %>\
-/**************************************************************************************/
-// Automatically generated thermal building model for EnergyPlus (epJSON format)
-// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on ${systemCfg['timestamp']()}
-//
-/***************************************************************************************/
 {
+  "Comments": [
+      "Automatically generated thermal building model for EnergyPlus (epJSON format)",
+      "CoTeTo code generator IFC_MultiZoneBuildings_Modelica on ${systemCfg['timestamp']()}."
+    ],
   "BuildingSurface:Detailed": {
-  // Opaque construction elements
 % for ele in data['elementsOpaque']:
+% if ele.memberOfZone[1] == "AMB":
       "${ele.name}": {
           "construction_name": "WALL",
           "number_of_vertices": 4,
@@ -29,8 +28,9 @@ for filename in d:
           ],
           "view_factor_to_ground": 0.5,
           "wind_exposure": "WindExposed",
-          "zone_name": "zone1"
+          "zone_name": "${ele.memberOfZone[0]}"
       }${',' if not loop.last else ''}
+% endif
 % endfor
   },
   "Construction": {
@@ -69,8 +69,8 @@ for filename in d:
 % endfor
           "view_factor_to_ground": "Autocalculate"
       },
-  % endfor
-  % for ele in data['elementsTransparent']:
+% endfor
+% for ele in data['elementsTransparent']:
       "${ele.name}": {
           "building_surface_name": "wall1",
           "construction_name": "DoublePane",
