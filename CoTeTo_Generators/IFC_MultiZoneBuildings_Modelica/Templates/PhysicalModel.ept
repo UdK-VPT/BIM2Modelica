@@ -1,0 +1,180 @@
+<%
+## Data of the multi-zone building model
+for filename in d:
+    data = d[filename]['_buildingData']
+%>\
+/**************************************************************************************/
+// Automatically generated thermal building model for EnergyPlus (epJSON format)
+// CoTeTo code generator IFC_MultiZoneBuildings_Modelica on ${systemCfg['timestamp']()}
+//
+/***************************************************************************************/
+{
+  "BuildingSurface:Detailed": {
+  // Opaque construction elements
+% for ele in data['elementsOpaque']:
+      "${ele.name}": {
+          "construction_name": "WALL",
+          "number_of_vertices": 4,
+          "outside_boundary_condition": "Outdoors",
+          "sun_exposure": "SunExposed",
+          "surface_type": "Wall",
+          "vertices": [
+% for i in range(4):
+              {
+                  "vertex_x_coordinate": ${ele.mesh.vertices[i][0]},
+                  "vertex_y_coordinate": ${ele.mesh.vertices[i][1]},
+                  "vertex_z_coordinate": ${ele.mesh.vertices[i][2]}
+              }${',' if not loop.last else ''}
+% endfor
+          ],
+          "view_factor_to_ground": 0.5,
+          "wind_exposure": "WindExposed",
+          "zone_name": "zone1"
+      }${',' if not loop.last else ''}
+% endfor
+  },
+  "Construction": {
+      "DOOR": {
+          "outside_layer": "WOOD30"
+      },
+      "FLOOR": {
+          "layer_2": "INSULATION100",
+          "outside_layer": "CONCRETE100"
+      },
+      "ROOF": {
+          "layer_2": "INSULATION100",
+          "outside_layer": "CONCRETE100"
+      },
+      "WALL": {
+          "outside_layer": "CONCRETE150"
+      }
+  },
+  "Construction:WindowDataFile": {
+      "DoublePane": {
+          "file_name": "..\\datasets\\Window5DataFile.dat"
+      }
+  },
+  "FenestrationSurface:Detailed": {
+% for ele in data['elementsDoor']:
+      "${ele.name}: {
+          "building_surface_name": "wall6",
+          "construction_name": "DOOR",
+          "multiplier": 1,
+          "number_of_vertices": 4,
+          "surface_type": "Door",
+% for i in range(4):
+          "vertex_${i+1}_x_coordinate": ${ele.mesh.vertices[i][0]},
+          "vertex_${i+1}_y_coordinate": ${ele.mesh.vertices[i][1]},
+          "vertex_${i+1}_z_coordinate": ${ele.mesh.vertices[i][2]},
+% endfor
+          "view_factor_to_ground": "Autocalculate"
+      },
+  % endfor
+  % for ele in data['elementsTransparent']:
+      "${ele.name}": {
+          "building_surface_name": "wall1",
+          "construction_name": "DoublePane",
+          "multiplier": 1.0,
+          "number_of_vertices": 4,
+          "surface_type": "Window",
+% for i in range(4):
+          "vertex_${i+1}_x_coordinate": ${ele.mesh.vertices[i][0]},
+          "vertex_${i+1}_y_coordinate": ${ele.mesh.vertices[i][1]},
+          "vertex_${i+1}_z_coordinate": ${ele.mesh.vertices[i][2]},
+% endfor
+          "view_factor_to_ground": 0.5
+      }${',' if not loop.last else ''}
+% endfor
+  },
+  "GlobalGeometryRules": {
+      "GlobalGeometryRules 1": {
+          "coordinate_system": "World",
+          "starting_vertex_position": "UpperLeftCorner",
+          "vertex_entry_direction": "CounterClockWise"
+      }
+  },
+  "Material": {
+      "CONCRETE100": {
+          "conductivity": 1.729577,
+          "density": 2242.585,
+          "roughness": "MediumRough",
+          "solar_absorptance": 0.65,
+          "specific_heat": 836.8,
+          "thermal_absorptance": 0.9,
+          "thickness": 0.1,
+          "visible_absorptance": 0.65
+      },
+      "CONCRETE150": {
+          "conductivity": 1.729577,
+          "density": 2242.585,
+          "roughness": "MediumRough",
+          "solar_absorptance": 0.65,
+          "specific_heat": 836.8,
+          "thermal_absorptance": 0.9,
+          "thickness": 0.15,
+          "visible_absorptance": 0.65
+      },
+      "INSULATION100": {
+          "conductivity": 0.04,
+          "density": 50.0,
+          "roughness": "MediumRough",
+          "solar_absorptance": 0.65,
+          "specific_heat": 1000.0,
+          "thermal_absorptance": 0.9,
+          "thickness": 0.1,
+          "visible_absorptance": 0.65
+      },
+      "WOOD30": {
+          "conductivity": 0.13,
+          "density": 600.0,
+          "roughness": "MediumRough",
+          "solar_absorptance": 0.65,
+          "specific_heat": 1000.0,
+          "thermal_absorptance": 0.9,
+          "thickness": 0.03,
+          "visible_absorptance": 0.65
+      }
+  },
+  "Model": {
+      "name": "FlexibleSpace",
+      "version": "0.1"
+  },
+  "RunPeriod": {
+      "Run Period 1": {
+          "apply_weekend_holiday_rule": "No",
+          "begin_day_of_month": 1,
+          "begin_month": 1,
+          "day_of_week_for_start_day": "Tuesday",
+          "end_day_of_month": 31,
+          "end_month": 12,
+          "use_weather_file_daylight_saving_period": "Yes",
+          "use_weather_file_holidays_and_special_days": "Yes",
+          "use_weather_file_rain_indicators": "Yes",
+          "use_weather_file_snow_indicators": "Yes"
+      }
+  },
+  "Site:Location": {
+      "Germany_Berlin_Meteonorm_ASCII": {
+          "elevation": 35.0,
+          "latitude": 52.47,
+          "longitude": 13.4,
+          "time_zone": 1.0
+      }
+  },
+  "Zone": {
+% for zone in data['zones']:
+      "${zone.name}": {
+          "ceiling_height": "Autocalculate",
+          "direction_of_relative_north": 0,
+          "floor_area": "Autocalculate",
+          "multiplier": 1,
+          "part_of_total_floor_area": "Yes",
+          "type": 1,
+          "volume": "Autocalculate",
+          "x_origin": 0,
+          "y_origin": 0,
+          "z_origin": 0
+      }${',' if not loop.last else ''}
+% endfor
+  }
+}

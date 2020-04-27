@@ -48,6 +48,11 @@ topFile = PhysicalModel.mot
 type = mako
 ext = .mo
 
+[TEMPLATE_ENERGYPLUS]
+topFile = PhysicalModel.ept
+type = mako
+ext = .epJSON
+
 [TEMPLATE_UNITY_STATE_VARIABLES]
 topFile = StateVariables.unt
 type = mako
