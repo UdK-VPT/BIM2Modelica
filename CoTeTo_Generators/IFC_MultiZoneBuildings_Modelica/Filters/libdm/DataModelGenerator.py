@@ -23,7 +23,7 @@ class Zone:
         self.heatsource = heatsource
 
 class Element:
-    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh):
+    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, meshSide1, meshSide2):
         self.name = name
         self.pos = pos
         self.memberOfZone = memberOfZone
@@ -32,23 +32,24 @@ class Element:
         self.height = height
         self.width = width
         self.thickness = thickness
-        self.mesh = mesh
+        self.meshSide1 = meshSide1
+        self.meshSide2 = meshSide2
 
 class ElementOpaque(Element):
-    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh, constructionData, AInnSur, includedWindows, includedDoors):
-        Element.__init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh)
+    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, meshSide1, meshSide2, constructionData, AInnSur, includedWindows, includedDoors):
+        Element.__init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, meshSide1, meshSide2)
         self.constructionData = constructionData
         self.AInnSur = AInnSur
-        self.includedWindows=includedWindows
-        self.includedDoors=includedDoors
+        self.includedWindows = includedWindows
+        self.includedDoors = includedDoors
 
 class ElementTransparent(Element):
-    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh):
-        Element.__init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh)
+    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, meshSide1, meshSide2):
+        Element.__init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, meshSide1, meshSide2)
 
 class ElementDoor(Element):
-    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh, constructionData, AInnSur):
-        Element.__init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, mesh)
+    def __init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, meshSide1, meshSide2, constructionData, AInnSur):
+        Element.__init__(self, name, pos, memberOfZone, angleDegAzi, angleDegTil, height, width, thickness, meshSide1, meshSide2)
         self.constructionData = constructionData
         self.AInnSur = AInnSur
 

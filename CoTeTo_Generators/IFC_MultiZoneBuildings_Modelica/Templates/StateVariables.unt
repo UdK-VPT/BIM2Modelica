@@ -35,15 +35,15 @@ public class ${data['buildingSystem'].name}_StateVariables : MonoBehaviour
     surface${i}.GetComponent<Renderer>().material.SetColor("_Speccolor",Color.Lerp(myColor1,myColor2,Random.Range(0.0f,1.0f)));
     mesh${i} = surface${i}.GetComponent<MeshFilter>().mesh;
     // vertices
-    vertices${i} = new Vector3[${len(ele.mesh.vertices)}]{
-  % for ver in ele.mesh.vertices:
+    vertices${i} = new Vector3[${len(ele.meshSide1.vertices)}]{
+  % for ver in ele.meshSide1.vertices:
       new Vector3(${ver[0]}f,${ver[2]}f,${ver[1]}f)${',' if not loop.last else ''}
   % endfor
     };
     // Triangles
-    triangles${i} = new int[${len(ele.mesh.triangles)}]{
-  % for j in range(0,int(len(ele.mesh.triangles)/3)):
-      ${ele.mesh.triangles[3*j+0]},${ele.mesh.triangles[3*j+1]},${ele.mesh.triangles[3*j+2]}${',' if not loop.last else ''}
+    triangles${i} = new int[${len(ele.meshSide1.triangles)}]{
+  % for j in range(0,int(len(ele.meshSide1.triangles)/3)):
+      ${ele.meshSide1.triangles[3*j+0]},${ele.meshSide1.triangles[3*j+1]},${ele.meshSide1.triangles[3*j+2]}${',' if not loop.last else ''}
   % endfor
     };
     mesh${i}.Clear();

@@ -20,9 +20,9 @@ for filename in d:
           "vertices": [
 % for i in range(4):
               {
-                  "vertex_x_coordinate": ${ele.mesh.vertices[i][0]},
-                  "vertex_y_coordinate": ${ele.mesh.vertices[i][1]},
-                  "vertex_z_coordinate": ${ele.mesh.vertices[i][2]}
+                  "vertex_x_coordinate": ${ele.meshSide1.vertices[i][0]},
+                  "vertex_y_coordinate": ${ele.meshSide1.vertices[i][1]},
+                  "vertex_z_coordinate": ${ele.meshSide1.vertices[i][2]}
               }${',' if not loop.last else ''}
 % endfor
           ],
@@ -30,6 +30,47 @@ for filename in d:
           "wind_exposure": "WindExposed",
           "zone_name": "${ele.memberOfZone[0]}"
       }${',' if not loop.last else ''}
+% else:
+      "${ele.name}_1": {
+          "construction_name": "WALL",
+          "number_of_vertices": 4,
+          "outside_boundary_condition": "Surface",
+          "outside_boundary_condition_object": "${ele.name}_2",
+          "sun_exposure": "NoSun",
+          "surface_type": "Wall",
+          "vertices": [
+% for i in range(4):
+              {
+                  "vertex_x_coordinate": ${ele.meshSide1.vertices[i][0]},
+                  "vertex_y_coordinate": ${ele.meshSide1.vertices[i][1]},
+                  "vertex_z_coordinate": ${ele.meshSide1.vertices[i][2]}
+              }${',' if not loop.last else ''}
+% endfor
+          ],
+          "view_factor_to_ground": 0.0,
+          "wind_exposure": "NoWind",
+          "zone_name": "${ele.memberOfZone[0]}"
+      },
+      "${ele.name}_2": {
+          "construction_name": "WALL",
+          "number_of_vertices": 4,
+          "outside_boundary_condition": "Surface",
+          "outside_boundary_condition_object": "${ele.name}_1",
+          "sun_exposure": "NoSun",
+          "surface_type": "Wall",
+          "vertices": [
+      % for i in range(4):
+              {
+                  "vertex_x_coordinate": ${ele.meshSide2.vertices[i][0]},
+                  "vertex_y_coordinate": ${ele.meshSide2.vertices[i][1]},
+                  "vertex_z_coordinate": ${ele.meshSide2.vertices[i][2]}
+              }${',' if not loop.last else ''}
+      % endfor
+          ],
+          "view_factor_to_ground": 0.0,
+          "wind_exposure": "NoWind",
+          "zone_name": "${ele.memberOfZone[1]}"
+      },
 % endif
 % endfor
   },
@@ -63,9 +104,9 @@ for filename in d:
           "number_of_vertices": 4,
           "surface_type": "Door",
 % for i in range(4):
-          "vertex_${i+1}_x_coordinate": ${ele.mesh.vertices[i][0]},
-          "vertex_${i+1}_y_coordinate": ${ele.mesh.vertices[i][1]},
-          "vertex_${i+1}_z_coordinate": ${ele.mesh.vertices[i][2]},
+          "vertex_${i+1}_x_coordinate": ${ele.meshSide1.vertices[i][0]},
+          "vertex_${i+1}_y_coordinate": ${ele.meshSide1.vertices[i][1]},
+          "vertex_${i+1}_z_coordinate": ${ele.meshSide1.vertices[i][2]},
 % endfor
           "view_factor_to_ground": "Autocalculate"
       },
@@ -78,9 +119,9 @@ for filename in d:
           "number_of_vertices": 4,
           "surface_type": "Window",
 % for i in range(4):
-          "vertex_${i+1}_x_coordinate": ${ele.mesh.vertices[i][0]},
-          "vertex_${i+1}_y_coordinate": ${ele.mesh.vertices[i][1]},
-          "vertex_${i+1}_z_coordinate": ${ele.mesh.vertices[i][2]},
+          "vertex_${i+1}_x_coordinate": ${ele.meshSide1.vertices[i][0]},
+          "vertex_${i+1}_y_coordinate": ${ele.meshSide1.vertices[i][1]},
+          "vertex_${i+1}_z_coordinate": ${ele.meshSide1.vertices[i][2]},
 % endfor
           "view_factor_to_ground": 0.5
       }${',' if not loop.last else ''}

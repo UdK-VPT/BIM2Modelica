@@ -241,11 +241,17 @@ def mapIFCtoBuildingDataModel(file,filename):
         for bound in space.Boundaries:
             if bound.OtherSideSpace in treatedZones.keys() or bound.OtherSideSpace == "EXTERNAL":
                 side1 =  treatedZones[space.Space.GlobalId]
+                meshSide1 = DataClasses.Mesh(bound.Face)
                 if bound.OtherSideSpace == "EXTERNAL":
                     side2 = "AMB"
+                    meshSide2 = ""
                 else:
                     side2 = treatedZones[bound.OtherSideSpace]
-
+                    for ospace in Spaces:
+                        if bound.OtherSideSpace == ospace.Space.GlobalId:
+                            for obound in ospace.Boundaries:
+                                if obound.Id == bound.OtherSideBoundary:
+                                    meshSide2 = DataClasses.Mesh(obound.Face)
                 ## Walls
                 if bound.RelatedBuildingElement in WallInfo.keys() and bound.thickness[0] > 0.0:
                     iel = iel + 1
@@ -272,7 +278,8 @@ def mapIFCtoBuildingDataModel(file,filename):
                                                                                 areaNet=bound.Area,
                                                                                 thickness=bound.thickness[0],
                                                                                 constructionData=treatedCon[BuildingElementToMaterialLayerSet[bound.RelatedBuildingElement]],
-                                                                                mesh=DataClasses.Mesh(bound.Face),
+                                                                                meshSide1=meshSide1,
+                                                                                meshSide2=meshSide2,
                                                                                 includedWindows=includedWindows,
                                                                                 includedDoors=includedDoors))
                         iwa = iwa + 1
@@ -299,7 +306,8 @@ def mapIFCtoBuildingDataModel(file,filename):
                                                                                 areaNet=bound.Area,
                                                                                 thickness=bound.thickness[0],
                                                                                 constructionData=treatedCon[BuildingElementToMaterialLayerSet[bound.RelatedBuildingElement]],
-                                                                                mesh=DataClasses.Mesh(bound.Face),
+                                                                                meshSide1=meshSide1,
+                                                                                meshSide2=meshSide2,
                                                                                 includedWindows=[],
                                                                                 includedDoors=[]))
                         isl = isl + 1
@@ -309,7 +317,6 @@ def mapIFCtoBuildingDataModel(file,filename):
                     iel = iel + 1
                     idoz = idoz + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
-                        mesh=DataClasses.Mesh(bound.Face)
                         treatedBuildingEle[bound.Id] = "door_"+str(ido)
                         buildingData.addDoorElement(bdm.BuildingElementDoor(id=bound.Id,
                                                                             name="door_"+str(ido),
@@ -323,7 +330,8 @@ def mapIFCtoBuildingDataModel(file,filename):
                                                                             areaNet=bound.Area,
                                                                             thickness=bound.thickness[0],
                                                                             constructionData="Construction1",
-                                                                            mesh=DataClasses.Mesh(bound.Face)))
+                                                                            meshSide1=meshSide1,
+                                                                            meshSide2=meshSide2))
                         ido = ido + 1
 
                 ## Transparent elements
@@ -331,7 +339,6 @@ def mapIFCtoBuildingDataModel(file,filename):
                     iel = iel + 1
                     iwiz = iwiz + 1
                     if bound.OtherSideBoundary not in treatedBuildingEle.keys():
-                        mesh=DataClasses.Mesh(bound.Face)
                         treatedBuildingEle[bound.Id] = "window_"+str(iwi)
                         buildingData.addTransparentElement(bdm.BuildingElementTransparent(id=bound.Id,
                                                                                           name="window_"+str(iwi),
@@ -344,7 +351,8 @@ def mapIFCtoBuildingDataModel(file,filename):
                                                                                           height=bound.Height,
                                                                                           areaNet=bound.Area,
                                                                                           thickness=bound.thickness[0],
-                                                                                          mesh=DataClasses.Mesh(bound.Face)))
+                                                                                          meshSide1=meshSide1,
+                                                                                          meshSide2=meshSide2))
                         iwi = iwi + 1
 
         ## Thermal zones
@@ -406,7 +414,8 @@ def getGeneratorData(buildingData):
                                                 height=eleOpa.height,
                                                 width=eleOpa.width,
                                                 thickness=eleOpa.thickness,
-                                                mesh=eleOpa.mesh,
+                                                meshSide1=eleOpa.meshSide1,
+                                                meshSide2=eleOpa.meshSide2,
                                                 constructionData=eleOpa.constructionData,
                                                 AInnSur=round(eleOpa.width*eleOpa.height-eleOpa.areaNet,3),
                                                 includedWindows=eleOpa.includedWindows,
@@ -423,7 +432,8 @@ def getGeneratorData(buildingData):
                                                           height=eleTra.height,
                                                           width=eleTra.width,
                                                           thickness=eleTra.thickness,
-                                                          mesh=eleTra.mesh))
+                                                          meshSide1=eleTra.meshSide1,
+                                                          meshSide2=eleTra.meshSide2))
 
     ## Door elements
     elementsDoor = []
@@ -436,7 +446,8 @@ def getGeneratorData(buildingData):
                                             height=eleDoo.height,
                                             width=eleDoo.width,
                                             thickness=eleDoo.thickness,
-                                            mesh=eleDoo.mesh,
+                                            meshSide1=eleDoo.meshSide1,
+                                            meshSide2=eleDoo.meshSide2,
                                             constructionData=eleDoo.constructionData,
                                             AInnSur=round(eleDoo.width*eleDoo.height-eleDoo.areaNet,3)))
 

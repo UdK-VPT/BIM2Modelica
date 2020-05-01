@@ -77,7 +77,8 @@ class BuildingElement:
            'height',
            'areaNet',
            'thickness',
-           'mesh']
+           'meshSide1',
+           'meshSide2']
 
     def __init__(self, id, name, pos, **kwargs):
         self.id = str(id)
@@ -92,7 +93,8 @@ class BuildingElement:
         self.height = None
         self.areaNet = None
         self.thickness = None
-        self.mesh = None
+        self.meshSide1 = None
+        self.meshSide2 = None
 
     def setParameter(self, **kwargs):
         if kwargs is not None:
