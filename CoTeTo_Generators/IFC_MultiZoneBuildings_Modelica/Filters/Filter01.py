@@ -390,7 +390,7 @@ def getGeneratorData(buildingData):
     zones = []
     for zone in buildingData.getParameter('zones'):
         zones.append(dmg.Zone(name=zone.name,
-                              pos=(zone.pos.X(),zone.pos.Y(),zone.pos.Z()),
+                              pos=zone.pos,
                               nElements=zone.numberOfElements,
                               nWalls=zone.numberOfWalls,
                               nSlabs=zone.numberOfSlabs,
@@ -407,7 +407,7 @@ def getGeneratorData(buildingData):
     elementsOpaque = []
     for eleOpa in buildingData.getParameter('opaqueElements'):
         elementsOpaque.append(dmg.ElementOpaque(name=eleOpa.name,
-                                                pos=(eleOpa.pos.X(),eleOpa.pos.Y(),eleOpa.pos.Z()),
+                                                pos=eleOpa.pos,
                                                 memberOfZone=[eleOpa.adjZoneSide1,eleOpa.adjZoneSide2],
                                                 angleDegAzi=eleOpa.angleDegAzi,
                                                 angleDegTil=eleOpa.angleDegTil,
@@ -425,7 +425,7 @@ def getGeneratorData(buildingData):
     elementsTransparent = []
     for eleTra in buildingData.getParameter('transparentElements'):
         elementsTransparent.append(dmg.ElementTransparent(name=eleTra.name,
-                                                          pos=(eleTra.pos.X(),eleTra.pos.Y(),eleTra.pos.Z()),
+                                                          pos=eleTra.pos,
                                                           memberOfZone=[eleTra.adjZoneSide1,eleTra.adjZoneSide2],
                                                           angleDegAzi=eleTra.angleDegAzi,
                                                           angleDegTil=eleTra.angleDegTil,
@@ -439,7 +439,7 @@ def getGeneratorData(buildingData):
     elementsDoor = []
     for eleDoo in buildingData.getParameter('doorElements'):
         elementsDoor.append(dmg.ElementDoor(name=eleDoo.name,
-                                            pos=(eleDoo.pos.X(),eleDoo.pos.Y(),eleDoo.pos.Z()),
+                                            pos=eleDoo.pos,
                                             memberOfZone=[eleDoo.adjZoneSide1,eleDoo.adjZoneSide2],
                                             angleDegAzi=eleDoo.angleDegAzi,
                                             angleDegTil=eleDoo.angleDegTil,

@@ -1,6 +1,4 @@
 #!/usr/bin/python
-import OCC.Core.gp
-
 class Geometry3D:
     '''
     This class describes the properties of 3D geometry object.
@@ -8,7 +6,7 @@ class Geometry3D:
 
     def __init__(self, name='', pos=(0.0, 0.0, 0.0)):
         self.name = str(name)
-        self.pos = OCC.Core.gp.gp_Pnt(pos[0], pos[1], pos[2])
+        self.pos = pos
 
 
 class Material:
@@ -83,7 +81,7 @@ class BuildingElement:
     def __init__(self, id, name, pos, **kwargs):
         self.id = str(id)
         self.name = str(name)
-        self.pos = OCC.Core.gp.gp_Pnt(pos[0], pos[1], pos[2])
+        self.pos = pos
         self.angleDegAzi = None
         self.angleDegTil = None
         self.adjZoneSide1 = None
@@ -164,7 +162,7 @@ class BuildingZone:
     def __init__(self, id='', name='', pos=(0.0, 0.0, 0.0), **kwargs):
         self.id = str(id)
         self.name = str(name)
-        self.pos = OCC.Core.gp.gp_Pnt(pos[0], pos[1], pos[2])
+        self.pos = pos
         self.volume = None
         self.height = None
         self.geometry = None
